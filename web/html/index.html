@@ -65,11 +65,14 @@
             </div>
           </li>
           <li>
-            <div class="btn-group" dropdown is-open="status.isopen">
-              <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
+            <div class="btn-group" dropdown>
+              <button type="button" class="btn btn-primary">
                 <span ng-show="!status.logged">No has iniciado sesion</span>
                 <span ng-show="status.logged">Bienvenido {{currentUser.userName}} </span>
+              </button>
+              <button class="btn btn-primary dropdown-toggle" dropdown-toggle>
                 <span class="caret"></span>
+                <span class="sr-only">Split button!</span>
               </button>
               <ul class="dropdown-menu" role="menu">
                 <li ng-show="!status.logged"><a href="#/loginView">Iniciar sesion</a></li>
