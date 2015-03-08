@@ -14,4 +14,4 @@ module.exports = function(app) {
 
   app.route('/private/upload')
   .post(uploads.upload);
-}
+};

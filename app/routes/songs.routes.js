@@ -18,4 +18,4 @@ module.exports = function(app) {
 
   app.route('/private/albums')
   .get(songs.albums);
-}
+};

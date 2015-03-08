@@ -103,4 +103,4 @@ exports.albums = function(req, res) {
       callback();
     });
   }]);
-}
+};

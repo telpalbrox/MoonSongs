@@ -17,30 +17,31 @@ function findTags(tags, res, callback) {
     headers : {
       'User-Agent': 'MoonSongs/0.0.1 ( alberto.luna.95@gmail.com )'
     }
-  }
+  };
   console.log(requestTag.url);
   request(requestTag, function(error, response, body) {
+    var tags = null;
     if (!error && response.statusCode === 200) {
       body = JSON.parse(body);
       console.log('titulo: ' + body.title);
       console.log('album: ' + body.releases[0].title);
       console.log('artista: ' + body['artist-credit'][0].name);
-      var tags = {
+      tags = {
         artist : body['artist-credit'][0].name,
         album : body.releases[0].title,
         title : body.title,
         'fileName' : fileName
-      }
+      };
       callback(tags, res);
     } else {
       console.log('error al recibir tags');
       console.log(error);
-      var tags = {
+      tags = {
         artist : 'Unknown',
         album : 'Unknown',
         title : fileUploadName,
         'fileName' : fileName
-      }
+      };
       callback(tags, res);
     }
   });
@@ -133,7 +134,7 @@ exports.upload = function(req, res) {
 
   var tags = JSON.parse(req.body.info);
   tags.fileName = req.files.file.name;
-  if(!tags.artist || !tags.album || !tags.title || tags.artist === "" || !tags.album === "" || !tags.title === "") {
+  if(!tags.artist || !tags.album || !tags.title) {
     console.log('faltan tags');
     res.sendStatus(501);
     // findTags(tags, res, createArtistFolder);

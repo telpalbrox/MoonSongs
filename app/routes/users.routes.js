@@ -14,4 +14,4 @@ module.exports = function(app) {
   .get(users.read)
   .put(users.update)
   .delete(users.delete);
-}
+};

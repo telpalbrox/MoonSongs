@@ -115,7 +115,8 @@ module.exports = function(grunt) {
     },
     // Check js syntaxy
     jshint: {
-      web: ['Gruntfile.js', 'web/js/**/*.js']
+      web: ['Gruntfile.js', 'web/js/**/*.js'],
+      server: watchFiles.jsServerFiles
     },
     watch: {
       options: {
@@ -132,7 +133,7 @@ module.exports = function(grunt) {
       },
       jsServer: {
         files: watchFiles.jsServerFiles,
-        tasks: []
+        tasks: ['jshint:server']
       },
       css: {
         files: watchFiles.cssFiles,
