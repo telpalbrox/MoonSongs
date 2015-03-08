@@ -71,7 +71,7 @@ module.exports = function(grunt) {
       html: ['public/index.html', 'public/modals', 'public/templates'],
       fonts: ['public/fonts'],
       img: ['public/img'],
-      release: ['public/js/moonSongsIonic.js', 'public/css/style.css'],
+      release: ['public/js/moonSongs.js', 'public/css/style.css'],
       public: ['public/**'],
       uploads: ['uploads']
     },
