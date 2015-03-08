@@ -13,3 +13,5 @@ music/
 music2/
 # temporal upload folder
 uploads/
+# log files
+**/*.log
