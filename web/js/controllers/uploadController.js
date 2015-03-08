@@ -24,8 +24,6 @@ angular.module('moonSongs.uploadController', ['ngRoute'])
     $scope.autotag = false;
     var aniadirYtags = function(file) {
       id3(file, function(err, tags) {
-        console.log(tags);
-        console.log(file.type);
         if(!tags.album && !tags.title && !tags.artist && !tags.year) {
           return;
         }
@@ -81,21 +79,19 @@ angular.module('moonSongs.uploadController', ['ngRoute'])
             method: 'POST', //or PUT
             //headers: {'header-key': 'header-value'},
             //withCredentials: true,
-            data: {'info' :{
+            fields: {'info' :{
               artist : file.artist,
               album : file.album,
               title : file.title,
-              imageData : file.imageData,
+              imageData : file.image,
               fileUploadName : file.fileUploadName
               }},
             file: file
           }).progress(function(evt) {
             var percent = parseInt(100.0 * evt.loaded / evt.total);
-            console.log('percent: ' + percent);
             file.percentage = percent;
           }).success(function(data, status, headers, config) {
             // file is uploaded successfully
-            console.log('bien: '+data);
             file.uploaded = true;
             file.uploading = false;
           }).error(function(err) {
