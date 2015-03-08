@@ -1,0 +1,40 @@
+<h1>Subir canciones</h1>
+<div class="button" ng-file-select="aniadirArchivos($files)" data-multiple="true"></div>
+<div ng-file-drop="aniadirArchivos($files)" ng-file-drag-over-class="arrastrando"
+ng-show="dropSupported" id="cuadrado" ng-file-drag-over-delay="100" ng-disabled="true">Arrastra las canciones aqui</div>
+<div ng-file-drop-available="dropSupported=true"
+ng-show="!dropSupported">HTML5 Drop File is not supported!</div>
+<input type="checkbox" ng-model="autotag" ng-change="changeAutotag()">Autotag<br>
+<div ng-repeat="archivo in archivos">
+  <p>{{archivo.fileUploadName}}</p>
+  <form class="form-inline" role="form">
+    <img ng-src="{{archivo.image}}" style="width:45px;height:45px" class="img-thumbnail">
+    <div class="form-group">
+      <div class="input-group">
+        <label class="sr-only" for="inputArtista">Artista</label>
+        <input type="text" class="form-control" ng-model="archivo.artist" id="inputArtista" placeholder="Artista">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="inputAlbum">Album</label>
+      <input type="text" class="form-control" ng-model="archivo.album" id="inputAlbum" placeholder="Album">
+    </div>
+    <div class="form-group">
+      <label class="sr-only" for="inputTitle">Album</label>
+      <input type="text" class="form-control" ng-model="archivo.title" id="inputTitle" placeholder="Titilo">
+    </div>
+    <a href="" ng-show="!archivo.uploading" class="btn btn-warning" ng-click="eliminar(archivo)">Eliminar</a>
+  </form>
+  <div class="col-sm-4" ng-show="archivo.uploading">
+    <progressbar class="progress-striped active" max="100" value="archivo.percentage"
+    type="info"><i>{{archivo.percentage}} %</i></progressbar>
+  </div>
+  <div class="alert alert-dismissable alert-danger" ng-show="archivo.exists">
+    <strong>Error</strong> La cancion ya esta subida...
+  </div>
+  <div class="alert alert-dismissable alert-success" ng-show="archivo.uploaded">
+    Cancion subida con <strong>exito</strong>
+  </div>
+</div>
+<a href="" class="btn btn-success" ng-click="onFileSelect(archivos)">Subir archivos</a>
+<a href="" class="btn btn-danger" ng-click="cancelar()">Cancelar subida</a>

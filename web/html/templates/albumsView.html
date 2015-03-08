@@ -1,0 +1,55 @@
+<h1>Albumes</h1>
+<accordion close-others="flase">
+  <div ng-repeat="album in albums">
+    <div class="row">
+      <a class="media-left media-middle col-md-1">
+        <img class="img-circle" style="width:64px;height:64px" ng-src="private/music/{{album.artist}}/{{album.album}}/Cover.jpg?dim=64x64">
+      </a>
+      <accordion-group class="col-md-11" heading="{{album.artist}} | {{album.album}}">
+        <table class="table table-striped table-hover ">
+          <thead>
+            <tr>
+              <th ng-click="predicate = 'artist' ; reverse = !reverse">Artista</th>
+              <th ng-click="predicate = 'album' ; reverse = !reverse">Album</th>
+              <th ng-click="predicate = 'title' ; reverse = !reverse">Título</th>
+              <th>Opciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="song in album.songs |  filter:search | orderBy:predicate:reverse">
+              <td>
+                <div class="media">
+                  <a class="media-left media-middle">
+                    <img class="img-thumbnail" style="width:64px;height:64px" ng-src="private/music/{{song.artist}}/Artist.jpg?dim=64x64">
+                  </a>
+                  <div class="media-body">
+                    {{song.artist}}
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="media">
+                  <a class="media-left media-middle">
+                    <img class="img-thumbnail" style="width:64px;height:64px" ng-src="private/music/{{song.artist}}/{{song.album}}/Cover.jpg?64x64">
+                  </a>
+                  <div class="media-body">
+                    {{song.album}}
+                  </div>
+                </div>
+              </td>
+              <td>{{song.title}}</td>
+              <td>
+                <div class="btn-group btn-group-xs">
+                  <button type="button" class="btn btn-primary btn-xs" ng-click="play(song)">Reproducir</button>
+                  <button type="button" class="btn btn-info btn-xs" ng-click="addSong(song)">Añadir a la cola</button>
+                  <button type="button" class="btn btn-danger btn-xs" ng-click="delete(song)">Eliminar</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </accordion-group>
+    </div>
+    <br>
+  </div>
+</accordion>

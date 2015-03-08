@@ -1,0 +1,15 @@
+# node dependences
+node_modules/
+# Auto created file by Dolphin
+**/.directory
+# Auto created file by vim
+**/*~
+# web libraries
+web/lib/
+# compiled js/css/html
+public/
+# music folders
+music/
+music2/
+# temporal upload folder
+uploads/

@@ -1,0 +1,44 @@
+// server.js
+console.log('loading server...');
+// configurando todas las herramientas necesarias
+var express 	= require('express'); // libreria encargada de gestionar peticiones http
+var app			= express();
+var port 		= process.env.PORT || 8080;
+var mongoose	= require('mongoose'); // libreria encargada de conecar con la base de datos MongoDB
+var morgan		= require('morgan'); // libreria para registrar las peticiones http
+var bodyParser	= require('body-parser'); // libreria para recibir json
+var fs = require('fs');
+
+// configurando bd
+var configDB  = require('./config/database.js');
+mongoose.connect(configDB.url);
+
+var connect = require('connect');
+var serveStatic = require('serve-static');
+
+// configurando herramientas de la libreria express
+app.use(morgan('dev')); // registra cada peticion a la consola
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json());
+app.use(express.static('public'));
+
+var qt   = require('quickthumb');
+app.use('/private/music', qt.static(__dirname + '/music')); // Use quickthumb
+
+// activando CORS
+app.use(function (req, res, next) {
+				res.setHeader('Access-Control-Allow-Origin', "*");
+
+				res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+				res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
+				next();
+		}
+);
+
+// configurando direcciones
+require('./app/routes.js')(app);
+require('./config/updatedatabase.js')(fs);
+
+// lanzando servidor
+app.listen(port);
+console.log('The magic happens on port ' + port);

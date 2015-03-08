@@ -1,0 +1,24 @@
+<h1>Inicio sesion</h1>
+<form class="form-horizontal">
+  <fieldset>
+    <legend>Legend</legend>
+    <div class="form-group">
+      <label for="inputEmail" class="col-lg-1 control-label">Usuario</label>
+      <div class="col-lg-5">
+        <input class="form-control" id="inputEmail" ng-model="userName" placeholder="Usuario" type="text">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="inputPassword" class="col-lg-1 control-label">Password</label>
+      <div class="col-lg-5">
+        <input class="form-control" id="inputPassword" ng-model="pass" placeholder="Password" type="password">
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-lg-5 col-lg-offset-2">
+        <button class="btn btn-default">Cancel</button>
+        <button type="submit" class="btn btn-primary" ng-click="login()">Submit</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
