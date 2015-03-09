@@ -19,6 +19,7 @@
     "mongoose": "*",
     "morgan": "*",
     "multer": "*",
+    "q": "^1.2.0",
     "quickthumb": "*",
     "request": "*",
     "serve-static": "*",
