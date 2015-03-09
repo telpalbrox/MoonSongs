@@ -1,6 +1,6 @@
 <h1>Subir canciones</h1>
-<a href="" class="btn btn-default" ng-file-select ng-file-change="aniadirArchivos($files)">Seleccionar archivos</a>
-<div ng-file-change="aniadirArchivos($files)" drag-over-class="arrastrando" ng-show="dropSupported" id="cuadrado" ng-file-drag-over-delay="100" ng-file-drop >Arrastra las canciones aqui</div>
+<a href="" class="btn btn-default" ng-file-select ng-file-change="aniadirArchivos($files)" ng-multiple="true">Seleccionar archivos</a>
+<div ng-file-change="aniadirArchivos($files)" drag-over-class="arrastrando" ng-show="dropSupported" id="cuadrado" ng-file-drag-over-delay="100" ng-file-drop ng-multiple="true">Arrastra las canciones aqui</div>
 <div ng-file-drop-available="dropSupported=true" ng-show="!dropSupported">HTML5 Drop File is not supported!</div>
 <input type="checkbox" ng-model="autotag" ng-change="changeAutotag()">Autotag<br>
 <div ng-repeat="archivo in archivos">
