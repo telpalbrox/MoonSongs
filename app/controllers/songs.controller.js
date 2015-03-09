@@ -57,9 +57,10 @@ exports.delete = function(req, res) {
   }).remove( function(err, numberAffected, raw) {
     if(err) res.send(err);
     if(numberAffected === 0) res.send(404, 'Cancion no encontrada');
-    var fileSong = musicDir+'/'+artist+'/'+album+'/'+title+'.mp3';
-    fs.unlinkSync(fileSong);
-    res.send(200);
+    var fileSong = 'music/'+artist+'/'+album+'/'+title+'.mp3';
+    fs.unlink(fileSong, function(error) {
+      res.send(200);
+    });
   } );
 };
 
