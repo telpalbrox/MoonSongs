@@ -70,38 +70,25 @@ exports.albums = function(req, res) {
     return;
   }
 
-  var jsonAlbums = [];
-  var arrAlbums;
+  var albums = {};
 
-  var function1 = function(item, callback) {
-    Song.findOne({'album' : item }, function(err, song) {
-      jsonAlbums.push({
-        'album' : item,
-        'artist' : song.artist,
-        'songs' : []
-      });
-      callback();
-    });
-  };
-
-  async.series([function(callback) {
-    Song.distinct('album', function(err, albums) {
-      if(err) res.send(err);
-      arrAlbums = albums;
-      async.eachSeries(arrAlbums, function1, function() {
-        Song.find({}, function(err, songs) {
-          for(var j in songs) {
-            for(var k in jsonAlbums) {
-              if(songs[j].album == jsonAlbums[k].album) {
-                jsonAlbums[k].songs.push(songs[j]);
-              }
-            }
-          }
-          res.json(jsonAlbums);
-          callback();
-        });
-      });
-      callback();
-    });
-  }]);
+  Song.find({}, function(err, songs) {
+    for(var j in songs) {
+      if(albums[songs[j].album] === undefined) {
+        albums[songs[j].album] = {
+          'album': songs[j].album,
+          'artist': songs[j].artist,
+          'songs': []
+        };
+      }
+      albums[songs[j].album].songs.push(songs[j]);
+    }
+    var arrAlbums = [];
+    for(var key in albums) {
+      if(albums.hasOwnProperty(key)) {
+        arrAlbums.push(albums[key]);
+      }
+    }
+    res.json(arrAlbums);
+  });
 };
