@@ -1,6 +1,7 @@
 // Declare app level module which depends on views, and components
 angular.module('moonSongs', [
   'ngRoute',
+  'pascalprecht.translate',
   'moonSongs.albumsController',
   'moonSongs.indexController',
   'moonSongs.loginController',
@@ -21,4 +22,11 @@ angular.module('moonSongs', [
 ]).
 config(['$routeProvider', function($routeProvider, $rootScope, Token) {
   $routeProvider.otherwise({redirectTo: '/startView'});
-}]);
+}])
+.config(function ($translateProvider) {
+  $translateProvider.useStaticFilesLoader({
+    prefix: 'lang/locale-',
+    suffix: '.json'
+  });
+  $translateProvider.preferredLanguage('en');
+});
