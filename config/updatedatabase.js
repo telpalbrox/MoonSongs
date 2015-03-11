@@ -5,7 +5,6 @@ var Song = require('../app/models/song.js');
 var User = require('../app/models/user.js');
 var songUtils = require('../app/utils/songUtils.js');
 var path = require('path');
-var async = require('async');
 var id3 = require('id3js');
 var fs = require('fs');
 var q = require('q');

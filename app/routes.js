@@ -4,7 +4,6 @@ console.log('loading routes...');
 var Song = require('../app/models/song.js');
 var User = require('../app/models/user.js');
 var jwtauth = require('../config/jwtauth.js');
-var async = require('async');
 var path = require('path');
 var musicDir = path.dirname(__dirname)+'/music';
 var uploadsDir = path.dirname(__dirname)+'/uploads';

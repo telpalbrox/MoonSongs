@@ -5,7 +5,6 @@ console.log('loading song controller');
 * Module dependencies
 */
 var Song = require('../models/song.js'),
-async = require('async'),
 path = require('path'),
 fs = require('fs');
 var musicDir = path.dirname(__dirname)+'/music';
