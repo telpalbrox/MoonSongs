@@ -54,14 +54,30 @@ exports.delete = function(req, res) {
     'artist' : artist,
     'album' : album,
     'title' : title
-  }).remove( function(err, numberAffected, raw) {
-    if(err) res.send(err);
-    if(numberAffected === 0) res.send(404, 'Cancion no encontrada');
-    var fileSong = 'music/'+artist+'/'+album+'/'+title+'.mp3';
-    fs.unlink(fileSong, function(error) {
-      res.send(200);
+  }, function(err, song) {
+    song.remove(function (err, song) {
+      if(err) {
+        console.log(err);
+        res.status(501).send('Error al borrar la cancion');
+        return;
+      }
+      if(!song) {
+        res.status(404).send('Cancion no encontrada');
+        return;
+      }
+      else {
+        fs.unlink(song.path, function(err) {
+          if(err) {
+            console.log(err);
+            res.status(501).send('Error al borrar la cancion');
+            return;
+          }
+          res.send(200);
+          return;
+        });
+      }
     });
-  } );
+  });
 };
 
 exports.albums = function(req, res) {

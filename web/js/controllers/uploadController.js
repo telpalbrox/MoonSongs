@@ -40,6 +40,9 @@ angular.module('moonSongs.uploadController', ['ngRoute'])
         if(tags.artist) $scope.archivos[index].artist = tags.artist.replace(/\0/g, '');
         if(tags.album) $scope.archivos[index].album = tags.album.replace(/\0/g, '');
         if(tags.title) $scope.archivos[index].title = tags.title.replace(/\0/g, '');
+        if(tags.year) $scope.archivos[index].year = tags.year.replace(/\0/g, '');
+        if(tags.v1.track) $scope.archivos[index].year = tags.v1.track;
+        if(tags.v1.genre) $scope.archivos[index].genre = tags.v1.genre.replace(/\0/g, '');
         $scope.archivos[index].uploading = false;
         $scope.archivos[index].fileUploadName = file.name;
         if(tags.v2.image) {
@@ -68,8 +71,7 @@ angular.module('moonSongs.uploadController', ['ngRoute'])
   $scope.onFileSelect = function($files) {
     //$files: an array of files selected, each file has name, size, and type.
     var checkSongAndUpload = function(file) {
-      $http.get('private/checkSong?artist='+file.artist+
-      '&album='+file.album+'&title='+file.title)
+      $http.get('private/checkSong?artist='+file.artist+'&album='+file.album+'&title='+file.title)
       .success(function(data) {
         file.exists = data;
         if(!file.exists) {
@@ -83,6 +85,9 @@ angular.module('moonSongs.uploadController', ['ngRoute'])
               artist : file.artist,
               album : file.album,
               title : file.title,
+              year : file.year,
+              track : file.track,
+              genre: file.genre,
               imageData : file.image,
               fileUploadName : file.fileUploadName
               }},

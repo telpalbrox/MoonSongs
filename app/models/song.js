@@ -8,7 +8,12 @@ var songSchema = mongoose.Schema({
   artist  : String,
   album   : String,
   downloads: Number,
-  listens : Number,
+  year    : String,
+  track   : Number,
+  genre: String,
+  path: String,
+  coverUrl: String,
+  artistUrl: String,
   found : Boolean
 });
 

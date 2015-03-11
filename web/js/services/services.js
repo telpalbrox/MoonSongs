@@ -6,7 +6,7 @@ angular.module('starter.services', [])
 .factory('ServerIp', function() {
   return {
     get : function() {
-      return window.localStorage.getItem('serverIp') || "http://"+ location.host;
+      return window.localStorage.getItem('serverIp') || "http://localhost:8080";
     },
     set : function(ip) {
       window.localStorage.setItem('serverIp', ip);
@@ -94,9 +94,7 @@ angular.module('starter.services', [])
       if(self.offline) {
         return self.getSong().url;
       } else {
-        return ServerIp.get()+'/private/music/'+self.songList[self.songIndex].artist+'/'+
-        self.songList[self.songIndex].album+'/'+
-        self.songList[self.songIndex].title+'.mp3';
+        return ServerIp.get()+'/private/'+self.getSong().path;
       }
     };
 
@@ -120,6 +118,7 @@ angular.module('starter.services', [])
     */
     self.playSong = function() {
       console.log('playSong');
+      // self.audio.src = self.getAudioUrl();
       if(self.offline) {
         if(self.audio.mediaStatus == Media.MEDIA_RUNNING) {
           self.playNow();
@@ -143,13 +142,20 @@ angular.module('starter.services', [])
     * whatever was pause property
     */
     self.nextSong = function(now) {
+      console.log('next');
       if(self.songIndex < self.songList.length - 1) {
         if(!now) {
           self.changeSong = true; // Controls finish media in offline mode
         }
         self.songIndex++;
-        if(now) self.playNow();
-        else self.playSong();
+        if(now) {
+          console.log('now');
+          self.playNow();
+        }
+        else {
+          console.log('not now');
+          self.playSong();
+        }
       }
     };
 
@@ -222,12 +228,13 @@ angular.module('starter.services', [])
 
     self.setOffline = function(offline) {
       self.offline = offline;
+      self.reset();
       if(self.offline) {
         self.audio = new Media("", self.finishMedia, function(){}, self.mediaStatusChanged);
       } else {
         self.audio = new Audio();
+        self.changeSong = false;
       }
-      self.reset();
     };
 
     self.equals = function(song) {
