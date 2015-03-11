@@ -6,7 +6,7 @@ angular.module('starter.services', [])
 .factory('ServerIp', function() {
   return {
     get : function() {
-      return window.localStorage.getItem('serverIp') || "http://localhost:8080";
+      return window.localStorage.getItem('serverIp') || "http://"+ location.host;
     },
     set : function(ip) {
       window.localStorage.setItem('serverIp', ip);
