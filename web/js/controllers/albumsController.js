@@ -27,9 +27,15 @@ angular.module('moonSongs.albumsController', ['ngRoute'])
     Music.playNow();
   };
 
-  $scope.random = function() {
+  $scope.random = function(album) {
+    var arrSongs = [];
+
+    for(var j in album.songs) {
+      arrSongs.push(album.songs[j]);
+    }
+
     Music.songList = [];
-    Music.songList = JSON.parse(JSON.stringify($scope.songs));
+    Music.songList = arrSongs;
     Music.randomizeSongList();
     Music.songIndex = 0;
     Music.playNow();
