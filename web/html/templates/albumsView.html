@@ -20,7 +20,7 @@
               <td>
                 <div class="media">
                   <a class="media-left media-middle">
-                    <img class="img-thumbnail" style="width:64px;height:64px" ng-src="private/music/{{song.artist}}/Artist.jpg?dim=64x64">
+                    <img class="img-rounded" style="width:64px;height:64px" ng-src="private/music/{{song.artist}}/Artist.jpg?dim=64x64">
                   </a>
                   <div class="media-body">
                     {{song.artist}}
@@ -30,7 +30,7 @@
               <td>
                 <div class="media">
                   <a class="media-left media-middle">
-                    <img class="img-thumbnail" style="width:64px;height:64px" ng-src="private/music/{{song.artist}}/{{song.album}}/Cover.jpg?64x64">
+                    <img class="img-rounded" style="width:64px;height:64px" ng-src="private/music/{{song.artist}}/{{song.album}}/Cover.jpg?64x64">
                   </a>
                   <div class="media-body">
                     {{song.album}}
@@ -42,7 +42,7 @@
                 <div class="btn-group btn-group-xs">
                   <button type="button" class="btn btn-primary btn-xs" ng-click="play(song)">Reproducir</button>
                   <button type="button" class="btn btn-info btn-xs" ng-click="addSong(song)">Añadir a la cola</button>
-                  <button type="button" class="btn btn-danger btn-xs" ng-click="delete(song)">Eliminar</button>
+                  <button type="button" class="btn btn-danger btn-xs" ng-click="delete(song, album)">Eliminar</button>
                 </div>
               </td>
             </tr>

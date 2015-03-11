@@ -13,17 +13,10 @@ angular.module('moonSongs.songsController', ['ngRoute'])
     $scope.songs = data;
   });
 
-  $http.get('private/albums')
-  .success(function(data) {
-    $scope.albums = data;
-    console.log(data);
-  });
-
   $scope.predicate = 'album';
   $scope.reverse = false;
 
   $scope.addSong = function(song) {
-    console.log("pulsa que te pulsa");
     Music.addSong(song);
   };
 
@@ -46,7 +39,7 @@ angular.module('moonSongs.songsController', ['ngRoute'])
     $scope.selected = song;
 
     var modalInstance = $modal.open({
-      templateUrl: 'modalDeleteSong.html',
+      templateUrl: 'modals/modalDeleteSong.html',
       controller: 'ModalDeleteSong',
       scope : $scope
     });
