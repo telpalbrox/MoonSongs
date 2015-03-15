@@ -1,7 +1,7 @@
 {
   "name": "MoonSongs",
   "main": "server.js",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.12.0",

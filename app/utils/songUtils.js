@@ -67,7 +67,7 @@ exports.findTags = function(rid, fileName, fileUploadName, filePath) {
   var requestTag =  {
     url : 'http://musicbrainz.org/ws/2/recording/'+rid+'?inc=artist-credits+isrcs+releases&fmt=json',
     headers : {
-      'User-Agent': 'MoonSongs/0.0.3 ( alberto.luna.95@gmail.com )'
+      'User-Agent': 'MoonSongs/0.0.4 ( alberto.luna.95@gmail.com )'
     },
     json: true
   };
