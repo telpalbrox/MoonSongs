@@ -3,6 +3,7 @@ module.exports = function(grunt) {
   var watchFiles = {
     jsWebFiles: ['web/js/**/*.js'],
     jsServerFiles: ['app/**/*.js', 'config/**/*.js'],
+    langFiles: ['web/lang/**/*.json'],
     cssFiles: ['web/css/**/*.css'],
     htmlFiles: ['web/html/**/*.html']
   };
@@ -98,6 +99,15 @@ module.exports = function(grunt) {
           dest: 'public/'
         }]
       },
+      lang: {
+        files: [{
+          cwd: 'web/lang/',
+          src: [
+            '**'
+          ],
+          dest: 'public/lang'
+        }]
+      },
       img: {
         files: [{
           cwd: 'web/img/',
@@ -148,6 +158,10 @@ module.exports = function(grunt) {
         options: {
           livereload: true
         }
+      },
+      lang: {
+        files: watchFiles.langFiles,
+        tasks: ['sync:lang']
       }
     },
     // launchs watch and ionic task at the same time

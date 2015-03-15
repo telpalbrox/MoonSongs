@@ -1,4 +1,4 @@
-<h1>Albumes</h1>
+<h1 translate>ALBUMS</h1>
 <accordion close-others="flase">
   <div ng-repeat="album in albums">
     <div class="row">
@@ -8,15 +8,15 @@
       <accordion-group class="col-md-11" heading="{{album.artist}} | {{album.album}}">
         <button type="button" class="btn btn-default col-md-3" ng-click="random(album)">
           <span class="glyphicon glyphicon-random" aria-hidden="true"></span>
-          Reproducr todas las canciones
+          <span translate>SHUFFLE SONGS</span>
         </button>
         <table class="table table-striped table-hover ">
           <thead>
             <tr>
-              <th ng-click="predicate = 'artist' ; reverse = !reverse">Artista</th>
-              <th ng-click="predicate = 'album' ; reverse = !reverse">Album</th>
-              <th ng-click="predicate = 'title' ; reverse = !reverse">Título</th>
-              <th>Opciones</th>
+              <th ng-click="predicate = 'artist' ; reverse = !reverse" translate>ARTIST</th>
+              <th ng-click="predicate = 'album' ; reverse = !reverse" translate>ALBUM</th>
+              <th ng-click="predicate = 'title' ; reverse = !reverse" translate>TITLE</th>
+              <th translate>OPTIONS</th>
             </tr>
           </thead>
           <tbody>
@@ -44,9 +44,9 @@
               <td>{{song.title}}</td>
               <td>
                 <div class="btn-group btn-group-xs">
-                  <button type="button" class="btn btn-primary btn-xs" ng-click="play(song)">Reproducir</button>
-                  <button type="button" class="btn btn-info btn-xs" ng-click="addSong(song)">Añadir a la cola</button>
-                  <button type="button" class="btn btn-danger btn-xs" ng-click="delete(song, album)">Eliminar</button>
+                  <button type="button" class="btn btn-primary btn-xs" ng-click="play(song)" translate>PLAY</button>
+                  <button type="button" class="btn btn-info btn-xs" ng-click="addSong(song)" translate>QUEUE SONG</button>
+                  <button type="button" class="btn btn-danger btn-xs" ng-click="delete(song, album)" translate>DELETE</button>
                 </div>
               </td>
             </tr>

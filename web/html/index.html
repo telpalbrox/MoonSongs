@@ -7,7 +7,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Angular Songs</title>
+  <title>Moon Songs</title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <base href="/">
@@ -31,15 +31,15 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <!--<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>-->
-          <li><a href="#/startView">Inicio</a></li>
+          <li><a href="#/startView" translate>START</a></li>
           <li><a href="#/songsView" class="fx-zoom-normal fx-easing-bounce fx-speed-800"
-            ng-show="currentUser && currentUser.permissions.canListen">Canciones</a>
+            ng-show="currentUser && currentUser.permissions.canListen" translate>SONGS</a>
           </li>
           <li><a href="#/albums" class="fx-zoom-normal fx-easing-bounce fx-speed-800"
-            ng-show="currentUser && currentUser.permissions.canListen">Albumes</a>
+            ng-show="currentUser && currentUser.permissions.canListen" translate>ALBUMS</a>
           </li>
           <li><a href="#/uploadView" class="fx-zoom-normal fx-easing-bounce fx-speed-800"
-            ng-show="currentUser && currentUser.permissions.canUpload">Subir canciones</a>
+            ng-show="currentUser && currentUser.permissions.canUpload" translate>UPLOADS SONGS</a>
           </li>
           <li>
             <div class="btn-group navbar-form">
@@ -68,18 +68,18 @@
           <li>
             <div class="btn-group" dropdown>
               <button type="button" class="btn btn-primary">
-                <span ng-show="!status.logged">No has iniciado sesion</span>
-                <span ng-show="status.logged">Bienvenido {{currentUser.userName}} </span>
+                <span ng-show="!status.logged" translate>NOT LOGGED</span>
+                <span ng-show="status.logged" translate-value-user="{{currentUser.userName}}" translate>WELCOME USER</span>
               </button>
               <button class="btn btn-primary dropdown-toggle" dropdown-toggle>
                 <span class="caret"></span>
                 <span class="sr-only">Split button!</span>
               </button>
               <ul class="dropdown-menu" role="menu">
-                <li ng-show="!status.logged"><a href="#/loginView">Iniciar sesion</a></li>
-                <li ng-show="status.logged && getUser().admin"><a href="#/manageUsersView">Gestionar usuarios</a></li>
+                <li ng-show="!status.logged"><a href="#/loginView" translate>LOGIN</a></li>
+                <li ng-show="status.logged && getUser().admin"><a href="#/manageUsersView" translate>MANAGE USERS</a></li>
                 <li ng-show="status.logged && getUser().admin" class="divider"></li>
-                <li ng-show="status.logged"><a href="" ng-click="logout()">Cerrar sesion</a></li>
+                <li ng-show="status.logged"><a href="" ng-click="logout()" translate>LOGOUT</a></li>
               </ul>
             </div>
           </li>
@@ -100,7 +100,10 @@
   <div class="container">
     <div ng-view></div>
 
-    <footer><div>Moon Songs: v<span app-version></span></div></footer>
+    <footer>
+      <span class="pull-left">Moon Songs: v<span app-version></span></span>
+      <span class="pull-right">Change language: <a href="" ng-click="changeLang('es')">es</a> | <a href="" ng-click="changeLang('en')">en</a></span>
+    </footer>
   </div>
 
   <!-- In production use:

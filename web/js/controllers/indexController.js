@@ -1,5 +1,5 @@
 angular.module('moonSongs.indexController', ['ngRoute'])
-.controller('IndexController', function($rootScope, $scope, Music, $interval, StorageService, Token, $location) {
+.controller('IndexController', function($rootScope, $scope, Music, $interval, StorageService, Token, $location, $translate) {
 
   $scope.time = 0;
 
@@ -111,6 +111,10 @@ angular.module('moonSongs.indexController', ['ngRoute'])
 
   $scope.prev = function() {
     Music.prevSong();
+  };
+
+  $scope.changeLang = function(lang) {
+    $translate.use(lang);
   };
 
   Music.audio.addEventListener('ended', function(){

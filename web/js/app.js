@@ -24,9 +24,15 @@ config(['$routeProvider', function($routeProvider, $rootScope, Token) {
   $routeProvider.otherwise({redirectTo: '/startView'});
 }])
 .config(function ($translateProvider) {
+  var availableLangs = ['es', 'en'];
   $translateProvider.useStaticFilesLoader({
     prefix: 'lang/locale-',
     suffix: '.json'
   });
-  $translateProvider.preferredLanguage('en');
+  var userLang = navigator.language || navigator.userLanguage;
+  var locale = userLang[0]+userLang[1];
+  locale = locale.toLowerCase();
+  if(availableLangs.indexOf(locale) != 1) $translateProvider.use(locale);
+  else $translateProvider.use('en');
+  console.log('lenguaje: ' + locale);
 });
