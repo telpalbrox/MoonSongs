@@ -11,16 +11,16 @@ angular.module('moonSongs.loginController', ['ngRoute'])
   StorageService, Token, $location) {
   $scope.login = function() {
     $http.post('public/authenticate', {
-      'userName' : $scope.userName,
-      'password' : $scope.pass
-    })
-    .success(function(data) {
-      Token.save(data.token);
-      $location.path('/startView');
-    })
-    .error(function(err) {
-      console.log('error:');
-      console.log(err);
-    });
+        'userName': $scope.userName,
+        'password': $scope.pass
+      })
+      .success(function(data) {
+        Token.save(data.token);
+        $location.path('/startView');
+      })
+      .error(function(err) {
+        console.log('error:');
+        console.log(err);
+      });
   };
 });

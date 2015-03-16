@@ -5,17 +5,17 @@ var songs = require('../controllers/songs.controller.js');
 
 module.exports = function(app) {
   app.route('/private/songs')
-  .get(songs.list);
+    .get(songs.list);
 
   app.route('/private/songs/:id')
-  .get(songs.read);
+    .get(songs.read);
 
   app.route('/private/songs/?')
-  .delete(songs.delete);
+    .delete(songs.delete);
 
   app.route('/private/checkSong?')
-  .get(songs.ckeck);
+    .get(songs.ckeck);
 
   app.route('/private/albums')
-  .get(songs.albums);
+    .get(songs.albums);
 };

@@ -9,9 +9,9 @@ angular.module('moonSongs.songsController', ['ngRoute'])
 
 .controller('SongsController', function($http, $scope, Music, $location, $modal, Token, $log) {
   $http.get('private/songs')
-  .success(function(data) {
-    $scope.songs = data;
-  });
+    .success(function(data) {
+      $scope.songs = data;
+    });
 
   $scope.predicate = 'album';
   $scope.reverse = false;
@@ -34,26 +34,26 @@ angular.module('moonSongs.songsController', ['ngRoute'])
     Music.playNow();
   };
 
-  $scope.delete = function (song) {
+  $scope.delete = function(song) {
 
     $scope.selected = song;
 
     var modalInstance = $modal.open({
       templateUrl: 'modals/modalDeleteSong.html',
       controller: 'ModalDeleteSong',
-      scope : $scope
+      scope: $scope
     });
 
-    modalInstance.result.then(function (song) {
-      $http.delete('private/songs/?artist='+song.artist+'&album='+song.album+'&title='+song.title)
-      .success(function() {
-        $scope.songs.splice($scope.songs.indexOf(song), 1);
-        console.log('borrado: '+song.title);
-      })
-      .error(function(err) {
-        console.log('error al borrar: '+err);
-      });
-    }, function () {
+    modalInstance.result.then(function(song) {
+      $http.delete('private/songs/?artist=' + song.artist + '&album=' + song.album + '&title=' + song.title)
+        .success(function() {
+          $scope.songs.splice($scope.songs.indexOf(song), 1);
+          console.log('borrado: ' + song.title);
+        })
+        .error(function(err) {
+          console.log('error al borrar: ' + err);
+        });
+    }, function() {
       $log.info('Modal dismissed at: ' + new Date());
     });
   };
@@ -61,13 +61,13 @@ angular.module('moonSongs.songsController', ['ngRoute'])
 })
 
 
-.controller('ModalDeleteSong', function ($scope, $modalInstance) {
+.controller('ModalDeleteSong', function($scope, $modalInstance) {
 
-  $scope.ok = function () {
+  $scope.ok = function() {
     $modalInstance.close($scope.selected);
   };
 
-  $scope.cancel = function () {
+  $scope.cancel = function() {
     $modalInstance.dismiss('cancel');
   };
 });

@@ -5,9 +5,9 @@ var Song = require('../app/models/song.js');
 var User = require('../app/models/user.js');
 var jwtauth = require('../config/jwtauth.js');
 var path = require('path');
-var musicDir = path.dirname(__dirname)+'/music';
-var uploadsDir = path.dirname(__dirname)+'/uploads';
-var multer  = require('multer');
+var musicDir = path.dirname(__dirname) + '/music';
+var uploadsDir = path.dirname(__dirname) + '/uploads';
+var multer = require('multer');
 var fs = require('fs');
 var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
@@ -15,7 +15,7 @@ var moment = require('moment');
 var request = require('request');
 
 var SECRET = "albertoesmuylol";
-var musicDir = path.dirname(__dirname)+'/music';
+var musicDir = path.dirname(__dirname) + '/music';
 
 module.exports = function(app) {
 
@@ -37,26 +37,32 @@ module.exports = function(app) {
     // we are checking to see if the user trying to login alredy exits
     var userName = req.body.userName;
     var password = req.body.password;
-    User.findOne( { 'userName' : req.body.userName }, function (err, user) {
+    User.findOne({
+      'userName': req.body.userName
+    }, function(err, user) {
       // if there ar any erros, return the error before anything else
-      if(err) return done(err);
+      if (err) return done(err);
 
       // if no user is found, return the message
-      if(!user) {
+      if (!user) {
         res.send(401, 'Unauthorized request, wrong user');
         return;
       }
 
       // if the user is found, but the password is wrong
-      if(!user.validPassword(req.body.password)) {
+      if (!user.validPassword(req.body.password)) {
         res.send(401, 'Unauthorized request, wrong pass');
         return;
       }
 
       user.exp = moment().add(1, 'minutes');
-      var token = jwt.sign(user, SECRET, {expiresInMinutes: 1});
+      var token = jwt.sign(user, SECRET, {
+        expiresInMinutes: 1
+      });
       console.log(token);
-      res.json( { 'token' : token } );
-    } );
+      res.json({
+        'token': token
+      });
+    });
   });
 };
