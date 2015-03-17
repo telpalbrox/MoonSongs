@@ -10,19 +10,19 @@
      var encodedUser = token.split('.')[1];
      jwt.verify(token, 'albertoesmuylol', {}, function(err, decoded) {
        var userToken = decoded;
-       console.log('Peticion de: '+userToken.userName);
+       // console.log('Peticion de: '+userToken.userName);
        User.findOne( { 'userName' : userToken.userName }, function (err, user) {
          // if there ar any erros, return the error before anything else
          if(err) return res.send(err);
 
          // if no user is found, return the message
          if(!user) {
-           res.send(401);
+           res.status(401).send();
            return;
          }
          // if the user is found, but the password is wrong
          if(user.password != userToken.password) {
-           res.send(401);
+           res.status(401).send();
            return;
          }
          req.user = user;
@@ -31,6 +31,6 @@
      });
    } else {
      console.log('No hay token');
-     res.send(401);
+     res.status(401).send();
    }
  };

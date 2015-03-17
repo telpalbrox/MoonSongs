@@ -13,7 +13,7 @@ var walk    = require('walk');
 function endHandler() {
   User.find({}, function(err, users) {
     if(users.length !== 0) {
-      console.log('Hay creados '+users.length+' usuarios');
+      // console.log('Hay creados '+users.length+' usuarios');
     } else {
       console.log('No hay usuarios creados, creando admin');
       newUser = new User();
@@ -34,7 +34,7 @@ function fileHandler(root, fileStat, next) {
     return;
   }
   var fileRoute = root+'/'+fileStat.name;
-  console.log(fileRoute);
+  // console.log(fileRoute);
   id3({ file: fileRoute, type: id3.OPEN_LOCAL }, function(err, tags) {
     if(err) {
       console.log('Error al procesar: ' + fileRoute);

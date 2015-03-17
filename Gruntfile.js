@@ -5,7 +5,8 @@ module.exports = function(grunt) {
     jsServerFiles: ['app/**/*.js', 'config/**/*.js'],
     langFiles: ['web/lang/**/*.json'],
     cssFiles: ['web/css/**/*.css'],
-    htmlFiles: ['web/html/**/*.html']
+    htmlFiles: ['web/html/**/*.html'],
+    mochaTests: ['tests/**/*.js']
   };
 
   grunt.initConfig({
@@ -16,30 +17,32 @@ module.exports = function(grunt) {
       // Concat all js files
       js: {
         src: ['web/lib/jquery/dist/jquery.js',
-        'web/lib/gsap/src/uncompressed/TweenMax.js',
-        'web/lib/bootstrap/dist/js/bootstrap.js',
-        'web/lib/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js',
-        'web/lib/id3/dist/id3.js',
-        'web/lib/angular/angular.js',
-        'web/lib/angular-route/angular-route.js',
-        'web/lib/angular-translate/angular-translate.js',
-        'web/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
-        'web/lib/angular-touch/angular-touch.js',
-        'web/lib/angular-loading-bar/src/loading-bar.js',
-        'web/lib/ng-file-upload/angular-file-upload-all.js',
-        'web/lib/ng-file-upload/angular-file-upload-shim.js',
-        'web/lib/angular-bootstrap/ui-bootstrap-tpls.js',
-        'web/lib/ngFx/dist/ngFxBundle.js',
-        'web/js/**/*.js'],
+          'web/lib/gsap/src/uncompressed/TweenMax.js',
+          'web/lib/bootstrap/dist/js/bootstrap.js',
+          'web/lib/html5-boilerplate/js/vendor/modernizr-2.6.2.min.js',
+          'web/lib/id3/dist/id3.js',
+          'web/lib/angular/angular.js',
+          'web/lib/angular-route/angular-route.js',
+          'web/lib/angular-translate/angular-translate.js',
+          'web/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
+          'web/lib/angular-touch/angular-touch.js',
+          'web/lib/angular-loading-bar/src/loading-bar.js',
+          'web/lib/ng-file-upload/angular-file-upload-all.js',
+          'web/lib/ng-file-upload/angular-file-upload-shim.js',
+          'web/lib/angular-bootstrap/ui-bootstrap-tpls.js',
+          'web/lib/ngFx/dist/ngFxBundle.js',
+          'web/js/**/*.js'
+        ],
         dest: 'public/js/moonSongs.js',
       },
       // Concat all css files
       css: {
         src: ['web/lib/html5-boilerplate/css/normalize.css',
-        'web/lib/html5-boilerplate/css/main.css',
-        'web/lib/bootstrap/dist/css/bootstrap.css',
-        'web/lib/angular-loading-bar/src/loading-bar.css',
-        'web/css/**/*.css'],
+          'web/lib/html5-boilerplate/css/main.css',
+          'web/lib/bootstrap/dist/css/bootstrap.css',
+          'web/lib/angular-loading-bar/src/loading-bar.css',
+          'web/css/**/*.css'
+        ],
         dest: 'public/css/style.css'
       }
     },
@@ -76,7 +79,8 @@ module.exports = function(grunt) {
       img: ['public/img'],
       release: ['public/js/moonSongs.js', 'public/css/style.css'],
       public: ['public/**'],
-      uploads: ['uploads']
+      uploads: ['uploads'],
+      music: ['music/**']
     },
     // Copy static html and resources to public/ directory
     sync: {
@@ -178,6 +182,18 @@ module.exports = function(grunt) {
           watch: watchFiles.jsServer
         }
       }
+    },
+    mochaTest: {
+      src: watchFiles.mochaTests,
+      options: {
+        reporter: 'spec',
+        require: 'server.js'
+      }
+    },
+    env: {
+      test: {
+        NODE_ENV: 'test'
+      }
     }
   });
 
@@ -190,6 +206,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-concurrent');
   grunt.loadNpmTasks('grunt-nodemon');
+  grunt.loadNpmTasks('grunt-mocha-test');
+  grunt.loadNpmTasks('grunt-env');
 
   // Installs bower dependences
   grunt.registerTask('bower', function() {
@@ -220,5 +238,7 @@ module.exports = function(grunt) {
   grunt.registerTask('dev', ['build-dev', 'concurrent']);
   // Starts server
   grunt.registerTask('start', ['build', 'nodemon']);
+  // Tests
+  grunt.registerTask('test', ['clean:music', 'env:test', 'mochaTest', 'folders']);
 
 };

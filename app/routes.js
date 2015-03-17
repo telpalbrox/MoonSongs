@@ -45,13 +45,13 @@ module.exports = function(app) {
 
       // if no user is found, return the message
       if (!user) {
-        res.send(401, 'Unauthorized request, wrong user');
+        res.status(401).send('Unauthorized request, wrong user');
         return;
       }
 
       // if the user is found, but the password is wrong
       if (!user.validPassword(req.body.password)) {
-        res.send(401, 'Unauthorized request, wrong pass');
+        res.status(401).send('Unauthorized request, wrong pass');
         return;
       }
 
@@ -59,7 +59,7 @@ module.exports = function(app) {
       var token = jwt.sign(user, SECRET, {
         expiresInMinutes: 1
       });
-      console.log(token);
+      // console.log(token);
       res.json({
         'token': token
       });

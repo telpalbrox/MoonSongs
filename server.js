@@ -24,7 +24,7 @@ var connect = require('connect');
 var serveStatic = require('serve-static');
 
 // configurando herramientas de la libreria express
-app.use(morgan('dev')); // registra cada peticion a la consola
+if(process.env.NODE_ENV != 'test') app.use(morgan('dev')); // registra cada peticion a la consola
 app.use(bodyParser.urlencoded());
 app.use(bodyParser.json());
 app.use(express.static('public'));
@@ -39,4 +39,8 @@ require('./config/updatedatabase.js')(fs);
 
 // lanzando servidor
 app.listen(port);
+
+// Expose app
+exports = module.exports = app;
+
 console.log('The magic happens on port ' + port);

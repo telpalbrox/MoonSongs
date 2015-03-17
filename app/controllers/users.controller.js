@@ -21,7 +21,7 @@ exports.create = function(req, res) {
 
     //check to see if there is already a user with the email
     if (user) {
-      return res.send(409, 'Ese usuairo ya esta registrado'); //done(null, false, req.flash('signupMessage', 'That email is already taken'));
+      return res.status(409).send('Ese usuario ya esta registrado'); //done(null, false, req.flash('signupMessage', 'That email is already taken'));
     } else {
       // if there is no user with that email
       // create the user
@@ -38,7 +38,7 @@ exports.create = function(req, res) {
       // save the user
       newUser.save(function(err) {
         if (err) res.send(err);
-        res.send(201);
+        res.status(201).send();
       });
     }
   });
@@ -46,48 +46,67 @@ exports.create = function(req, res) {
 
 exports.list = function(req, res) {
   if (!req.user.admin) {
-    res.send(401);
+    res.status(401).send();
     return;
   }
   User.find({}, function(err, users) {
+    if(users.length === 0) {
+      res.status(404).send();
+      return;
+    }
     res.json(users);
   });
 };
 
 exports.read = function(req, res) {
   if (!req.user.admin) {
-    res.send(401);
+    res.status(401).send();
     return;
   }
   User.findOne({
-    _id: req.param('id')
+    _id: req.params.id
   }, function(err, user) {
+    if (!user) {
+      res.status(404).send();
+      return;
+    }
     res.json(user);
   });
 };
 
 exports.update = function(req, res) {
   if (!req.user.admin) {
-    res.send(401);
+    res.status(401).send();
     return;
   }
-  Song.update({
-      '_id': req.param('id')
-    }, {
-      'email': req.body.user.email,
-      'password': req.body.user.password,
-      'admin': req.body.user.admin,
-      'userName': req.body.user.userName,
-      'permissions': {
-        'canUpload': req.body.user.canUpload,
-        'canListen': req.body.user.canListen
-      }
-    },
-    function(err, numberAffected, raw) {
-      if (err) res.send(err);
-      if (numberAffected === 0) res.send(404, 'Ese _id no existe');
-      res.send(200);
-    });
+  if (!req.body.user) {
+    res.status(409).send();
+    return;
+  }
+
+  var user = req.body.user;
+  var updateUser = {};
+  var auxUser = new User();
+
+  if (user.email !== undefined) updateUser.email = user.email;
+  if (user.password !== undefined) updateUser.password = auxUser.generateHash(user.password);
+  if (user.admin !== undefined) updateUser.admin = user.admin;
+  if (user.userName !== undefined) updateUser.userName = user.userName;
+  if (user.permissions !== undefined) {
+    updateUser.permissions = {};
+    if (user.permissions.canUpload !== undefined) updateUser.permissions.canUpload = user.permissions.canUpload;
+    if (user.permissions.canListen !== undefined) updateUser.permissions.canListen = user.permissions.canListen;
+  }
+
+  User.findOneAndUpdate({
+    '_id': req.params.id
+  }, {
+    $set: updateUser
+  }, function(err, user) {
+    if (err) res.status(501).send();
+    if (!user) res.status(404).send();
+    res.status(201).send();
+  });
 };
 
 exports.delete = function(req, res) {
@@ -95,11 +114,11 @@ exports.delete = function(req, res) {
     res.send(401);
     return;
   }
-  User.find({
-    _id: req.param('id')
-  }).remove(function(err, numberAffected, raw) {
-    if (err) res.send(err);
-    if (numberAffected === 0) res.send(404, 'Ese _id no existe');
-    res.send(200);
+  User.findOneAndRemove({
+    '_id': req.params.id
+  }, function(err, user) {
+    if (err) res.status(404).send();
+    if (!user) res.status(404).send();
+    res.status(200).send();
   });
 };

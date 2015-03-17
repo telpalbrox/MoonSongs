@@ -72,40 +72,44 @@ angular.module('moonSongs.uploadController', ['ngRoute'])
     //$files: an array of files selected, each file has name, size, and type.
     var checkSongAndUpload = function(file) {
       $http.get('private/checkSong?artist=' + file.artist + '&album=' + file.album + '&title=' + file.title)
-        .success(function(data) {
-          file.exists = data;
-          if (!file.exists) {
-            file.uploading = true;
-            $scope.upload = $upload.upload({
-              url: 'private/upload', //private/upload.php script, node.js route, or servlet url
-              method: 'POST', //or PUT
-              //headers: {'header-key': 'header-value'},
-              //withCredentials: true,
-              fields: {
-                'info': {
-                  artist: file.artist,
-                  album: file.album,
-                  title: file.title,
-                  year: file.year,
-                  track: file.track,
-                  genre: file.genre,
-                  imageData: file.image,
-                  fileUploadName: file.fileUploadName
-                }
-              },
-              file: file
-            }).progress(function(evt) {
-              var percent = parseInt(100.0 * evt.loaded / evt.total);
-              file.percentage = percent;
-            }).success(function(data, status, headers, config) {
-              // file is uploaded successfully
-              file.uploaded = true;
-              file.uploading = false;
-            }).error(function(err) {
-              console.log(err);
-            });
-          } else {
-            console.log('la cancion esta ya subida');
+        .error(function(data, status) {
+          if(status != 404) {
+            console.log('error al comprobar si existe la cancion');
+            return;
+          }
+          file.uploading = true;
+          $scope.upload = $upload.upload({
+            url: 'private/upload', //private/upload.php script, node.js route, or servlet url
+            method: 'POST', //or PUT
+            //headers: {'header-key': 'header-value'},
+            //withCredentials: true,
+            fields: {
+              'info': {
+                artist: file.artist,
+                album: file.album,
+                title: file.title,
+                year: file.year,
+                track: file.track,
+                genre: file.genre,
+                imageData: file.image,
+                fileUploadName: file.fileUploadName
+              }
+            },
+            file: file
+          }).progress(function(evt) {
+            var percent = parseInt(100.0 * evt.loaded / evt.total);
+            file.percentage = percent;
+          }).success(function(data, status, headers, config) {
+            // file is uploaded successfully
+            file.uploaded = true;
+            file.uploading = false;
+          }).error(function(err) {
+            console.log(err);
+          });
+        })
+        .success(function(data, status) {
+          if (status == 200) {
+            console.log('la cancion ya esta subida');
           }
         });
     };

@@ -7,12 +7,18 @@ console.log('loading song controller');
 var Song = require('../models/song.js'),
   path = require('path'),
   fs = require('fs');
+
 var musicDir = path.dirname(__dirname) + '/music';
+
 exports.list = function(req, res) {
   Song.find().sort({
     'album': 1,
     'title': 1,
   }).exec(function(err, songs) {
+    if(songs.length === 0) {
+      res.status(404).send();
+      return;
+    }
     res.json(songs);
   });
 };
@@ -25,7 +31,15 @@ exports.read = function(req, res) {
   Song.findOne({
     '_id': req.params.id
   }, function(err, song) {
-    if (err) res.send(err);
+    if (err) {
+      console.log(err);
+      res.status(501).send();
+      return;
+    }
+    if (!song) {
+      res.status(404).send();
+      return;
+    }
     res.json(song);
   });
 };
@@ -40,9 +54,9 @@ exports.ckeck = function(req, res) {
     'album': req.query.album,
     'title': req.query.title
   }, function(err, song) {
-    if (err) res.send(err);
-    if (song) res.send(true);
-    else res.send(false);
+    if (err) res.status(501).send();
+    if (song) res.status(200).send();
+    else res.status(404).send();
   });
 };
 
@@ -59,23 +73,23 @@ exports.delete = function(req, res) {
     'album': album,
     'title': title
   }, function(err, song) {
+    if (!song) {
+      res.status(404).send('Cancion no encontrada');
+      return;
+    }
     song.remove(function(err, song) {
       if (err) {
         console.log(err);
         res.status(501).send('Error al borrar la cancion');
         return;
-      }
-      if (!song) {
-        res.status(404).send('Cancion no encontrada');
-        return;
       } else {
         fs.unlink(song.path, function(err) {
-          if (err) {
+          if (err && process.env.NODE_ENV != 'test') {
             console.log(err);
             res.status(501).send('Error al borrar la cancion');
             return;
           }
-          res.send(200);
+          res.status(200).send();
           return;
         });
       }
@@ -92,6 +106,10 @@ exports.albums = function(req, res) {
   var albums = {};
 
   Song.find({}, function(err, songs) {
+    if (songs.length === 0) {
+      res.status(404).send();
+      return;
+    }
     for (var j in songs) {
       if (albums[songs[j].album] === undefined) {
         albums[songs[j].album] = {
