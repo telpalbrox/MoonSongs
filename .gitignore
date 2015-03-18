@@ -15,3 +15,5 @@ music2/
 uploads/
 # log files
 **/*.log
+# WebStorm folder
+.idea/
