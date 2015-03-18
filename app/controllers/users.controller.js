@@ -4,7 +4,8 @@ console.log('loading user controller');
 /**
  * Module dependencies
  */
-var User = require('../models/user.js');
+var mongoose = require('mongoose'),
+  User = mongoose.model('User');
 
 exports.create = function(req, res) {
   var email = req.body.email;

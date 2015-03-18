@@ -11,6 +11,7 @@ public/
 # music folders
 music/
 music2/
+musicTmp/
 # temporal upload folder
 uploads/
 # log files

@@ -6,7 +6,8 @@ var q = require('q');
 var fs = require('fs');
 var request = require('request');
 var ffmetadata = require("ffmetadata");
-var Song = require('../models/song.js');
+var mongoose = require('mongoose');
+var Song = mongoose.model('Song');
 
 var acoustidApiKey = 'cSpUJKpD';
 var lastfmApiKey = 'b6eea2a4758396a9c5369fa6938d0d7e';

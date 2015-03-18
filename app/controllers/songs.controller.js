@@ -1,19 +1,18 @@
-// app/controlers/songs.controllers.js
+// app/controllers/songs.controllers.js
 console.log('loading song controller');
 
 /**
  * Module dependencies
  */
-var Song = require('../models/song.js'),
+var mongoose = require('mongoose'),
+  Song = mongoose.model('Song'),
   path = require('path'),
   fs = require('fs');
-
-var musicDir = path.dirname(__dirname) + '/music';
 
 exports.list = function(req, res) {
   Song.find().sort({
     'album': 1,
-    'title': 1,
+    'title': 1
   }).exec(function(err, songs) {
     if(songs.length === 0) {
       res.status(404).send();
@@ -44,7 +43,7 @@ exports.read = function(req, res) {
   });
 };
 
-exports.ckeck = function(req, res) {
+exports.check = function(req, res) {
   if (!req.user.permissions.canUpload) {
     res.send(401);
     return;

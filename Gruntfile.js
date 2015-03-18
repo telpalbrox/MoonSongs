@@ -33,7 +33,7 @@ module.exports = function(grunt) {
           'web/lib/ngFx/dist/ngFxBundle.js',
           'web/js/**/*.js'
         ],
-        dest: 'public/js/moonSongs.js',
+        dest: 'public/js/moonSongs.js'
       },
       // Concat all css files
       css: {
@@ -90,7 +90,7 @@ module.exports = function(grunt) {
           src: [
             '**'
           ],
-          dest: 'public/fonts',
+          dest: 'public/fonts'
         }],
         verbose: true
       },
@@ -226,6 +226,14 @@ module.exports = function(grunt) {
     shelljs.mkdir('music');
   });
 
+  grunt.registerTask('moveMusicTmp', function () {
+    shelljs.mv('music/', 'musicTmp/');
+  });
+
+  grunt.registerTask('moveMusic', function () {
+    shelljs.mv('musicTmp/', 'music/');
+  });
+
   // Install bower dependences and build project
   grunt.registerTask('install', ['clean', 'folders', 'bower', 'build']);
   // Build project and uglify
@@ -239,6 +247,6 @@ module.exports = function(grunt) {
   // Starts server
   grunt.registerTask('start', ['build', 'nodemon']);
   // Tests
-  grunt.registerTask('test', ['clean:music', 'env:test', 'mochaTest', 'folders']);
+  grunt.registerTask('test', ['moveMusicTmp', 'env:test', 'mochaTest', 'moveMusic']);
 
 };

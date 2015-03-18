@@ -33,6 +33,10 @@ app.use(cors());
 var qt = require('quickthumb');
 app.use('/private/music', qt.static(__dirname + '/music')); // Use quickthumb
 
+// configurando modelos
+require('./app/models/song');
+require('./app/models/user');
+
 // configurando direcciones
 require('./app/routes.js')(app);
 require('./config/updatedatabase.js')(fs);

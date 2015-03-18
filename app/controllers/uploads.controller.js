@@ -1,12 +1,11 @@
 // app/controllers/uploads.controllers.js
 console.log('loading uploads controller...');
 
-var shelljs = require('shelljs');
 var q = require('q');
-var multer = require('multer');
 var fs = require('fs');
 var request = require('request');
-var Song = require('../models/song.js');
+var mongoose = require('mongoose');
+var Song = mongoose.model('Song');
 var songUtils = require('../utils/songUtils.js');
 
 exports.upload = function(req, res) {

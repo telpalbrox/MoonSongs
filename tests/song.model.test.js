@@ -1,3 +1,4 @@
+require('../app/models/song');
 var should = require('should'),
   mongoose = require('mongoose'),
   Song = mongoose.model('Song');

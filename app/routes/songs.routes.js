@@ -14,7 +14,7 @@ module.exports = function(app) {
     .delete(songs.delete);
 
   app.route('/private/checkSong?')
-    .get(songs.ckeck);
+    .get(songs.check);
 
   app.route('/private/albums')
     .get(songs.albums);

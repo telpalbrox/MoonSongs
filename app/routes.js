@@ -1,21 +1,17 @@
 // routes.js
 console.log('loading routes...');
 
-var Song = require('../app/models/song.js');
-var User = require('../app/models/user.js');
+var mongoose = require('mongoose');
+var Song = mongoose.model('Song');
+var User = mongoose.model('User');
 var jwtauth = require('../config/jwtauth.js');
 var path = require('path');
-var musicDir = path.dirname(__dirname) + '/music';
-var uploadsDir = path.dirname(__dirname) + '/uploads';
-var multer = require('multer');
 var fs = require('fs');
 var jwt = require('jsonwebtoken');
-var expressJwt = require('express-jwt');
 var moment = require('moment');
 var request = require('request');
 
 var SECRET = "albertoesmuylol";
-var musicDir = path.dirname(__dirname) + '/music';
 
 module.exports = function(app) {
 

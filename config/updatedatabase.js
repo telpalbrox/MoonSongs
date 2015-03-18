@@ -1,8 +1,9 @@
 // config/updatedatabase.js
 console.log('updating database');
 
-var Song = require('../app/models/song.js');
-var User = require('../app/models/user.js');
+var mongoose = require('mongoose');
+var Song = mongoose.model('Song');
+var User = mongoose.model('User');
 var songUtils = require('../app/utils/songUtils.js');
 var path = require('path');
 var id3 = require('id3js');

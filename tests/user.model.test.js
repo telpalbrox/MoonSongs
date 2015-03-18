@@ -7,7 +7,7 @@ var should = require('should'),
 
 var user;
 
-describe('Article Model Unit Tests:', function() {
+describe('User Model Unit Tests:', function() {
   beforeEach(function(done) {
     user = new User({
       email: 'user@localhost',
