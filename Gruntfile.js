@@ -247,6 +247,6 @@ module.exports = function(grunt) {
   // Starts server
   grunt.registerTask('start', ['build', 'nodemon']);
   // Tests
-  grunt.registerTask('test', ['moveMusicTmp', 'env:test', 'mochaTest', 'moveMusic']);
+  grunt.registerTask('test', ['moveMusicTmp', 'env:test', 'mochaTest', 'clean:music', 'moveMusic']);
 
 };

@@ -12,12 +12,20 @@ var Song = mongoose.model('Song');
 var acoustidApiKey = 'cSpUJKpD';
 var lastfmApiKey = 'b6eea2a4758396a9c5369fa6938d0d7e';
 
+/**
+ * Gets duration
+ * @param {string} fileRoute
+ * @returns {Promise} with Object that contains duration and fingerPrint properties
+ */
 exports.getSongFingerPrint = function(fileRoute) {
   var deferred = q.defer();
   shelljs.exec('fpcalc ' + '"' + fileRoute + '"', {
     silent: true,
     aync: true
   }, function(code, output) {
+    if(output.substr(0, 4) == 'ERROR') {
+      throw new Error('Error executing fpcalc');
+    }
     var commandLines = output.split('\n');
     var duration = commandLines[1].split('=')[1];
     var fingerPrint = commandLines[2].split('=')[1];
@@ -30,24 +38,39 @@ exports.getSongFingerPrint = function(fileRoute) {
   return deferred.promise;
 };
 
+/**
+ * Get song RID for make musicBrainz query
+ * @param {String} duration
+ * @param {String} fingerPrint
+ * @returns {Promise} with rid if exits or null if not exits
+ */
 exports.getSongRid = function(duration, fingerPrint) {
+  if(!duration || !fingerPrint) throw new Error('Duration and figerPrint must be defined');
   var deferred = q.defer();
   var requestRid = {
     url: 'http://api.acoustid.org/v2/lookup?client=' + acoustidApiKey + '&meta=recordingids&duration=' + duration + '&fingerprint=' + fingerPrint,
     json: true
   };
   request(requestRid, function(error, response, body) {
-    if (error) throw new Error(error);
+    if (error || !body) throw new Error(error);
     var rid = null;
     if (body.results.length !== 0) {
       rid = body.results[0].recordings[0].id;
     }
-    console.log('rid: ' + rid);
+    // console.log('rid: ' + rid);
     deferred.resolve(rid);
   });
   return deferred.promise;
 };
 
+/**
+ * Find tags for a song
+ * @param {String} rid
+ * @param {String} fileName
+ * @param {String} fileUploadName
+ * @param {String} filePath
+ * @returns {Promise} with Object that contains tags
+ */
 exports.findTags = function(rid, fileName, fileUploadName, filePath) {
   var deferred = q.defer();
   var unknownTags = {
@@ -75,14 +98,15 @@ exports.findTags = function(rid, fileName, fileUploadName, filePath) {
     },
     json: true
   };
-  console.log(requestTag.url);
+  // console.log(requestTag.url);
   request(requestTag, function(error, response, body) {
     var tags = null;
     var releaseId = "";
+    if(error) throw new Error();
     if (!error && response.statusCode === 200) {
-      console.log('titulo: ' + body.title);
-      console.log('album: ' + body.releases[0].title);
-      console.log('artista: ' + body['artist-credit'][0].name);
+      // console.log('titulo: ' + body.title);
+      // console.log('album: ' + body.releases[0].title);
+      // console.log('artista: ' + body['artist-credit'][0].name);
       tags = {
         artist: body['artist-credit'][0].name,
         album: body.releases[0].title,
@@ -101,8 +125,9 @@ exports.findTags = function(rid, fileName, fileUploadName, filePath) {
         },
         json: true
       };
-      console.log(requestTrackYear.url);
+      // console.log(requestTrackYear.url);
       request(requestTrackYear, function(error, response, body) {
+        if(error) throw new Error();
         if (!error && response.statusCode === 200) {
           tags.year = new Date(body.date).getFullYear();
           tags.track = -1;
@@ -110,8 +135,8 @@ exports.findTags = function(rid, fileName, fileUploadName, filePath) {
           for (var j in tracks) {
             if (tags.title === tracks[j].title) {
               tags.track = tracks[j].number;
-              console.log('numero de pista para ' + tags.title + ': ' + tags.track);
-              console.log('anio: ' + tags.year);
+              // console.log('numero de pista para ' + tags.title + ': ' + tags.track);
+              // console.log('anio: ' + tags.year);
               break;
             }
           }
@@ -121,20 +146,27 @@ exports.findTags = function(rid, fileName, fileUploadName, filePath) {
 
           deferred.resolve(tags);
         } else {
-          console.log('error al recibir track number');
+          // console.log('error al recibir track number');
           tags.track = 0;
           deferred.resolve(tags);
         }
       });
     } else {
-      console.log('error al recibir tags');
-      console.log(error);
+      // console.log('error al recibir tags');
+      // console.log(error);
       deferred.resolve(unknownTags);
     }
   });
   return deferred.promise;
 };
 
+/**
+ * Get song tags, if tags aren't passed they were sought on internet
+ * @param {Object} tags
+ * @param {String} fileRoute
+ * @param {Boolean} uploaded
+ * @returns {Promise} with tags
+ */
 exports.getSongTags = function(tags, fileRoute, uploaded) {
   var deferred = q.defer();
   if (!tags.artist || !tags.album || !tags.title) {
