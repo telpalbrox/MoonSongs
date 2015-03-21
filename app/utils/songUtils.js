@@ -23,6 +23,7 @@ exports.getSongFingerPrint = function(fileRoute) {
     silent: true,
     aync: true
   }, function(code, output) {
+    output = output.replace(/\r/g, '');
     if(output.substr(0, 4) == 'ERROR') {
       throw new Error('Error executing fpcalc');
     }
@@ -221,6 +222,7 @@ function downloadImageArtist(tags, path) {
 }
 
 exports.downloadImages = function(tags) {
+  console.log('descargando imagenes');
   var imageArtistPath = 'music/' + tags.artist + '/Artist.jpg';
   var imageCoverPath = 'music/' + tags.artist + '/' + tags.album + '/Cover.jpg';
 

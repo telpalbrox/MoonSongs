@@ -10,6 +10,7 @@ var id3 = require('id3js');
 var fs = require('fs');
 var q = require('q');
 var walk    = require('walk');
+var path = require('path');
 
 function endHandler() {
   User.find({}, function(err, users) {
@@ -34,7 +35,7 @@ function fileHandler(root, fileStat, next) {
     next();
     return;
   }
-  var fileRoute = root+'/'+fileStat.name;
+  var fileRoute = path.join(root, fileStat.name);
   // console.log(fileRoute);
   id3({ file: fileRoute, type: id3.OPEN_LOCAL }, function(err, tags) {
     if(err) {
