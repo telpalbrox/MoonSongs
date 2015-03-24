@@ -21,7 +21,7 @@ angular.module('moonSongs.manageUsersController', ['ngRoute'])
       });
 
       modalInstance.result.then(function(user) {
-        $http.delete('private/users/' + user._id)
+        $http.delete('api/users/' + user._id)
           .success(function() {
             $scope.users.splice($scope.users.indexOf(user), 1);
             console.log('borrado: ' + user.userName);
@@ -34,7 +34,7 @@ angular.module('moonSongs.manageUsersController', ['ngRoute'])
       });
     };
 
-    $http.get('private/users')
+    $http.get('api/users')
       .success(function(data) {
         $scope.users = data;
       });

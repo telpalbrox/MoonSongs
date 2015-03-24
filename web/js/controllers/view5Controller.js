@@ -10,7 +10,7 @@ angular.module('moonSongs.view5Controller', ['ngRoute'])
 .controller('View5Ctrl', function($http, $scope, Music, $location) {
   $scope.register = function() {
     console.log($scope.canUpload);
-    $http.post('public/users', {
+    $http.post('api/users', {
         'email': $scope.email,
         'password': $scope.pass,
         'admin': $scope.admin,

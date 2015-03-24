@@ -10,7 +10,6 @@ var id3 = require('id3js');
 var fs = require('fs');
 var q = require('q');
 var walk    = require('walk');
-var path = require('path');
 
 function endHandler() {
   User.find({}, function(err, users) {
@@ -18,7 +17,7 @@ function endHandler() {
       // console.log('Hay creados '+users.length+' usuarios');
     } else {
       console.log('No hay usuarios creados, creando admin');
-      newUser = new User();
+      var newUser = new User();
       newUser.email = 'admin@localhost';
       newUser.userName = 'admin';
       newUser.password = newUser.generateHash('patata');

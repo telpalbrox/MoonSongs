@@ -25,7 +25,7 @@ module.exports = function(app) {
   require('../app/routes/uploads.routes.js')(app);
 
   // TOKEN
-  app.post('/public/authenticate', function(req, res) {
+  app.post('/api/authenticate', function(req, res) {
     // find a user whose email is the same as the forms email
     // we are checking to see if the user trying to login alredy exits
     var userName = req.body.userName;

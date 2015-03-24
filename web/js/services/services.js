@@ -94,7 +94,8 @@ angular.module('starter.services', [])
         if (self.offline) {
           return self.getSong().url;
         } else {
-          return ServerIp.get() + '/private/' + self.getSong().path.replace(/\\/g, '/');
+          console.log(ServerIp.get() + self.getSong().path.replace(/\\/g, '/'));
+          return ServerIp.get() + '/' + self.getSong().path.replace(/\\/g, '/');
         }
       };
 

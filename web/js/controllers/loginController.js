@@ -10,7 +10,7 @@ angular.module('moonSongs.loginController', ['ngRoute'])
 .controller('LoginController', function($http, $rootScope, $scope, Music,
   StorageService, Token, $location) {
   $scope.login = function() {
-    $http.post('public/authenticate', {
+    $http.post('api/authenticate', {
         'userName': $scope.userName,
         'password': $scope.pass
       })

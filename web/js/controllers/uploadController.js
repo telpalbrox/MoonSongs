@@ -71,7 +71,7 @@ angular.module('moonSongs.uploadController', ['ngRoute'])
   $scope.onFileSelect = function($files) {
     //$files: an array of files selected, each file has name, size, and type.
     var checkSongAndUpload = function(file) {
-      $http.get('private/checkSong?artist=' + file.artist + '&album=' + file.album + '&title=' + file.title)
+      $http.get('api/checkSong?artist=' + file.artist + '&album=' + file.album + '&title=' + file.title)
         .error(function(data, status) {
           if(status != 404) {
             console.log('error al comprobar si existe la cancion');
@@ -79,7 +79,7 @@ angular.module('moonSongs.uploadController', ['ngRoute'])
           }
           file.uploading = true;
           $scope.upload = $upload.upload({
-            url: 'private/upload', //private/upload.php script, node.js route, or servlet url
+            url: 'api/upload', //private/upload.php script, node.js route, or servlet url
             method: 'POST', //or PUT
             //headers: {'header-key': 'header-value'},
             //withCredentials: true,

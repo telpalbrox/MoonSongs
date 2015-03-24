@@ -11,6 +11,7 @@ var Song = mongoose.model('Song');
 
 var acoustidApiKey = 'cSpUJKpD';
 var lastfmApiKey = 'b6eea2a4758396a9c5369fa6938d0d7e';
+var version = require('../../package.json').version;
 
 /**
  * Gets duration
@@ -122,7 +123,7 @@ exports.findTags = function(rid, fileName, fileUploadName, filePath) {
       var requestTrackYear = {
         url: 'http://musicbrainz.org/ws/2/release/' + releaseId + '?inc=artist-credits+labels+discids+recordings&fmt=json',
         headers: {
-          'User-Agent': 'MoonSongs/0.0.2 ( alberto.luna.95@gmail.com )'
+          'User-Agent': 'MoonSongs/' + version + ' ( alberto.luna.95@gmail.com )'
         },
         json: true
       };

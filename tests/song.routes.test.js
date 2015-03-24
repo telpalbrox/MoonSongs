@@ -34,7 +34,7 @@ describe('Song CRUD tests', function() {
     user.password = user.generateHash(credentials.password);
     user.save(function(err) {
       should.not.exist(err);
-      agent.post('/public/authenticate')
+      agent.post('/api/authenticate')
         .send(credentials)
         .expect(200)
         .end(function(err, res) {
@@ -79,7 +79,7 @@ describe('Song CRUD tests', function() {
       song.found = true;
       song.save(function(err) {
         should.not.exist(err);
-        agent.get('/private/songs')
+        agent.get('/api/songs')
           .set('Authorization', 'Bearer ' + token)
           .expect(200)
           .end(function(err, res) {
@@ -96,7 +96,7 @@ describe('Song CRUD tests', function() {
 
     it('should not be able to get songs when there are not songs', function(done) {
       Song.remove().exec();
-      agent.get('/private/songs')
+      agent.get('/api/songs')
         .set('Authorization', 'Bearer ' + token)
         .expect(404)
         .end(function(err, res) {
@@ -106,7 +106,7 @@ describe('Song CRUD tests', function() {
     });
 
     it('should be able to get only a song', function(done) {
-      agent.get('/private/songs/' + song.id)
+      agent.get('/api/songs/' + song.id)
         .set('Authorization', 'Bearer ' + token)
         .expect(200)
         .end(function(err, res) {
@@ -119,7 +119,7 @@ describe('Song CRUD tests', function() {
     });
 
     it('should not be able to get a song that not exists', function(done) {
-      agent.get('/private/songs/5508268ef2edc50f36c526c0')
+      agent.get('/api/songs/5508268ef2edc50f36c526c0')
         .set('Authorization', 'Bearer ' + token)
         .expect(404)
         .end(function(err, res) {
@@ -131,7 +131,7 @@ describe('Song CRUD tests', function() {
 
   describe('Delete song tests', function() {
     it('should be able to delete song', function(done) {
-      agent.delete('/private/songs/?artist=Artist&album=Album&title=Title')
+      agent.delete('/api/songs/?artist=Artist&album=Album&title=Title')
         .set('Authorization', 'Bearer ' + token)
         .expect(200)
         .end(function(err, res) {
@@ -141,7 +141,7 @@ describe('Song CRUD tests', function() {
     });
 
     it('should not be able to delete song that not exists', function(done) {
-      agent.delete('/private/songs/?artist=Artis&album=Albu&title=Titl')
+      agent.delete('/api/songs/?artist=Artis&album=Albu&title=Titl')
         .set('Authorization', 'Bearer ' + token)
         .expect(404)
         .end(function(err, res) {
@@ -153,7 +153,7 @@ describe('Song CRUD tests', function() {
 
   describe('Check song tests', function() {
     it('should be able to ckeck if a song exits', function(done) {
-      agent.get('/private/checkSong?artist=Artist&album=Album&title=Title')
+      agent.get('/api/checkSong?artist=Artist&album=Album&title=Title')
         .set('Authorization', 'Bearer ' + token)
         .expect(200)
         .end(function(err, res) {
@@ -163,7 +163,7 @@ describe('Song CRUD tests', function() {
     });
 
     it('should be able to ckeck if a song not exits', function(done) {
-      agent.get('/private/checkSong?artist=Artis&album=Albu&title=Titl')
+      agent.get('/api/checkSong?artist=Artis&album=Albu&title=Titl')
         .set('Authorization', 'Bearer ' + token)
         .expect(404)
         .end(function(err, res) {
@@ -187,7 +187,7 @@ describe('Song CRUD tests', function() {
       song.found = true;
       song.save(function(err) {
         should.not.exist(err);
-        agent.get('/private/albums')
+        agent.get('/api/albums')
           .set('Authorization', 'Bearer ' + token)
           .expect(200)
           .end(function(err, res) {
@@ -208,7 +208,7 @@ describe('Song CRUD tests', function() {
     it('should not be able to get albums when there are not songs', function(done) {
       Song.remove({}, function(err) {
         should.not.exist(err);
-        agent.get('/private/albums')
+        agent.get('/api/albums')
           .set('Authorization', 'Bearer ' + token)
           .expect(404)
           .end(function(err, res) {

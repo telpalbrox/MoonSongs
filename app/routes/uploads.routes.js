@@ -13,6 +13,6 @@ module.exports = function(app) {
     }
   }));
 
-  app.route('/private/upload')
+  app.route('/api/upload')
     .post(jwtauth.allowOnlyUpload, uploads.upload);
 };

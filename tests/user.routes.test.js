@@ -28,7 +28,7 @@ describe('User CRUD tests', function() {
     user.password = user.generateHash(credentials.password);
     user.save(function(err) {
       should.not.exist(err);
-      agent.post('/public/authenticate')
+      agent.post('/api/authenticate')
         .send(credentials)
         .expect(200)
         .end(function(err, res) {
@@ -46,7 +46,7 @@ describe('User CRUD tests', function() {
 
   describe('Login tests', function() {
     it('should be able to login', function(done) {
-      agent.post('/public/authenticate')
+      agent.post('/api/authenticate')
         .send(credentials)
         .expect(200)
         .end(function(err, res) {
@@ -58,7 +58,7 @@ describe('User CRUD tests', function() {
 
     it('should not be able to login, user name not exists', function(done) {
       credentials.userName = 'meh';
-      agent.post('/public/authenticate')
+      agent.post('/api/authenticate')
         .send(credentials)
         .expect(401)
         .end(function(err, res) {
@@ -69,7 +69,7 @@ describe('User CRUD tests', function() {
 
     it('should not be able to login, password is wrong', function(done) {
       credentials.password = 'dem';
-      agent.post('/public/authenticate')
+      agent.post('/api/authenticate')
         .send(credentials)
         .expect(401)
         .end(function(err, res) {
@@ -93,7 +93,7 @@ describe('User CRUD tests', function() {
       data.permissions.canUpload = true;
       data.permissions.canListen = true;
 
-      agent.post('/public/users')
+      agent.post('/api/users')
         .send(data)
         .expect(201)
         .end(function(err, res) {
@@ -116,7 +116,7 @@ describe('User CRUD tests', function() {
       data.permissions.canUpload = true;
       data.permissions.canListen = true;
 
-      agent.post('/public/users')
+      agent.post('/api/users')
         .send(data)
         .expect(409)
         .end(function(err, res) {
@@ -129,7 +129,7 @@ describe('User CRUD tests', function() {
 
   describe('Getting users tests', function() {
     it('should be able to get user list', function(done) {
-      agent.get('/private/users')
+      agent.get('/api/users')
         .set('Authorization', 'Bearer ' + token)
         .expect(200)
         .end(function(err, res) {
@@ -143,7 +143,7 @@ describe('User CRUD tests', function() {
 
     it('should not be able to get users lists when there are not users', function(done) {
       User.remove().exec();
-      agent.get('/private/users')
+      agent.get('/api/users')
         .set('Authorization', 'Bearer ' + token)
         .expect(401)
         .end(function(err, res) {
@@ -156,7 +156,7 @@ describe('User CRUD tests', function() {
       user.update({
         admin: false
       }, function() {
-        agent.get('/private/users')
+        agent.get('/api/users')
           .set('Authorization', 'Bearer ' + token)
           .expect(401)
           .end(function(err, res) {
@@ -167,7 +167,7 @@ describe('User CRUD tests', function() {
     });
 
     it('should be able to get a user', function(done) {
-      agent.get('/private/users/' + user._id)
+      agent.get('/api/users/' + user._id)
         .set('Authorization', 'Bearer ' + token)
         .expect(200)
         .end(function(err, res) {
@@ -193,7 +193,7 @@ describe('User CRUD tests', function() {
       data.permissions.canUpload = false;
       data.permissions.canListen = true;
 
-      agent.put('/private/users/' + user._id)
+      agent.put('/api/users/' + user._id)
         .set('Authorization', 'Bearer ' + token)
         .send({
           user: data
@@ -214,7 +214,7 @@ describe('User CRUD tests', function() {
         email: 'test@email.com'
       };
 
-      agent.put('/private/users/' + user._id)
+      agent.put('/api/users/' + user._id)
         .set('Authorization', 'Bearer ' + token)
         .send({
           user: data
@@ -245,7 +245,7 @@ describe('User CRUD tests', function() {
       data.permissions.canUpload = false;
       data.permissions.canListen = true;
 
-      agent.put('/private/users/5508268ef2edc50f36c526c0')
+      agent.put('/api/users/5508268ef2edc50f36c526c0')
         .set('Authorization', 'Bearer ' + token)
         .send({
           user: data
@@ -260,7 +260,7 @@ describe('User CRUD tests', function() {
 
   describe('Delete users tests', function() {
     it('should be able to delete a user', function(done) {
-      agent.delete('/private/users/' + user._id)
+      agent.delete('/api/users/' + user._id)
         .set('Authorization', 'Bearer ' + token)
         .expect(200)
         .end(function(err, res) {
@@ -274,7 +274,7 @@ describe('User CRUD tests', function() {
     });
 
     it('should not be able to delete a user that not exists', function(done) {
-      agent.delete('/private/users/5508268ef2edc50f36c526c0')
+      agent.delete('/api/users/5508268ef2edc50f36c526c0')
         .set('Authorization', 'Bearer ' + token)
         .expect(404)
         .end(function(err, res) {
