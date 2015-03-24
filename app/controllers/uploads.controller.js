@@ -9,11 +9,6 @@ var Song = mongoose.model('Song');
 var songUtils = require('../utils/songUtils.js');
 
 exports.upload = function(req, res) {
-  if (!req.user.permissions.canUpload) {
-    res.send(401);
-    return;
-  }
-
   var tags = JSON.parse(req.body.info);
   tags.fileName = req.files.file.name;
 

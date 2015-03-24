@@ -46,10 +46,6 @@ exports.create = function(req, res) {
 };
 
 exports.list = function(req, res) {
-  if (!req.user.admin) {
-    res.status(401).send();
-    return;
-  }
   User.find({}, function(err, users) {
     if(users.length === 0) {
       res.status(404).send();
@@ -60,10 +56,6 @@ exports.list = function(req, res) {
 };
 
 exports.read = function(req, res) {
-  if (!req.user.admin) {
-    res.status(401).send();
-    return;
-  }
   User.findOne({
     _id: req.params.id
   }, function(err, user) {
@@ -76,10 +68,6 @@ exports.read = function(req, res) {
 };
 
 exports.update = function(req, res) {
-  if (!req.user.admin) {
-    res.status(401).send();
-    return;
-  }
   if (!req.body.user) {
     res.status(409).send();
     return;
@@ -111,10 +99,6 @@ exports.update = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-  if (!req.user.admin) {
-    res.send(401);
-    return;
-  }
   User.findOneAndRemove({
     '_id': req.params.id
   }, function(err, user) {

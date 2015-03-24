@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
   fs = require('fs');
 
 exports.list = function(req, res) {
-  Song.find().sort({
+  Song.find({}).sort({
     'album': 1,
     'title': 1
   }).exec(function(err, songs) {
@@ -23,10 +23,6 @@ exports.list = function(req, res) {
 };
 
 exports.read = function(req, res) {
-  if (!req.user.permissions.canListen) {
-    res.send(401);
-    return;
-  }
   Song.findOne({
     '_id': req.params.id
   }, function(err, song) {
@@ -44,10 +40,6 @@ exports.read = function(req, res) {
 };
 
 exports.check = function(req, res) {
-  if (!req.user.permissions.canUpload) {
-    res.send(401);
-    return;
-  }
   Song.findOne({
     'artist': req.query.artist,
     'album': req.query.album,
@@ -60,10 +52,6 @@ exports.check = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-  if (!req.user.permissions.canUpload) {
-    res.send(401);
-    return;
-  }
   var artist = req.query.artist;
   var album = req.query.album;
   var title = req.query.title;
@@ -97,11 +85,6 @@ exports.delete = function(req, res) {
 };
 
 exports.albums = function(req, res) {
-  if (!req.user.permissions.canListen) {
-    res.send(401);
-    return;
-  }
-
   var albums = {};
 
   Song.find({}, function(err, songs) {

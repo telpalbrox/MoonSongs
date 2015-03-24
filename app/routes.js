@@ -4,7 +4,6 @@ console.log('loading routes...');
 var mongoose = require('mongoose');
 var Song = mongoose.model('Song');
 var User = mongoose.model('User');
-var jwtauth = require('../config/jwtauth.js');
 var path = require('path');
 var fs = require('fs');
 var jwt = require('jsonwebtoken');
@@ -17,8 +16,6 @@ module.exports = function(app) {
 
   // We are going to protect /private routes with JWT
   //app.use('/private', expressJwt({secret: SECRET}));
-
-  app.all('/private/*', jwtauth);
 
   // load user routes
   require('../app/routes/users.routes.js')(app);

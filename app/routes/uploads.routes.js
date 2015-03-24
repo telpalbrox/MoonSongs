@@ -3,6 +3,7 @@ console.log('loading uploads routes...');
 
 var uploads = require('../controllers/uploads.controller.js');
 var multer = require('multer');
+var jwtauth = require('../../config/jwtauth.js');
 
 module.exports = function(app) {
   app.use(multer({
@@ -13,5 +14,5 @@ module.exports = function(app) {
   }));
 
   app.route('/private/upload')
-    .post(uploads.upload);
+    .post(jwtauth.allowOnlyUpload, uploads.upload);
 };
