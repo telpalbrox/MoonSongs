@@ -27,7 +27,7 @@ angular.module('moonSongs.indexController', ['ngRoute'])
         return;
       }
       if ($rootScope.getUser()) {
-        if (!$rootScope.getUser().admin && blackListAdmin.indexOf(current.loadedTemplateUrl) != -1) {
+        if (!$rootScope.getUser().permissions.admin && blackListAdmin.indexOf(current.loadedTemplateUrl) != -1) {
           $location.path('/startView');
           console.log('acceso denegado, solo admin');
           return;

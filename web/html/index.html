@@ -77,8 +77,8 @@
               </button>
               <ul class="dropdown-menu" role="menu">
                 <li ng-show="!status.logged"><a href="#/loginView" translate>LOGIN</a></li>
-                <li ng-show="status.logged && getUser().admin"><a href="#/manageUsersView" translate>MANAGE USERS</a></li>
-                <li ng-show="status.logged && getUser().admin" class="divider"></li>
+                <li ng-show="status.logged && getUser().permissions.admin"><a href="#/manageUsersView" translate>MANAGE USERS</a></li>
+                <li ng-show="status.logged && getUser().permissions.admin" class="divider"></li>
                 <li ng-show="status.logged"><a href="" ng-click="logout()" translate>LOGOUT</a></li>
               </ul>
             </div>

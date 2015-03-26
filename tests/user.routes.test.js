@@ -19,10 +19,10 @@ describe('User CRUD tests', function() {
     user = new User({
       email: 'test@localhost',
       userName: credentials.userName,
-      admin: true,
       permissions: {
         canUpload: true,
-        canListen: true
+        canListen: true,
+        admin: true
       }
     });
     user.password = user.generateHash(credentials.password);
@@ -154,7 +154,9 @@ describe('User CRUD tests', function() {
 
     it('should not be able to get user list if you are not admin', function(done) {
       user.update({
-        admin: false
+        permissions: {
+          admin: false
+        }
       }, function() {
         agent.get('/api/users')
           .set('Authorization', 'Bearer ' + token)

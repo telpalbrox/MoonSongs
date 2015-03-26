@@ -106,47 +106,24 @@ module.exports.allowAllUsers = function(req, res, next) {
   });
 };
 
-module.exports.allowOnlyListen = function(req, res, next) {
-  auth(req, function(err, user) {
-    if(err) {
-      console.error(err);
-      return res.status(401).send();
-    }
-    if(!user.permissions.canListen) {
-      console.log(user.userName + ' is not allowed to listen');
-      return res.status(401).send();
-    }
+/**
+ * Allow a user with a determinate permission
+ * @param permission
+ * @returns {Function}
+ */
+module.exports.allowUserType = function (permission) {
+  return function (req, res, next) {
+    auth(req, function (err, user) {
+      if(err) {
+        // console.error(err);
+        return res.status(401).send();
+      }
 
-    next();
-  });
-};
+      if(user.permissions[permission] === false) {
+        return res.status(401).send();
+      }
 
-module.exports.allowOnlyUpload = function (req, res, next) {
-  auth(req, function(err, user) {
-    if(err) {
-      // console.error(err);
-      return res.status(401).send();
-    }
-    if(!user.permissions.canUpload) {
-      // console.log(req.user.userName + ' is not allowed to upload');
-      return res.status(401).send();
-    }
-
-    next();
-  });
-};
-
-module.exports.allowOnlyAdmin = function(req, res, next) {
-  auth(req, function(err, user) {
-    if(err) {
-      // console.error(err);
-      return res.status(401).send();
-    }
-    if(!user.admin) {
-      // console.log(req.user.userName + ' is not admin');
-      return res.status(401).send();
-    }
-
-    next();
-  });
+      next();
+    });
+  };
 };

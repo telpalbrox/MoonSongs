@@ -21,9 +21,9 @@ function endHandler() {
       newUser.email = 'admin@localhost';
       newUser.userName = 'admin';
       newUser.password = newUser.generateHash('patata');
-      newUser.admin = true;
       newUser.permissions.canUpload = true;
       newUser.permissions.canListen = true;
+      newUser.permissions.admin = true;
       newUser.save(function(err) {});
     }
   });

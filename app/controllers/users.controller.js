@@ -31,10 +31,10 @@ exports.create = function(req, res) {
       // set the user's local credentials
       newUser.email = email;
       newUser.password = newUser.generateHash(password);
-      newUser.admin = admin;
       newUser.userName = userName;
       newUser.permissions.canUpload = canUpload;
       newUser.permissions.canListen = canListen;
+      newUser.permissions.admin = admin;
 
       // save the user
       newUser.save(function(err) {
@@ -79,12 +79,12 @@ exports.update = function(req, res) {
 
   if (user.email !== undefined) updateUser.email = user.email;
   if (user.password !== undefined) updateUser.password = auxUser.generateHash(user.password);
-  if (user.admin !== undefined) updateUser.admin = user.admin;
   if (user.userName !== undefined) updateUser.userName = user.userName;
   if (user.permissions !== undefined) {
     updateUser.permissions = {};
     if (user.permissions.canUpload !== undefined) updateUser.permissions.canUpload = user.permissions.canUpload;
     if (user.permissions.canListen !== undefined) updateUser.permissions.canListen = user.permissions.canListen;
+    if (user.permissions.admin !== undefined) updateUser.permissions.admin = user.permissions.admin;
   }
 
   User.findOneAndUpdate({

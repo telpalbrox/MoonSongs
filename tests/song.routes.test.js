@@ -25,10 +25,10 @@ describe('Song CRUD tests', function() {
     user = new User({
       email: 'test@localhost',
       userName: credentials.userName,
-      admin: true,
       permissions: {
         canUpload: true,
-        canListen: true
+        canListen: true,
+        admin: true
       }
     });
     user.password = user.generateHash(credentials.password);

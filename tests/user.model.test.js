@@ -12,10 +12,10 @@ describe('User Model Unit Tests:', function() {
     user = new User({
       email: 'user@localhost',
       userName: 'user',
-      admin: true,
       permissions: {
         canUpload: true,
-        canListen: true
+        canListen: true,
+        admin: true
       }
     });
     user.password = user.generateHash('pass');

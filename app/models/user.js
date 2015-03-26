@@ -17,10 +17,10 @@ var userSchema = mongoose.Schema({
     default: '',
     required: 'password cannot be blank'
   },
-  admin: Boolean,
   permissions: {
     canUpload: Boolean,
-    canListen: Boolean
+    canListen: Boolean,
+    admin: Boolean
   }
 });
 
