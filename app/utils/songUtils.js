@@ -4,6 +4,7 @@ console.log('loading songs utils...');
 var shelljs = require('shelljs');
 var q = require('q');
 var fs = require('fs');
+var path = require('path');
 var request = require('request');
 var ffmetadata = require("ffmetadata");
 var mongoose = require('mongoose');
@@ -85,7 +86,7 @@ exports.findTags = function(rid, fileName, fileUploadName, filePath) {
     'fileName': fileName,
     autoTaged: true
   };
-  unknownTags.path = filePath || 'music/' + unknownTags.artist + '/' + unknownTags.album + '/' + unknownTags.title + '.mp3';
+  unknownTags.path = filePath || path.resolve(__dirname, '../../music') + '/' + unknownTags.artist + '/' + unknownTags.album + '/' + unknownTags.title + '.mp3';
 
   if (rid === null) {
     return q.fcall(function() {
@@ -185,7 +186,7 @@ exports.getSongTags = function(tags, fileRoute, uploaded) {
       });
   } else {
     return q.fcall(function() {
-      if (uploaded) tags.path = 'music/' + tags.artist + '/' + tags.album + '/' + tags.title + '.mp3';
+      if (uploaded) tags.path = path.resolve(__dirname, '../../music') + '/' + tags.artist + '/' + tags.album + '/' + tags.title + '.mp3';
       else tags.path = fileRoute;
       return tags;
     });

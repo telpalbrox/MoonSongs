@@ -52,7 +52,7 @@ angular.module('moonSongs.albumsController', ['ngRoute'])
     });
 
     modalInstance.result.then(function(song) {
-      $http.delete('api/songs/?artist=' + song.artist + '&album=' + song.album + '&title=' + song.title)
+      $http.delete('api/songs/' + song._id)
         .success(function() {
           var albumIndex = $scope.albums.indexOf(album);
           $scope.albums[albumIndex].songs.splice($scope.albums[albumIndex].songs.indexOf(song), 1);

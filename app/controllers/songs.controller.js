@@ -9,6 +9,33 @@ var mongoose = require('mongoose'),
   path = require('path'),
   fs = require('fs');
 
+/**
+ * Get find parameters form request
+ * @param req
+ * @returns {Object|null}
+ */
+function getFindParams(req) {
+  var id = req.params.id;
+  if(!id) {
+    var title = req.params.title;
+    var album = req.params.album;
+    var artist = req.params.artist;
+    if(!title || !album || !artist) {
+      return null;
+    } else {
+      return {
+        'title': title,
+        'album': album,
+        'artist': artist
+      };
+    }
+  } else {
+    return {
+      '_id': id
+    };
+  }
+}
+
 exports.list = function(req, res) {
   Song.find({}).sort({
     'album': 1,
@@ -23,9 +50,10 @@ exports.list = function(req, res) {
 };
 
 exports.read = function(req, res) {
-  Song.findOne({
-    '_id': req.params.id
-  }, function(err, song) {
+  var findParams = getFindParams(req);
+  if(!findParams) return res.status(400).send();
+
+  Song.findOne(findParams, function(err, song) {
     if (err) {
       console.log(err);
       res.status(501).send();
@@ -40,11 +68,10 @@ exports.read = function(req, res) {
 };
 
 exports.check = function(req, res) {
-  Song.findOne({
-    'artist': req.query.artist,
-    'album': req.query.album,
-    'title': req.query.title
-  }, function(err, song) {
+  var findParams = getFindParams(req);
+  if(!findParams) return res.status(400).send();
+
+  Song.findOne(findParams, function(err, song) {
     if (err) res.status(501).send();
     if (song) res.status(200).send();
     else res.status(404).send();
@@ -52,14 +79,10 @@ exports.check = function(req, res) {
 };
 
 exports.delete = function(req, res) {
-  var artist = req.query.artist;
-  var album = req.query.album;
-  var title = req.query.title;
-  Song.findOne({
-    'artist': artist,
-    'album': album,
-    'title': title
-  }, function(err, song) {
+  var findParams = getFindParams(req);
+  if(!findParams) return res.status(400).send();
+
+  Song.findOne(findParams, function(err, song) {
     if (!song) {
       res.status(404).send('Cancion no encontrada');
       return;
@@ -113,14 +136,10 @@ exports.albums = function(req, res) {
 };
 
 exports.listen = function(req, res) {
-  var title = req.params.title;
-  var artist = req.params.artist;
-  var album = req.params.album;
-  Song.findOne({
-    'artist': artist,
-    'album': album,
-    'title': title
-  }, function(err, song) {
+  var findParams = getFindParams(req);
+  if(!findParams) return res.status(400).send();
+
+  Song.findOne(findParams, function(err, song) {
     if(err) return res.status(500).send('Error al buscar la cancion');
     if(!song) return res.status(404).send('nosta');
     res.sendFile(song.path, function(err) {

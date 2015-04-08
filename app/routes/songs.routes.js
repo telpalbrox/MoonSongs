@@ -9,16 +9,16 @@ module.exports = function(app) {
     .get(jwtauth.allowUserType('canListen'), songs.list);
 
   app.route('/api/songs/:id')
-    .get(jwtauth.allowUserType('canListen'), songs.read);
-
-  app.route('/api/songs/?')
+    .get(jwtauth.allowUserType('canListen'), songs.read)
     .delete(jwtauth.allowUserType('canUpload'), songs.delete);
 
-  app.route('/api/checkSong?')
-    .get(jwtauth.allowUserType('canUpload'), songs.check);
+  app.route('/api/songs/:artist/:album/:title')
+    .get(jwtauth.allowUserType('canListen'), songs.read)
+    .delete(jwtauth.allowUserType('canUpload'), songs.delete);
 
   app.route('/api/albums')
     .get(jwtauth.allowUserType('canListen'), songs.albums);
+
   app.route('/api/songs/listen/:artist/:album/:title')
     .get(songs.listen);
 };
