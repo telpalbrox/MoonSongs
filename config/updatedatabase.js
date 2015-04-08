@@ -82,7 +82,9 @@ module.exports = function(fs) {
   Song.remove({}, function(err) {
 
   });
-  var walker  = walk.walk('music', { followLinks: false, filters: [".cache"] });
+
+  var musicDir = path.resolve(__dirname, '../music');
+  var walker  = walk.walk(musicDir, { followLinks: false, filters: [".cache"] });
   walker.on("file", fileHandler);
   walker.on("end", endHandler);
 };

@@ -111,3 +111,23 @@ exports.albums = function(req, res) {
     res.json(arrAlbums);
   });
 };
+
+exports.listen = function(req, res) {
+  var title = req.params.title;
+  var artist = req.params.artist;
+  var album = req.params.album;
+  Song.findOne({
+    'artist': artist,
+    'album': album,
+    'title': title
+  }, function(err, song) {
+    if(err) return res.status(500).send('Error al buscar la cancion');
+    if(!song) return res.status(404).send('nosta');
+    res.sendFile(song.path, function(err) {
+      if(err) {
+        console.log(err);
+        // return res.status(500).send('Error al enviar la cancion');
+      }
+    });
+  });
+};

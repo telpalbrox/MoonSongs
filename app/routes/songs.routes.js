@@ -19,4 +19,6 @@ module.exports = function(app) {
 
   app.route('/api/albums')
     .get(jwtauth.allowUserType('canListen'), songs.albums);
+  app.route('/api/songs/listen/:artist/:album/:title')
+    .get(songs.listen);
 };
