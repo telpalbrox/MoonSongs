@@ -195,6 +195,13 @@ module.exports = function(grunt) {
       test: {
         NODE_ENV: 'test'
       }
+    },
+    ngAnnotate: {
+      webClient: {
+        files: {
+
+        }
+      }
     }
   });
 
@@ -209,6 +216,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-env');
+  grunt.loadNpmTasks('grunt-ng-annotate');
 
   // Installs bower dependences
   grunt.registerTask('bower', function() {

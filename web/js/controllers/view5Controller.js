@@ -1,16 +1,23 @@
-angular.module('moonSongs.view5Controller', ['ngRoute'])
+(function() {
+  angular.module('moonSongs')
+    .config(configRoute)
+    .controller('View5Ctrl', View5);
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/view5', {
-    templateUrl: 'templates/view5.html',
-    controller: 'View5Ctrl'
-  });
-}])
+  configRoute.$inject = ['$routeProvider'];
 
-.controller('View5Ctrl', function($http, $scope, Music, $location) {
-  $scope.register = function() {
-    console.log($scope.canUpload);
-    $http.post('api/users', {
+  function configRoute($routeProvider) {
+    $routeProvider.when('/view5', {
+      templateUrl: 'templates/view5.html',
+      controller: 'View5Ctrl'
+    });
+  }
+
+  View5.$inject = ['$http', '$scope', 'Music', '$location'];
+
+  function View5($http, $scope, Music, $location) {
+    $scope.register = function() {
+      console.log($scope.canUpload);
+      $http.post('api/users', {
         'email': $scope.email,
         'password': $scope.pass,
         'admin': $scope.admin,
@@ -18,10 +25,11 @@ angular.module('moonSongs.view5Controller', ['ngRoute'])
         'canUpload': $scope.canUpload,
         'canListen': $scope.canListen
       })
-      .success(function(data) {
-        console.log('bien');
-        console.log(data);
-        $location.path('/manageUsersView');
-      });
-  };
-});
+        .success(function(data) {
+          console.log('bien');
+          console.log(data);
+          $location.path('/manageUsersView');
+        });
+    };
+  }
+})();

@@ -1,13 +1,32 @@
-angular.module('moonSongs.manageUsersController', ['ngRoute'])
+(function() {
+  angular.module('moonSongs')
+    .config(configRoute)
+    .controller('manageUsersController', ManageUsers)
+    // Please note that $modalInstance represents a modal window (instance) dependency.
+    // It is not the same as the $modal service used above.
+    .controller('ModalInstanceCtrl', function($scope, $modalInstance) {
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/manageUsersView', {
-    templateUrl: 'templates/manageUsersView.html',
-    controller: 'manageUsersController'
-  });
-}])
+      $scope.ok = function() {
+        $modalInstance.close($scope.selected);
+      };
 
-.controller('manageUsersController', function($http, $scope, Music, $location, $modal, $log) {
+      $scope.cancel = function() {
+        $modalInstance.dismiss('cancel');
+      };
+    });
+
+  configRoute.$inject = ['$routeProvider'];
+
+  function configRoute($routeProvider) {
+    $routeProvider.when('/manageUsersView', {
+      templateUrl: 'templates/manageUsersView.html',
+      controller: 'manageUsersController'
+    });
+  }
+
+  ManageUsers.$inject = ['$http', '$scope', 'Music', '$location', '$modal', '$log'];
+
+  function ManageUsers($http, $scope, Music, $location, $modal, $log) {
 
     $scope.delete = function(size, user) {
 
@@ -42,16 +61,6 @@ angular.module('moonSongs.manageUsersController', ['ngRoute'])
     $scope.createUser = function() {
       $location.path('/view5');
     };
-  })
-  // Please note that $modalInstance represents a modal window (instance) dependency.
-  // It is not the same as the $modal service used above.
-  .controller('ModalInstanceCtrl', function($scope, $modalInstance) {
+  }
 
-    $scope.ok = function() {
-      $modalInstance.close($scope.selected);
-    };
-
-    $scope.cancel = function() {
-      $modalInstance.dismiss('cancel');
-    };
-  });
+})();

@@ -1,5 +1,10 @@
-angular.module('moonSongs.indexController', ['ngRoute'])
-  .controller('IndexController', function($rootScope, $scope, Music, $interval, StorageService, Token, $location, $translate) {
+(function() {
+  angular.module('moonSongs')
+    .controller('IndexController', Index);
+
+  Index.$inject = ['$rootScope', '$scope', 'Music', '$interval', 'StorageService', 'Token', '$location', '$translate'];
+
+  function Index($rootScope, $scope, Music, $interval, StorageService, Token, $location, $translate) {
 
     $scope.time = 0;
 
@@ -83,20 +88,17 @@ angular.module('moonSongs.indexController', ['ngRoute'])
     }, 1000);
 
     $('#rangeTime').mousedown(function(event) {
-        console.log('pabajo');
-        if (Music.getSong() === undefined)
-          event.preventDefault();
-        pulsado = true;
-      })
+      if (Music.getSong() === undefined)
+        event.preventDefault();
+      pulsado = true;
+    })
       .mouseup(function(event) {
-        console.log('parriba');
         pulsado = false;
       })
       .change(function(event) {
         if (Music.getSong() === undefined)
           event.preventDefault();
         var elem = $(this).get(0);
-        console.log('cambio');
         $scope.time = elem.value;
         Music.setTime($scope.time);
       });
@@ -131,4 +133,5 @@ angular.module('moonSongs.indexController', ['ngRoute'])
     $rootScope.$on('Music.audio.ended', function() {
       Music.nextSong(true);
     });
-  });
+  }
+})();
