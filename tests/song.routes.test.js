@@ -131,7 +131,7 @@ describe('Song CRUD tests', function() {
 
   describe('Delete song tests', function() {
     it('should be able to delete song', function(done) {
-      agent.delete('/api/songs/?artist=Artist&album=Album&title=Title')
+      agent.delete('/api/songs/Artist/Album/Title')
         .set('Authorization', 'Bearer ' + token)
         .expect(200)
         .end(function(err, res) {
@@ -141,29 +141,7 @@ describe('Song CRUD tests', function() {
     });
 
     it('should not be able to delete song that not exists', function(done) {
-      agent.delete('/api/songs/?artist=Artis&album=Albu&title=Titl')
-        .set('Authorization', 'Bearer ' + token)
-        .expect(404)
-        .end(function(err, res) {
-          should.not.exist(err);
-          done();
-        });
-    });
-  });
-
-  describe('Check song tests', function() {
-    it('should be able to ckeck if a song exits', function(done) {
-      agent.get('/api/checkSong?artist=Artist&album=Album&title=Title')
-        .set('Authorization', 'Bearer ' + token)
-        .expect(200)
-        .end(function(err, res) {
-          should.not.exist(err);
-          done();
-        });
-    });
-
-    it('should be able to ckeck if a song not exits', function(done) {
-      agent.get('/api/checkSong?artist=Artis&album=Albu&title=Titl')
+      agent.delete('/api/songs/Artis/Album/Title')
         .set('Authorization', 'Bearer ' + token)
         .expect(404)
         .end(function(err, res) {
