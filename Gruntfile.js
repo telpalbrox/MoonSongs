@@ -31,6 +31,7 @@ module.exports = function(grunt) {
           'web/lib/ng-file-upload/angular-file-upload-shim.js',
           'web/lib/angular-bootstrap/ui-bootstrap-tpls.js',
           'web/lib/ngFx/dist/ngFxBundle.js',
+          'web/js/**/*Module.js',
           'web/js/**/*.js'
         ],
         dest: 'public/js/moonSongs.js'
