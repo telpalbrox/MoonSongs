@@ -4,6 +4,7 @@
 
   Index.$inject = ['$rootScope', '$scope', 'Music', '$interval', 'StorageService', 'Token', '$location', '$translate'];
 
+  // TODO refactor controller
   function Index($rootScope, $scope, Music, $interval, StorageService, Token, $location, $translate) {
 
     $scope.time = 0;

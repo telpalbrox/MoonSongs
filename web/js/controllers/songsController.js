@@ -8,51 +8,54 @@
 
   function configRoute($routeProvider) {
     $routeProvider.when('/songsView', {
-      templateUrl: 'templates/songsView.html',
-      controller: 'SongsController'
+      templateUrl: 'templates/songsView.html'
     });
   }
 
   SongsCtr.$inject = ['$http', '$scope', 'Music', '$modal', '$log', 'Songs'];
 
   function SongsCtr($http, $scope, Music, $modal, $log, Songs) {
-    Songs.getAll()
-      .then(function(res) {
-        $scope.songs = res.data;
-      })
-      .catch(function() {
+    var vm = this;
 
-      });
+    vm.predicate = 'album';
+    vm.reverse = false;
 
-    $scope.predicate = 'album';
-    $scope.reverse = false;
+    vm.addSong = addSong;
+    vm.play = play;
+    vm.random = random;
+    vm.remove = remove;
 
-    $scope.addSong = function(song) {
+    activate();
+
+    function activate() {
+      getSongs();
+    }
+
+    function addSong(song) {
       Music.addSong(song);
-    };
+    }
 
-    $scope.play = function(song) {
+    function play(song) {
       Music.addSong(song);
       Music.songIndex = Music.songList.length - 1;
       Music.playNow();
-    };
+    }
 
-    $scope.random = function() {
+    function random() {
       Music.songList = [];
-      Music.songList = JSON.parse(JSON.stringify($scope.songs));
+      Music.songList = JSON.parse(JSON.stringify(vm.songs));
       Music.randomizeSongList();
       Music.songIndex = 0;
       Music.playNow();
-    };
+    }
 
-    $scope.delete = function(song) {
-
-      $scope.selected = song;
+    function remove(song) {
+      vm.selected = song;
 
       var modalInstance = $modal.open({
         templateUrl: 'modals/modalDeleteSong.html',
         controller: 'ModalDeleteSong',
-        scope: $scope
+        scope: vm
       });
 
       modalInstance.result.then(function(song) {
@@ -67,7 +70,17 @@
       }, function() {
         $log.info('Modal dismissed at: ' + new Date());
       });
-    };
+    }
+
+    function getSongs() {
+      Songs.getAll()
+        .then(function(res) {
+          vm.songs = res.data;
+        })
+        .catch(function(err) {
+          $log.error('Error getting songs');
+        });
+    }
   }
 
   //TODO Repair delete modal

@@ -7,8 +7,7 @@
 
   function configRoute($routeProvider) {
     $routeProvider.when('/startView', {
-      templateUrl: 'templates/startView.html',
-      controller: 'StartController'
+      templateUrl: 'templates/startView.html'
     });
   }
 

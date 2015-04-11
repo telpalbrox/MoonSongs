@@ -1,22 +1,22 @@
-<form class="form-horizontal">
+<form class="form-horizontal" ng-controller="LoginController as vm">
   <fieldset>
     <legend translate>LOGIN</legend>
     <div class="form-group">
       <label for="inputEmail" class="col-lg-1 control-label" translate>USER</label>
       <div class="col-lg-5">
-        <input class="form-control" id="inputEmail" ng-model="userName" placeholder="{{'USER' | translate}}" type="text">
+        <input class="form-control" id="inputEmail" ng-model="vm.userName" placeholder="{{'USER' | translate}}" type="text">
       </div>
     </div>
     <div class="form-group">
       <label for="inputPassword" class="col-lg-1 control-label" translate>PASSWORD</label>
       <div class="col-lg-5">
-        <input class="form-control" id="inputPassword" ng-model="pass" placeholder="{{'PASSWORD' | translate}}" type="password">
+        <input class="form-control" id="inputPassword" ng-model="vm.pass" placeholder="{{'PASSWORD' | translate}}" type="password">
       </div>
     </div>
     <div class="form-group">
       <div class="col-lg-5 col-lg-offset-2">
         <button class="btn btn-default" translate>CANCEL</button>
-        <button type="submit" class="btn btn-primary" ng-click="login()">Submit</button>
+        <button type="submit" class="btn btn-primary" ng-click="vm.login()">Submit</button>
       </div>
     </div>
   </fieldset>

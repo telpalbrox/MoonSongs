@@ -3,31 +3,30 @@
     .config(configRoute)
     .controller('LoginController', Login);
 
-  Login.$inject = ['$http', '$rootScope', '$scope', 'Music', 'StorageService', 'Token', '$location'];
+  Login.$inject = ['Token', '$location', 'Users', '$log'];
 
-  function Login($http, $rootScope, $scope, Music, StorageService, Token, $location) {
-    $scope.login = function() {
-      $http.post('api/authenticate', {
-        'userName': $scope.userName,
-        'password': $scope.pass
-      })
-        .success(function(data) {
-          Token.save(data.token);
+  function Login(Token, $location, Users, $log) {
+    var vm = this;
+
+    vm.login = login;
+
+    function login() {
+      Users.login(vm.userName, vm.pass)
+        .then(function(res) {
+          Token.save(res.data.token);
           $location.path('/startView');
         })
-        .error(function(err) {
-          console.log('error:');
-          console.log(err);
+        .catch(function(err) {
+          $log.error('Error when login: ' + err.data);
         });
-    };
+    }
   }
 
   configRoute.$inject = ['$routeProvider'];
 
   function configRoute($routeProvider) {
     $routeProvider.when('/loginView', {
-      templateUrl: 'templates/loginView.html',
-      controller: 'LoginController'
+      templateUrl: 'templates/loginView.html'
     });
   }
 })();

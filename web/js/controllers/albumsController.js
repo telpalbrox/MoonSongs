@@ -7,40 +7,46 @@
 
   function configRoute($routeProvider) {
     $routeProvider.when('/albums', {
-      templateUrl: 'templates/albumsView.html',
-      controller: 'AlbumsController'
+      templateUrl: 'templates/albumsView.html'
     });
   }
 
   Albums.$inject = ['$http', '$scope', 'Music', '$modal', 'Songs', '$log'];
 
   function Albums($http, $scope, Music, $modal, Songs, $log) {
-    Songs.getAlbums()
-      .then(function(res) {
-        $scope.albums = res.data;
-      })
-      .catch(function(err) {
-        $log.error(err);
-      });
+    var vm = this;
 
-    $scope.predicate = 'album';
-    $scope.reverse = false;
+    vm.predicate = 'album';
+    vm.reverse = false;
 
-    $scope.addSong = function(song) {
+    vm.addSong = addSong;
+    vm.play = play;
+    vm.random = random;
+    vm.remove = remove;
+
+    activate();
+
+    function activate() {
+      getAlbums();
+    }
+
+    function addSong(song) {
       Music.addSong(song);
-    };
+    }
 
-    $scope.play = function(song) {
+    function play(song) {
       Music.addSong(song);
       Music.songIndex = Music.songList.length - 1;
       Music.playNow();
-    };
+    }
 
-    $scope.random = function(album) {
+    function random(album) {
       var arrSongs = [];
 
       for (var j in album.songs) {
-        arrSongs.push(album.songs[j]);
+        if(album.songs.hasOwnProperty(j)) {
+          arrSongs.push(album.songs[j]);
+        }
       }
 
       Music.songList = [];
@@ -48,16 +54,15 @@
       Music.randomizeSongList();
       Music.songIndex = 0;
       Music.playNow();
-    };
+    }
 
-    $scope.delete = function(song, album) {
-
-      $scope.selected = song;
+    function remove(song, album) {
+      vm.selected = song;
 
       var modalInstance = $modal.open({
         templateUrl: 'modals/modalDeleteSong.html',
         controller: 'ModalDeleteSong',
-        scope: $scope
+        scope: vm
       });
 
       modalInstance.result.then(function(song) {
@@ -75,7 +80,17 @@
       }, function() {
         $log.info('Modal dismissed at: ' + new Date());
       });
-    };
+    }
+
+    function getAlbums() {
+      Songs.getAlbums()
+        .then(function(res) {
+          vm.albums = res.data;
+        })
+        .catch(function(err) {
+          $log.error('Error getting albums');
+        });
+    }
   }
 
 })();

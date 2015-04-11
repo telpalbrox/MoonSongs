@@ -14,6 +14,7 @@
 
   Upload.$inject = ['$http', '$scope', 'Music', '$upload'];
 
+  // TODO refactor controller
   function Upload($http, $scope, Music, $upload) {
     // public method for encoding an Uint8Array to base64
     function encode(buffer) {

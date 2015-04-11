@@ -13,7 +13,8 @@
     var service = {
       getAll: getAll,
       create: create,
-      remove: remove
+      remove: remove,
+      login: login
     };
 
     return service;
@@ -51,6 +52,18 @@
 
     function baseUrl() {
       return ServerIp.get() + '/api';
+    }
+
+    function login(userName, pass) {
+      if(arguments.length != 2) {
+        var deferred = $q.defer();
+        deferred.reject('Must be 2 arguments: userName, password');
+        return deferred.promise;
+      }
+      return $http.post('api/authenticate', {
+        'userName': userName,
+        'password': pass
+      });
     }
   }
 })();

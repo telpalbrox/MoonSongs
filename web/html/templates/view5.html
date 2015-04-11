@@ -1,41 +1,43 @@
-<h1 translate>REGISTER</h1>
-<form class="form-horizontal">
-  <fieldset>
-    <legend translate>CEATE USER</legend>
-    <div class="form-group">
-      <label for="inputEmail" class="col-lg-1 control-label" translate>EMAIL</label>
-      <div class="col-lg-5">
-        <input class="form-control" id="inputEmail" ng-model="email" placeholder="{{'EMAIL' | translate}}" type="text">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputEmail" class="col-lg-1 control-label" translate>USER</label>
-      <div class="col-lg-5">
-        <input class="form-control" id="inputUsuario" ng-model="userName" placeholder="{{'USER' | translate}}" type="text">
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="inputPassword" class="col-lg-1 control-label" translate>PASSWORD</label>
-      <div class="col-lg-5">
-        <input class="form-control" id="inputPassword" ng-model="pass" placeholder="{{'PASSWORD' | translate}}" type="password">
-      </div>
-    </div>
-    <label class="checkbox-inline">
-      <input type="checkbox" ng-model="admin"><span translate>ADMIN</span>
-    </label>
-    <label class="checkbox-inline">
-      <input type="checkbox" ng-model="canUpload"><span translate>CAN UPLOAD</span>
-    </label>
-    <label class="checkbox-inline">
-      <input type="checkbox" ng-model="canListen"><span translate>CAN LISTEN</span>
-    </label>
-    <br>
-    <br>
-    <div class="form-group">
-      <div class="col-lg-5 col-lg-offset-2">
-        <button class="btn btn-default" translate>CANCEL</button>
-        <button type="submit" class="btn btn-primary" ng-click="register()">Submit</button>
-      </div>
-    </div>
-  </fieldset>
-</form>
+<div ng-controller="View5Ctrl as vm">
+    <h1 translate>REGISTER</h1>
+    <form class="form-horizontal">
+        <fieldset>
+            <legend translate>CEATE USER</legend>
+            <div class="form-group">
+                <label for="inputEmail" class="col-lg-1 control-label" translate>EMAIL</label>
+                <div class="col-lg-5">
+                    <input class="form-control" id="inputEmail" ng-model="vm.email" placeholder="{{'EMAIL' | translate}}" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail" class="col-lg-1 control-label" translate>USER</label>
+                <div class="col-lg-5">
+                    <input class="form-control" id="inputUsuario" ng-model="vm.userName" placeholder="{{'USER' | translate}}" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword" class="col-lg-1 control-label" translate>PASSWORD</label>
+                <div class="col-lg-5">
+                    <input class="form-control" id="inputPassword" ng-model="vm.pass" placeholder="{{'PASSWORD' | translate}}" type="password">
+                </div>
+            </div>
+            <label class="checkbox-inline">
+                <input type="checkbox" ng-model="vm.admin"><span translate>ADMIN</span>
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" ng-model="vm.canUpload"><span translate>CAN UPLOAD</span>
+            </label>
+            <label class="checkbox-inline">
+                <input type="checkbox" ng-model="vm.canListen"><span translate>CAN LISTEN</span>
+            </label>
+            <br>
+            <br>
+            <div class="form-group">
+                <div class="col-lg-5 col-lg-offset-2">
+                    <button class="btn btn-default" translate>CANCEL</button>
+                    <button type="submit" class="btn btn-primary" ng-click="vm.register()">Submit</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
