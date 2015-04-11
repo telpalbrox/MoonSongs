@@ -119,7 +119,7 @@ module.exports.allowUserType = function (permission) {
         return res.status(401).send();
       }
 
-      if(user.permissions[permission] === false) {
+      if(!user.permissions[permission]) {
         return res.status(401).send();
       }
 

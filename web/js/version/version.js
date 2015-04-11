@@ -3,4 +3,4 @@ angular.module('moonSongs.version', [
   'moonSongs.version.version-directive'
 ])
 
-.value('version', '0.0.5');
+.value('version', '0.0.5.1');
