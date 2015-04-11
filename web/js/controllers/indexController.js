@@ -21,41 +21,13 @@
       };
     }
 
-    var whiteList = ['templates/startView.html', 'templates/loginView.html'];
-    var blackListAdmin = ['templates/manageUsersView.html', 'templates/view5.html'];
-    var blackListUpload = ['templates/uploadView.html'];
-    var blackListListen = ['templates/songsView.html', 'templates/albumsView.html'];
-    $scope.$on('$routeChangeSuccess', function(event, current, previous, rejection) {
-      if (!$rootScope.status.logged && whiteList.indexOf(current.loadedTemplateUrl) == -1) {
-        $location.path('/startView');
-        return;
-      }
-      if ($rootScope.getUser()) {
-        if (!$rootScope.getUser().permissions.admin && blackListAdmin.indexOf(current.loadedTemplateUrl) != -1) {
-          $location.path('/startView');
-          console.log('acceso denegado, solo admin');
-          return;
-        }
-        if (!$rootScope.getUser().permissions.canUpload && blackListUpload.indexOf(current.loadedTemplateUrl) != -1) {
-          $location.path('/startView');
-          console.log('acceso denegado, solo upload');
-          return;
-        }
-        if (!$rootScope.getUser().permissions.canListen && blackListListen.indexOf(current.loadedTemplateUrl) != -1) {
-          $location.path('/startView');
-          console.log('acceso denegado, solo listen');
-          return;
-        }
-      }
-    });
-
     $scope.logout = function() {
       Token.remove();
       $rootScope.status = {
         'logged': false
       };
       Music.reset();
-      $location.path('/startView');
+      $location.path('/start');
     };
 
     $scope.getSongIndex = function() {

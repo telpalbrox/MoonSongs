@@ -1,15 +1,6 @@
 (function() {
   angular.module('moonSongs')
-    .config(configRoute)
     .controller('AlbumsController', Albums);
-
-  configRoute.$inject = ['$routeProvider'];
-
-  function configRoute($routeProvider) {
-    $routeProvider.when('/albums', {
-      templateUrl: 'templates/albumsView.html'
-    });
-  }
 
   Albums.$inject = ['$http', '$scope', 'Music', '$modal', 'Songs', '$log'];
 

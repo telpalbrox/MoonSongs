@@ -26,7 +26,7 @@
       responseError: function(rejection) {
         if (rejection.status == 401) {
           Token.remove();
-          $location.path('/loginView');
+          $location.path('/login');
         }
         return $q.reject(rejection);
       }

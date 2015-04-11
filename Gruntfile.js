@@ -23,6 +23,7 @@ module.exports = function(grunt) {
           'web/lib/id3/dist/id3.js',
           'web/lib/angular/angular.js',
           'web/lib/angular-route/angular-route.js',
+          'web/lib/angular-ui-router/release/angular-ui-router.js',
           'web/lib/angular-translate/angular-translate.js',
           'web/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
           'web/lib/angular-touch/angular-touch.js',

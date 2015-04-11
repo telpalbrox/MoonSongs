@@ -1,20 +1,11 @@
 (function() {
   angular.module('moonSongs')
-    .config(configRoute)
     .controller('UploadController', Upload);
-
-  configRoute.$inject = ['$routeProvider'];
-
-  function configRoute($routeProvider) {
-    $routeProvider.when('/uploadView', {
-      templateUrl: 'templates/uploadView.html',
-      controller: 'UploadController'
-    });
-  }
 
   Upload.$inject = ['$http', '$scope', 'Music', '$upload'];
 
   // TODO refactor controller
+  // TODO repair controller
   function Upload($http, $scope, Music, $upload) {
     // public method for encoding an Uint8Array to base64
     function encode(buffer) {

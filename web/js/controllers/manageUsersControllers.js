@@ -1,18 +1,9 @@
 (function() {
   angular.module('moonSongs')
-    .config(configRoute)
     .controller('manageUsersController', ManageUsers)
     // Please note that $modalInstance represents a modal window (instance) dependency.
     // It is not the same as the $modal service used above.
     .controller('ModalInstanceCtrl', ModalCtrl);
-
-  configRoute.$inject = ['$routeProvider'];
-
-  function configRoute($routeProvider) {
-    $routeProvider.when('/manageUsersView', {
-      templateUrl: 'templates/manageUsersView.html'
-    });
-  }
 
   ManageUsers.$inject = ['$location', '$modal', '$log', 'Users', '$scope'];
 

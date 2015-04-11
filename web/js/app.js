@@ -2,6 +2,7 @@
 (function() {
   angular.module('moonSongs', [
     'ngRoute',
+    'ui.router',
     'pascalprecht.translate',
     'moonSongs.version',
     'moonSongs.version.version-directive',
@@ -21,9 +22,7 @@
   configRouteProvider.$inject = ['$routeProvider'];
 
   function configRouteProvider($routeProvider) {
-    $routeProvider.otherwise({
-      redirectTo: '/startView'
-    });
+
   }
 
   configTranstale.$inject = ['$translateProvider'];

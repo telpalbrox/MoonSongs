@@ -1,16 +1,7 @@
 (function() {
   angular.module('moonSongs')
-    .config(configRoute)
     .controller('ModalDeleteSong', ModalDeleteSong)
     .controller('SongsController', SongsCtr);
-
-  configRoute.$inject = ['$routeProvider'];
-
-  function configRoute($routeProvider) {
-    $routeProvider.when('/songsView', {
-      templateUrl: 'templates/songsView.html'
-    });
-  }
 
   SongsCtr.$inject = ['$http', '$scope', 'Music', '$modal', '$log', 'Songs'];
 
