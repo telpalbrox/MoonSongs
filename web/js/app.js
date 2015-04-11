@@ -7,6 +7,7 @@
     'moonSongs.version.version-directive',
     'moonSongs.services',
     'moonSongs.filters',
+    'moonSongs.directives',
     'angularFileUpload',
     'ui.bootstrap',
     'ngAnimate',

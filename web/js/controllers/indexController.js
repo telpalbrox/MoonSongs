@@ -2,12 +2,10 @@
   angular.module('moonSongs')
     .controller('IndexController', Index);
 
-  Index.$inject = ['$rootScope', '$scope', 'Music', '$interval', 'StorageService', 'Token', '$location', '$translate'];
+  Index.$inject = ['$rootScope', '$scope', 'Music', 'Token', '$location', '$translate'];
 
   // TODO refactor controller
-  function Index($rootScope, $scope, Music, $interval, StorageService, Token, $location, $translate) {
-
-    $scope.time = 0;
+  function Index($rootScope, $scope, Music, Token, $location, $translate) {
 
     if (!$rootScope.getUser) {
       $rootScope.getUser = Token.getUser;
@@ -75,34 +73,6 @@
     $scope.data = {
       'time': 0
     };
-
-    var pulsado = false;
-
-    $interval(function() {
-      try {
-        $scope.duration = Music.getDuration();
-      } catch (e) {}
-      Music.getTime(function(time) {
-        if (!pulsado && time)
-          $scope.time = time;
-      });
-    }, 1000);
-
-    $('#rangeTime').mousedown(function(event) {
-      if (Music.getSong() === undefined)
-        event.preventDefault();
-      pulsado = true;
-    })
-      .mouseup(function(event) {
-        pulsado = false;
-      })
-      .change(function(event) {
-        if (Music.getSong() === undefined)
-          event.preventDefault();
-        var elem = $(this).get(0);
-        $scope.time = elem.value;
-        Music.setTime($scope.time);
-      });
 
     $scope.play = function() {
       if (Music.audio.src != encodeURI(Music.getAudioUrl())) {

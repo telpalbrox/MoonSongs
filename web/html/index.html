@@ -85,11 +85,9 @@
           </li>
         </ul>
       </div><!-- /.navbar-collapse -->
-      <div class="row">
-        <span class="hidden-xs col-md-1 text-center"><strong>{{time | toMinutes}}</strong></span>
-        <span class="col-md-10"><input type="range" id="rangeTime" ng-model="time" max="{{duration}}"></span>
-        <span class="hidden-xs col-md-1 text-center"><strong>{{duration | toMinutes}}</strong></span>
-      </div>
+        <div class="row">
+            <moon-player/>
+        </div>
     </div><!-- /.container-fluid -->
   </nav>
 
