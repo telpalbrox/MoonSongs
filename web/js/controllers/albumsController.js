@@ -12,13 +12,15 @@
     });
   }
 
-  Albums.$inject = ['$http', '$scope', 'Music', '$modal'];
+  Albums.$inject = ['$http', '$scope', 'Music', '$modal', 'Songs', '$log'];
 
-  function Albums($http, $scope, Music, $modal) {
-    $http.get('api/albums')
-      .success(function(data) {
-        $scope.albums = data;
-        console.log(data);
+  function Albums($http, $scope, Music, $modal, Songs, $log) {
+    Songs.getAlbums()
+      .then(function(res) {
+        $scope.albums = res.data;
+      })
+      .catch(function(err) {
+        $log.error(err);
       });
 
     $scope.predicate = 'album';

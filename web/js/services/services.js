@@ -5,7 +5,9 @@
     'services.storage',
     'services.music',
     'services.authInterceptor',
-    'services.token'
+    'services.token',
+    'services.songs',
+    'services.users'
   ]);
 
 })();

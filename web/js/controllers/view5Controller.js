@@ -12,23 +12,17 @@
     });
   }
 
-  View5.$inject = ['$http', '$scope', 'Music', '$location'];
+  View5.$inject = ['$http', '$scope', '$location', 'Users', '$log'];
 
-  function View5($http, $scope, Music, $location) {
+  function View5($http, $scope, $location, Users, $log) {
     $scope.register = function() {
-      console.log($scope.canUpload);
-      $http.post('api/users', {
-        'email': $scope.email,
-        'password': $scope.pass,
-        'admin': $scope.admin,
-        'userName': $scope.userName,
-        'canUpload': $scope.canUpload,
-        'canListen': $scope.canListen
-      })
-        .success(function(data) {
-          console.log('bien');
-          console.log(data);
+      Users.create($scope.email, $scope.userName, $scope.pass, $scope.admin, $scope.canListen, $scope.canUpload)
+        .then(function(res) {
+          $log.info(res);
           $location.path('/manageUsersView');
+        })
+        .catch(function(err) {
+          $log.error(err);
         });
     };
   }

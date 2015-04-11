@@ -2,7 +2,7 @@
   angular.module('moonSongs')
     .config(configRoute)
     .controller('ModalDeleteSong', ModalDeleteSong)
-    .controller('SongsController', Songs);
+    .controller('SongsController', SongsCtr);
 
   configRoute.$inject = ['$routeProvider'];
 
@@ -13,12 +13,15 @@
     });
   }
 
-  Songs.$inject = ['$http', '$scope', 'Music', '$location', '$modal', 'Token', '$log'];
+  SongsCtr.$inject = ['$http', '$scope', 'Music', '$modal', '$log', 'Songs'];
 
-  function Songs($http, $scope, Music, $modal, $log) {
-    $http.get('api/songs')
-      .success(function(data) {
-        $scope.songs = data;
+  function SongsCtr($http, $scope, Music, $modal, $log, Songs) {
+    Songs.getAll()
+      .then(function(res) {
+        $scope.songs = res.data;
+      })
+      .catch(function() {
+
       });
 
     $scope.predicate = 'album';

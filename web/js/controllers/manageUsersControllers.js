@@ -24,9 +24,9 @@
     });
   }
 
-  ManageUsers.$inject = ['$http', '$scope', 'Music', '$location', '$modal', '$log'];
+  ManageUsers.$inject = ['$scope', '$location', '$modal', '$log', 'Users'];
 
-  function ManageUsers($http, $scope, Music, $location, $modal, $log) {
+  function ManageUsers($scope, $location, $modal, $log, Users) {
 
     $scope.delete = function(size, user) {
 
@@ -40,22 +40,22 @@
       });
 
       modalInstance.result.then(function(user) {
-        $http.delete('api/users/' + user._id)
-          .success(function() {
+        Users.remove(user._id)
+          .then(function() {
             $scope.users.splice($scope.users.indexOf(user), 1);
-            console.log('borrado: ' + user.userName);
+            $log.info('deleted: ' + user.userName);
           })
-          .error(function(err) {
-            console.log('error al borrar: ' + err);
+          .catch(function(err) {
+            $log.error(err);
           });
       }, function() {
         $log.info('Modal dismissed at: ' + new Date());
       });
     };
 
-    $http.get('api/users')
-      .success(function(data) {
-        $scope.users = data;
+    Users.getAll()
+      .then(function(res) {
+        $scope.users = res.data;
       });
 
     $scope.createUser = function() {
