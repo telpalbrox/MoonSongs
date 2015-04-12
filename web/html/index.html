@@ -13,7 +13,7 @@
   <base href="/">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body ng-controller="IndexController as control">
+<body ng-controller="IndexController as vm">
   <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
@@ -33,26 +33,26 @@
           <!--<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>-->
           <li><a href="#/start" translate>START</a></li>
           <li><a href="#/songs" class="fx-zoom-normal fx-easing-bounce fx-speed-800"
-            ng-show="currentUser && currentUser.permissions.canListen" translate>SONGS</a>
+            ng-show="vm.getUser() && vm.getUser().permissions.canListen" translate>SONGS</a>
           </li>
           <li><a href="#/albums" class="fx-zoom-normal fx-easing-bounce fx-speed-800"
-            ng-show="currentUser && currentUser.permissions.canListen" translate>ALBUMS</a>
+            ng-show="vm.getUser() && vm.getUser().permissions.canListen" translate>ALBUMS</a>
           </li>
           <li><a href="#/upload" class="fx-zoom-normal fx-easing-bounce fx-speed-800"
-            ng-show="currentUser && currentUser.permissions.canUpload" translate>UPLOADS SONGS</a>
+            ng-show="vm.getUser() && vm.getUser().permissions.canUpload" translate>UPLOADS SONGS</a>
           </li>
           <li>
             <div class="btn-group navbar-form">
-              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bounce fx-speed-800" ng-show="currentUser && currentUser.permissions.canListen" ng-click="prev()">
+              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bounce fx-speed-800" ng-show="vm.getUser() && vm.getUser().permissions.canListen" ng-click="vm.prev()">
                 <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
               </button>
-              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bouncefx-speed-800" ng-show="currentUser && currentUser.permissions.canListen" ng-click="play()">
-                <span class="glyphicon glyphicon-play fx-zoom-normal fx-easing-bounce" ng-show="currentUser && currentUser.permissions.canListen" aria-hidden="true"></span>
+              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bouncefx-speed-800" ng-show="vm.getUser() && vm.getUser().permissions.canListen" ng-click="vm.play()">
+                <span class="glyphicon glyphicon-play fx-zoom-normal fx-easing-bounce" ng-show="vm.getUser() && vm.getUser().permissions.canListen" aria-hidden="true"></span>
               </button>
-              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bounce fx-speed-800" ng-show="currentUser && currentUser.permissions.canListen" ng-click="pause()">
+              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bounce fx-speed-800" ng-show="vm.getUser() && vm.getUser().permissions.canListen" ng-click="vm.pause()">
                 <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
               </button>
-              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bounce fx-speed-800" ng-show="currentUser && currentUser.permissions.canListen" ng-click="next()">
+              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bounce fx-speed-800" ng-show="vm.getUser() && vm.getUser().permissions.canListen" ng-click="vm.next()">
                 <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
               </button>
             </div>
@@ -60,26 +60,26 @@
         </ul>
         <ul class="nav navbar-nav navbar-right navbar-form">
           <li style="margin-right:2.5em;">
-            <div class="row" ng-show="getSong()">
-              <span>{{getSong().title}}</span>
-              <img style="width:45px;height:45px" ng-src="music/{{getSong().artist}}/{{getSong().album}}/Cover.jpg?dim=64x64" class="img-rounded">
+            <div class="row" ng-show="vm.getSong()">
+              <span>{{vm.getSong().title}}</span>
+              <img style="width:45px;height:45px" ng-src="music/{{vm.getSong().artist}}/{{vm.getSong().album}}/Cover.jpg?dim=64x64" class="img-rounded">
             </div>
           </li>
           <li>
             <div class="btn-group" dropdown>
               <button type="button" class="btn btn-primary">
-                <span ng-show="!status.logged" translate>NOT LOGGED</span>
-                <span ng-show="status.logged" translate-value-user="{{currentUser.userName}}" translate>WELCOME USER</span>
+                <span ng-show="!vm.status.logged" translate>NOT LOGGED</span>
+                <span ng-show="vm.status.logged" translate-value-user="{{vm.getUser().userName}}" translate>WELCOME USER</span>
               </button>
               <button class="btn btn-primary dropdown-toggle" dropdown-toggle>
                 <span class="caret"></span>
                 <span class="sr-only">Split button!</span>
               </button>
               <ul class="dropdown-menu" role="menu">
-                <li ng-show="!status.logged"><a href="#/login" translate>LOGIN</a></li>
-                <li ng-show="status.logged && getUser().permissions.admin"><a href="#/manageUsers" translate>MANAGE USERS</a></li>
-                <li ng-show="status.logged && getUser().permissions.admin" class="divider"></li>
-                <li ng-show="status.logged"><a href="" ng-click="logout()" translate>LOGOUT</a></li>
+                <li ng-show="!vm.status.logged"><a href="#/login" translate>LOGIN</a></li>
+                <li ng-show="vm.status.logged && vm.getUser().permissions.admin"><a href="#/manageUsers" translate>MANAGE USERS</a></li>
+                <li ng-show="vm.status.logged && vm.getUser().permissions.admin" class="divider"></li>
+                <li ng-show="vm.status.logged"><a href="" ng-click="vm.logout()" translate>LOGOUT</a></li>
               </ul>
             </div>
           </li>
@@ -100,7 +100,7 @@
 
     <footer>
       <span class="pull-left">Moon Songs: v<span app-version></span></span>
-      <span class="pull-right">Change language: <a href="" ng-click="changeLang('es')">es</a> | <a href="" ng-click="changeLang('en')">en</a></span>
+      <span class="pull-right">Change language: <a href="" ng-click="vm.changeLang('es')">es</a> | <a href="" ng-click="vm.changeLang('en')">en</a></span>
     </footer>
   </div>
 

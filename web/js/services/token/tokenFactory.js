@@ -15,15 +15,13 @@
       },
 
       save: function(data) {
-        $rootScope.status.logged = true;
         StorageService.save('token', data);
-        $rootScope.currentUser = this.getUser();
+        $rootScope.$broadcast('logged', true);
       },
 
       remove: function() {
         StorageService.remove('token');
-        $rootScope.status.logged = false;
-        $rootScope.currentUser = null;
+        $rootScope.$broadcast('logged', false);
       },
 
       getUser: function() {

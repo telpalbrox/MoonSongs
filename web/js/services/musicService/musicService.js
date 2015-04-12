@@ -166,6 +166,12 @@
         self.pause();
         self.songList = [];
         self.songIndex = 0;
+        if (self.offline) {
+          self.audio = new Media("", self.finishMedia, function() {}, self.mediaStatusChanged);
+        } else {
+          self.audio = new Audio();
+          self.changeSong = false;
+        }
       };
 
       self.setOffline = function(offline) {

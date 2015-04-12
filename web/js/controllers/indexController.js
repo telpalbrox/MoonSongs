@@ -2,79 +2,106 @@
   angular.module('moonSongs')
     .controller('IndexController', Index);
 
-  Index.$inject = ['$rootScope', '$scope', 'Music', 'Token', '$location', '$translate'];
+  Index.$inject = ['$rootScope', 'Music', 'Token', '$location', '$translate', '$log'];
 
-  // TODO refactor controller
-  function Index($rootScope, $scope, Music, Token, $location, $translate) {
+  function Index($rootScope, Music, Token, $location, $translate, $log) {
 
-    if (!$rootScope.getUser) {
-      $rootScope.getUser = Token.getUser;
+    var vm = this;
+
+    vm.play = play;
+    vm.pause = pause;
+    vm.next = next;
+    vm.prev = prev;
+    vm.getSong = getSong;
+    vm.getSongIndex = getSongIndex;
+    vm.getMusicLength = getMusicLength;
+    vm.changeLang = changeLang;
+    vm.getUser = getUser;
+    vm.logout = logout;
+
+    activate();
+
+    function activate() {
+      setLoggedStatus();
+      setMusicListeners();
+
+      $rootScope.$on('logged', function(event, logged) {
+        vm.status = {
+          'logged': logged
+        };
+        vm.time = 0;
+      });
+
     }
-    if (Token.get()) {
-      $rootScope.status = {
-        'logged': true
-      };
-      $rootScope.currentUser = Token.getUser();
-    } else {
-      $rootScope.status = {
-        'logged': false
-      };
+
+    function setLoggedStatus() {
+      if (Token.get()) {
+        vm.status = {
+          'logged': true
+        };
+      } else {
+        vm.status = {
+          'logged': false
+        };
+      }
     }
 
-    $scope.logout = function() {
-      Token.remove();
-      $rootScope.status = {
-        'logged': false
-      };
-      Music.reset();
-      $location.path('/start');
-    };
+    function setMusicListeners() {
+      Music.audio.addEventListener('ended', function() {
+        $rootScope.$broadcast('Music.audio.ended', self);
+      });
 
-    $scope.getSongIndex = function() {
-      return Music.getIndex();
-    };
+      $rootScope.$on('Music.audio.ended', function() {
+        Music.nextSong(true);
+      });
+    }
 
-    $scope.getSong = function() {
-      return Music.getSong();
-    };
-
-    $scope.getMusicLength = function() {
-      return Music.songList.length;
-    };
-
-    $scope.data = {
-      'time': 0
-    };
-
-    $scope.play = function() {
+    function play() {
       if (Music.audio.src != encodeURI(Music.getAudioUrl())) {
         Music.audio.src = Music.getAudioUrl();
       }
       Music.play();
-    };
+    }
 
-    $scope.pause = function() {
+    function pause() {
       Music.pause();
-    };
+    }
 
-    $scope.next = function() {
+    function next() {
       Music.nextSong();
-    };
+    }
 
-    $scope.prev = function() {
+    function prev() {
       Music.prevSong();
-    };
+    }
 
-    $scope.changeLang = function(lang) {
+    function getSong() {
+      return Music.getSong();
+    }
+
+    function getSongIndex() {
+      return Music.getIndex();
+    }
+
+    function getMusicLength() {
+      return Music.songList.length;
+    }
+
+    function changeLang(lang) {
       $translate.use(lang);
-    };
+    }
 
-    Music.audio.addEventListener('ended', function() {
-      $rootScope.$broadcast('Music.audio.ended', self);
-    });
+    function getUser() {
+      return Token.getUser();
+    }
 
-    $rootScope.$on('Music.audio.ended', function() {
-      Music.nextSong(true);
-    });
+    function logout() {
+      Token.remove();
+      vm.status = {
+        'logged': false
+      };
+      Music.reset();
+      $location.path('/start');
+    }
   }
 })();
