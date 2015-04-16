@@ -1,31 +1,33 @@
 // Declare app level module which depends on views, and components
-angular.module('moonSongs', [
-  'ngRoute',
-  'pascalprecht.translate',
-  'moonSongs.albumsController',
-  'moonSongs.indexController',
-  'moonSongs.loginController',
-  'moonSongs.manageUsersController',
-  'moonSongs.songsController',
-  'moonSongs.startController',
-  'moonSongs.uploadController',
-  'moonSongs.view5Controller',
-  'moonSongs.version',
-  'moonSongs.version.version-directive',
-  'starter.services',
-  'angularFileUpload',
-  'ui.bootstrap',
-  'ngAnimate',
-  'ngFx',
-  'ngTouch',
-  'angular-loading-bar'
-]).
-config(['$routeProvider', function($routeProvider, $rootScope, Token) {
-    $routeProvider.otherwise({
-      redirectTo: '/startView'
-    });
-  }])
-  .config(function($translateProvider) {
+(function() {
+  angular.module('moonSongs', [
+    'ngRoute',
+    'ui.router',
+    'pascalprecht.translate',
+    'moonSongs.version',
+    'moonSongs.version.version-directive',
+    'moonSongs.services',
+    'moonSongs.filters',
+    'moonSongs.directives',
+    'angularFileUpload',
+    'ui.bootstrap',
+    'ngAnimate',
+    'ngFx',
+    'ngTouch',
+    'angular-loading-bar'
+  ])
+    .config(configRouteProvider)
+    .config(configTranstale);
+
+  configRouteProvider.$inject = ['$routeProvider'];
+
+  function configRouteProvider($routeProvider) {
+
+  }
+
+  configTranstale.$inject = ['$translateProvider'];
+
+  function configTranstale($translateProvider) {
     var availableLangs = ['es', 'en'];
     $translateProvider.useStaticFilesLoader({
       prefix: 'lang/locale-',
@@ -37,4 +39,5 @@ config(['$routeProvider', function($routeProvider, $rootScope, Token) {
     if (availableLangs.indexOf(locale) != 1) $translateProvider.use(locale);
     else $translateProvider.use('en');
     console.log('lenguaje: ' + locale);
-  });
+  }
+})();

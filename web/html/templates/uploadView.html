@@ -1,38 +1,40 @@
-<h1 translate>UPLOADS SONGS</h1>
-<a href="" class="btn btn-default" ng-file-select ng-file-change="aniadirArchivos($files)" ng-multiple="true" translate>SELECT FILES</a>
-<div ng-file-change="aniadirArchivos($files)" drag-over-class="arrastrando" ng-show="dropSupported" id="cuadrado" ng-file-drag-over-delay="100" ng-file-drop ng-multiple="true" translate>DRAG SONGS</div>
-<div ng-file-drop-available="dropSupported=true" ng-show="!dropSupported">HTML5 Drop File is not supported!</div>
-<input type="checkbox" ng-model="autotag" ng-change="changeAutotag()">{{'AUTOTAG' | translate}}<br>
-<div ng-repeat="archivo in archivos">
-  <p>{{archivo.fileUploadName}}</p>
-  <form class="form-inline" role="form">
-    <img ng-src="{{archivo.image}}" style="width:45px;height:45px" class="img-thumbnail">
-    <div class="form-group">
-      <div class="input-group">
-        <label class="sr-only" for="inputArtista" translate>ARTIST</label>
-        <input type="text" class="form-control" ng-model="archivo.artist" id="inputArtista" placeholder="{{'ARTIST' | translate}}">
+<div ng-controller="UploadController as vm">
+  <h1 translate>UPLOADS SONGS</h1>
+  <a href="" class="btn btn-default" ng-file-select ng-file-change="vm.addFiles($files)" ng-multiple="true" translate>SELECT FILES</a>
+  <div ng-file-change="vm.addFiles($files)" drag-over-class="arrastrando" ng-show="dropSupported" id="cuadrado" ng-file-drag-over-delay="100" ng-file-drop ng-multiple="true" translate>DRAG SONGS</div>
+  <div ng-file-drop-available="dropSupported=true" ng-show="!dropSupported">HTML5 Drop File is not supported!</div>
+  <input type="checkbox" ng-model="vm.autotag" ng-change="vm.changeAutotag()">{{'AUTOTAG' | translate}}<br>
+  <div ng-repeat="archivo in vm.archivos">
+    <p>{{archivo.fileUploadName}}</p>
+    <form class="form-inline" role="form">
+      <img ng-src="{{archivo.image}}" style="width:45px;height:45px" class="img-thumbnail">
+      <div class="form-group">
+        <div class="input-group">
+          <label class="sr-only" for="inputArtista" translate>ARTIST</label>
+          <input type="text" class="form-control" ng-model="archivo.artist" id="inputArtista" placeholder="{{'ARTIST' | translate}}">
+        </div>
       </div>
+      <div class="form-group">
+        <label class="sr-only" for="inputAlbum" translate>ALBUM</label>
+        <input type="text" class="form-control" ng-model="archivo.album" id="inputAlbum" placeholder="{{'ALBUM' | translate}}">
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="inputTitle" translate>TITLE</label>
+        <input type="text" class="form-control" ng-model="archivo.title" id="inputTitle" placeholder="{{'TITLE' | translate}}">
+      </div>
+      <a href="" ng-show="!archivo.uploading" class="btn btn-warning" ng-click="vm.remove(archivo)" translate>DELETE</a>
+    </form>
+    <div class="col-sm-4" ng-show="archivo.uploading">
+      <progressbar class="progress-striped active" max="100" value="archivo.percentage"
+                   type="info"><i>{{archivo.percentage}} %</i></progressbar>
     </div>
-    <div class="form-group">
-      <label class="sr-only" for="inputAlbum" translate>ALBUM</label>
-      <input type="text" class="form-control" ng-model="archivo.album" id="inputAlbum" placeholder="{{'ALBUM' | translate}}">
+    <div class="alert alert-dismissable alert-danger" ng-show="archivo.exists">
+      <span translate>FAIL UPLOAD</span>
     </div>
-    <div class="form-group">
-      <label class="sr-only" for="inputTitle" translate>TITLE</label>
-      <input type="text" class="form-control" ng-model="archivo.title" id="inputTitle" placeholder="{{'TITLE' | translate}}">
+    <div class="alert alert-dismissable alert-success" ng-show="archivo.uploaded">
+      <span translate>SUCCESS UPLOAD</span>
     </div>
-    <a href="" ng-show="!archivo.uploading" class="btn btn-warning" ng-click="eliminar(archivo)" translate>DELETE</a>
-  </form>
-  <div class="col-sm-4" ng-show="archivo.uploading">
-    <progressbar class="progress-striped active" max="100" value="archivo.percentage"
-    type="info"><i>{{archivo.percentage}} %</i></progressbar>
   </div>
-  <div class="alert alert-dismissable alert-danger" ng-show="archivo.exists">
-    <span translate>FAIL UPLOAD</span>
-  </div>
-  <div class="alert alert-dismissable alert-success" ng-show="archivo.uploaded">
-    <span translate>SUCCESS UPLOAD</span>
-  </div>
+  <a href="" class="btn btn-success" ng-click="vm.startUpload(vm.archivos)" translate>UPLOAD FILES</a>
+  <a href="" class="btn btn-danger" ng-click="vm.cancel()" translate>CANCEL UPLOAD</a>
 </div>
-<a href="" class="btn btn-success" ng-click="onFileSelect(archivos)" translate>UPLOAD FILES</a>
-<a href="" class="btn btn-danger" ng-click="cancelar()" translate>CANCEL UPLOAD</a>

@@ -1,26 +1,23 @@
-angular.module('moonSongs.loginController', ['ngRoute'])
+(function() {
+  angular.module('moonSongs')
+    .controller('LoginController', Login);
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/loginView', {
-    templateUrl: 'templates/loginView.html',
-    controller: 'LoginController'
-  });
-}])
+  Login.$inject = ['Token', '$location', 'Users', '$log'];
 
-.controller('LoginController', function($http, $rootScope, $scope, Music,
-  StorageService, Token, $location) {
-  $scope.login = function() {
-    $http.post('api/authenticate', {
-        'userName': $scope.userName,
-        'password': $scope.pass
-      })
-      .success(function(data) {
-        Token.save(data.token);
-        $location.path('/startView');
-      })
-      .error(function(err) {
-        console.log('error:');
-        console.log(err);
-      });
-  };
-});
+  function Login(Token, $location, Users, $log) {
+    var vm = this;
+
+    vm.login = login;
+
+    function login() {
+      Users.login(vm.userName, vm.pass)
+        .then(function(res) {
+          Token.save(res.data.token);
+          $location.path('/start');
+        })
+        .catch(function(err) {
+          $log.error('Error when login: ' + err.data);
+        });
+    }
+  }
+})();

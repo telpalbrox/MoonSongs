@@ -1,7 +1,9 @@
-angular.module('moonSongs.version.version-directive', [])
+(function() {
+  angular.module('moonSongs.version.version-directive', [])
 
-.directive('appVersion', ['version', function(version) {
-  return function(scope, elm, attrs) {
-    elm.text(version);
-  };
-}]);
+    .directive('appVersion', ['version', function(version) {
+      return function(scope, elm, attrs) {
+        elm.text(version);
+      };
+    }]);
+})();

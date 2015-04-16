@@ -23,6 +23,7 @@ module.exports = function(grunt) {
           'web/lib/id3/dist/id3.js',
           'web/lib/angular/angular.js',
           'web/lib/angular-route/angular-route.js',
+          'web/lib/angular-ui-router/release/angular-ui-router.js',
           'web/lib/angular-translate/angular-translate.js',
           'web/lib/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
           'web/lib/angular-touch/angular-touch.js',
@@ -31,6 +32,7 @@ module.exports = function(grunt) {
           'web/lib/ng-file-upload/angular-file-upload-shim.js',
           'web/lib/angular-bootstrap/ui-bootstrap-tpls.js',
           'web/lib/ngFx/dist/ngFxBundle.js',
+          'web/js/**/*Module.js',
           'web/js/**/*.js'
         ],
         dest: 'public/js/moonSongs.js'
@@ -59,7 +61,7 @@ module.exports = function(grunt) {
     // Uglify js
     uglify: {
       options: {
-        mangle: false,
+        mangle: true,
         compress: {
           drop_console: true
         }
@@ -195,6 +197,13 @@ module.exports = function(grunt) {
       test: {
         NODE_ENV: 'test'
       }
+    },
+    ngAnnotate: {
+      webClient: {
+        files: {
+
+        }
+      }
     }
   });
 
@@ -209,6 +218,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-nodemon');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-env');
+  grunt.loadNpmTasks('grunt-ng-annotate');
 
   // Installs bower dependences
   grunt.registerTask('bower', function() {

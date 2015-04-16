@@ -1,32 +1,34 @@
-angular.module('moonSongs.uploadController', ['ngRoute'])
+(function() {
+  angular.module('moonSongs')
+    .controller('UploadController', Upload);
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/uploadView', {
-    templateUrl: 'templates/uploadView.html',
-    controller: 'UploadController'
-  });
-}])
+  Upload.$inject = ['$scope', '$upload', 'Songs', '$log', '$q'];
 
-.controller('UploadController', function($http, $scope, Music, $upload) {
-  // public method for encoding an Uint8Array to base64
-  function encode(buffer) {
-    var binary = '';
-    var bytes = new Uint8Array(buffer);
-    var len = bytes.byteLength;
-    for (var i = 0; i < len; i++) {
-      binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
-  }
+  function Upload($scope, $upload, Songs, $log, $q) {
 
-  $scope.archivos = [];
-  $scope.aniadirArchivos = function($files) {
-    $scope.autotag = false;
-    var aniadirYtags = function(file) {
-      id3(file, function(err, tags) {
-        if (!tags.album && !tags.title && !tags.artist && !tags.year) {
-          return;
+    var vm = this;
+    vm.archivos = [];
+    vm.uploads = [];
+    vm.autotag = false;
+
+    vm.addFiles = addFiles;
+    vm.cancel = cancel;
+    vm.remove = remove;
+    vm.changeAutotag = changeAutotag;
+    vm.addAndTag = addAndTag;
+    vm.startUpload = startUpload;
+
+    function addFiles($files) {
+      $scope.autotag = false;
+      for (var i in $files) {
+        if($files.hasOwnProperty(i)) {
+          addAndTag($files[i]);
         }
+      }
+    }
+
+    function addAndTag(file) {
+      id3(file, function(err, tags) {
         if (err) {
           console.log(err);
           return;
@@ -35,96 +37,126 @@ angular.module('moonSongs.uploadController', ['ngRoute'])
           console.log(file.name + ' no es una cancion');
           return;
         }
-        $scope.archivos.push(file);
-        var index = $scope.archivos.length - 1;
-        if (tags.artist) $scope.archivos[index].artist = tags.artist.replace(/\0/g, '');
-        if (tags.album) $scope.archivos[index].album = tags.album.replace(/\0/g, '');
-        if (tags.title) $scope.archivos[index].title = tags.title.replace(/\0/g, '');
-        if (tags.year) $scope.archivos[index].year = tags.year.replace(/\0/g, '');
-        if (tags.v1.track) $scope.archivos[index].year = tags.v1.track;
-        if (tags.v1.genre) $scope.archivos[index].genre = tags.v1.genre.replace(/\0/g, '');
-        $scope.archivos[index].uploading = false;
-        $scope.archivos[index].fileUploadName = file.name;
+
+        vm.archivos.push(file);
+        var index = vm.archivos.length - 1;
+        if (tags.artist) vm.archivos[index].artist = tags.artist.replace(/\0/g, '');
+        if (tags.album) vm.archivos[index].album = tags.album.replace(/\0/g, '');
+        if (tags.title) vm.archivos[index].title = tags.title.replace(/\0/g, '');
+        if (tags.year) vm.archivos[index].year = tags.year.replace(/\0/g, '');
+        if (tags.v1.track) vm.archivos[index].year = tags.v1.track;
+        if (tags.v1.genre) vm.archivos[index].genre = tags.v1.genre.replace(/\0/g, '');
+        vm.archivos[index].uploading = false;
+        vm.archivos[index].fileUploadName = file.name;
         if (tags.v2.image) {
           //$scope.archivos[index]['imageData'] = encode(tags.v2.image.data);
-          $scope.archivos[index].image = 'data:image/jpeg;base64,' + encode(tags.v2.image.data);
+          vm.archivos[index].image = 'data:image/jpeg;base64,' + encode(tags.v2.image.data);
         }
         //console.log(tags.title.replace(/\0/g, ''));
       });
-    };
-    for (var i in $files) {
-      aniadirYtags($files[i]);
     }
-  };
 
-  $scope.cancelar = function() {
-    try {
-      $scope.upload.abort();
-    } catch (e) {}
-    $scope.archivos = [];
-  };
+    function cancel() {
+      try {
+        for(var i = 0; i < vm.uploads.length; i++) {
+          vm.uploads[i].abort();
+        }
+      } catch (err) {
+        $log.error(err);
+      }
+      vm.uploads = [];
+      vm.archivos = [];
+    }
 
-  $scope.eliminar = function(archivo) {
-    $scope.archivos.splice($scope.archivos.indexOf(archivo), 1);
-  };
+    function remove(archivo) {
+      vm.archivos.splice(vm.archivos.indexOf(archivo), 1);
+    }
 
-  $scope.onFileSelect = function($files) {
-    //$files: an array of files selected, each file has name, size, and type.
-    var checkSongAndUpload = function(file) {
-      $http.get('api/checkSong/' + file.artist + '/' + file.album + '/' + file.title)
-        .error(function(data, status) {
-          if(status != 404) {
-            console.log('error al comprobar si existe la cancion');
-            return;
+    function upload(file) {
+      file.uploading = true;
+      var fileUpload = $upload.upload({
+        url: 'api/upload',
+        method: 'POST',
+        fields: {
+          'info': {
+            artist: file.artist,
+            album: file.album,
+            title: file.title,
+            year: file.year,
+            track: file.track,
+            genre: file.genre,
+            imageData: file.image,
+            fileUploadName: file.fileUploadName
           }
-          file.uploading = true;
-          $scope.upload = $upload.upload({
-            url: 'api/upload', //private/upload.php script, node.js route, or servlet url
-            method: 'POST', //or PUT
-            //headers: {'header-key': 'header-value'},
-            //withCredentials: true,
-            fields: {
-              'info': {
-                artist: file.artist,
-                album: file.album,
-                title: file.title,
-                year: file.year,
-                track: file.track,
-                genre: file.genre,
-                imageData: file.image,
-                fileUploadName: file.fileUploadName
-              }
-            },
-            file: file
-          }).progress(function(evt) {
-            var percent = parseInt(100.0 * evt.loaded / evt.total);
-            file.percentage = percent;
-          }).success(function(data, status, headers, config) {
-            // file is uploaded successfully
-            file.uploaded = true;
-            file.uploading = false;
-          }).error(function(err) {
-            console.log(err);
-          });
+        },
+        file: file
+      })
+        .progress(function(evt) {
+          file.percentage = parseInt(100.0 * evt.loaded / evt.total);
         })
-        .success(function(data, status) {
-          if (status == 200) {
-            console.log('la cancion ya esta subida');
-          }
-        });
-    };
-    for (var i = 0; i < $files.length; i++) {
-      var file = $files[i];
-      checkSongAndUpload(file);
+        .success(function() {
+        // file is uploaded successfully
+        file.uploaded = true;
+        file.uploading = false;
+      }).error(function(err) {
+        $log.error(err);
+      });
+      vm.uploads.push(fileUpload);
     }
-  };
-  $scope.changeAutotag = function() {
-    if ($scope.autotag) {
-      for (var x in $scope.archivos) {
-        $scope.archivos[x].artist = "";
-        $scope.archivos[x].album = "";
-        $scope.archivos[x].title = "";
+
+    function startUpload(files) {
+      //$files: an array of files selected, each file has name, size, and type.
+      for (var i = 0; i < files.length; i++) {
+        checkAndUpload(files[i]);
       }
     }
-  };
-});
+
+    function checkAndUpload(file) {
+      checkSong(file)
+        .then(function(file) {
+          $log.info('Uploading song');
+          upload(file);
+        })
+        .catch(function(file) {
+          file.exists = true;
+          $log.error('Song already uploaded');
+        });
+    }
+
+    function checkSong(file) {
+      var deferred = $q.defer();
+      Songs.get(file.artist, file.album, file.title)
+        .then(function() {
+          deferred.reject(file);
+        })
+        .catch(function(err) {
+          if(err.status == 404) {
+            deferred.resolve(file);
+          }
+        });
+      return deferred.promise;
+    }
+
+    function changeAutotag() {
+      if (vm.autotag) {
+        for (var i = 0; i < vm.archivos.length; i++) {
+          vm.archivos[i].artist = "";
+          vm.archivos[i].album = "";
+          vm.archivos[i].title = "";
+        }
+      }
+    }
+
+    // public method for encoding an Uint8Array to base64
+    function encode(buffer) {
+      var binary = '';
+      var bytes = new Uint8Array(buffer);
+      var len = bytes.byteLength;
+      for (var i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      return window.btoa(binary);
+    }
+  }
+
+})();

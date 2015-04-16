@@ -1,12 +1,8 @@
-angular.module('moonSongs.startController', ['ngRoute'])
+(function() {
+  angular.module('moonSongs')
+    .controller('StartController', Start);
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/startView', {
-    templateUrl: 'templates/startView.html',
-    controller: 'StartController'
-  });
-}])
+  function Start() {
 
-.controller('StartController', function(Music, $scope) {
-
-});
+  }
+})();

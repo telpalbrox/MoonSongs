@@ -1,70 +1,85 @@
-angular.module('moonSongs.albumsController', ['ngRoute'])
+(function() {
+  angular.module('moonSongs')
+    .controller('AlbumsController', Albums);
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/albums', {
-    templateUrl: 'templates/albumsView.html',
-    controller: 'AlbumsController'
-  });
-}])
+  Albums.$inject = ['Music', '$modal', 'Songs', '$log'];
 
-.controller('AlbumsController', function($http, $scope, Music, $location, $modal) {
-  $http.get('api/albums')
-    .success(function(data) {
-      $scope.albums = data;
-      console.log(data);
-    });
+  function Albums(Music, $modal, Songs, $log) {
+    var vm = this;
 
-  $scope.predicate = 'album';
-  $scope.reverse = false;
+    vm.predicate = 'album';
+    vm.reverse = false;
 
-  $scope.addSong = function(song) {
-    Music.addSong(song);
-  };
+    vm.addSong = addSong;
+    vm.play = play;
+    vm.random = random;
+    vm.remove = remove;
 
-  $scope.play = function(song) {
-    Music.addSong(song);
-    Music.songIndex = Music.songList.length - 1;
-    Music.playNow();
-  };
+    activate();
 
-  $scope.random = function(album) {
-    var arrSongs = [];
-
-    for (var j in album.songs) {
-      arrSongs.push(album.songs[j]);
+    function activate() {
+      getAlbums();
     }
 
-    Music.songList = [];
-    Music.songList = arrSongs;
-    Music.randomizeSongList();
-    Music.songIndex = 0;
-    Music.playNow();
-  };
+    function addSong(song) {
+      Music.addSong(song);
+    }
 
-  $scope.delete = function(song, album) {
+    function play(song) {
+      Music.addSong(song);
+      Music.songIndex = Music.songList.length - 1;
+      Music.playNow();
+    }
 
-    $scope.selected = song;
+    function random(album) {
+      var arrSongs = [];
 
-    var modalInstance = $modal.open({
-      templateUrl: 'modals/modalDeleteSong.html',
-      controller: 'ModalDeleteSong',
-      scope: $scope
-    });
+      for (var j in album.songs) {
+        if(album.songs.hasOwnProperty(j)) {
+          arrSongs.push(album.songs[j]);
+        }
+      }
 
-    modalInstance.result.then(function(song) {
-      $http.delete('api/songs/' + song._id)
-        .success(function() {
-          var albumIndex = $scope.albums.indexOf(album);
-          $scope.albums[albumIndex].songs.splice($scope.albums[albumIndex].songs.indexOf(song), 1);
+      Music.songList = [];
+      Music.songList = arrSongs;
+      Music.randomizeSongList();
+      Music.songIndex = 0;
+      Music.playNow();
+    }
 
-          if ($scope.albums[albumIndex].songs.length === 0) $scope.albums.splice($scope.albums.indexOf(album), 1);
-          console.log('borrado: ' + song.title);
+    function remove(song, album) {
+      vm.selected = song;
+
+      var modalInstance = $modal.open({
+        templateUrl: 'modals/modalDeleteSong.html',
+        controller: 'ModalInstanceCtrl'
+      });
+
+      modalInstance.result.then(function(song) {
+        Songs.remove(vm.selected._id)
+          .then(function() {
+            var albumIndex = vm.albums.indexOf(album);
+            vm.albums[albumIndex].songs.splice(vm.albums[albumIndex].songs.indexOf(vm.selected), 1);
+            if (vm.albums[albumIndex].songs.length === 0) vm.albums.splice(vm.albums.indexOf(album), 1);
+            $log.info('song deleted');
+          })
+          .catch(function() {
+            $log.info('error deleting song');
+          });
+      }, function() {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
+    }
+
+    function getAlbums() {
+      Songs.getAlbums()
+        .then(function(res) {
+          vm.albums = res.data;
         })
-        .error(function(err) {
-          console.log('error al borrar: ' + err);
+        .catch(function(err) {
+          $log.error('Error getting albums');
         });
-    }, function() {
-      $log.info('Modal dismissed at: ' + new Date());
-    });
-  };
-});
+    }
+  }
+
+})();

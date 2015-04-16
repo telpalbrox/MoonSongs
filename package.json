@@ -1,10 +1,10 @@
 {
   "name": "MoonSongs",
   "main": "server.js",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "scripts": {
-    "start" : "node server.js",
-    "test" : "grunt test"
+    "start": "node server.js",
+    "test": "grunt test"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
@@ -41,6 +41,7 @@
     "grunt-contrib-watch": "^0.6.1",
     "grunt-env": "^0.4.4",
     "grunt-mocha-test": "^0.12.7",
+    "grunt-ng-annotate": "^0.10.0",
     "grunt-nodemon": "^0.4.0",
     "grunt-sync": "^0.2.3",
     "mocha": "^2.2.1",

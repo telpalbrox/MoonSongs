@@ -1,57 +1,77 @@
-angular.module('moonSongs.manageUsersController', ['ngRoute'])
+(function() {
+  angular.module('moonSongs')
+    .controller('manageUsersController', ManageUsers)
+    // Please note that $modalInstance represents a modal window (instance) dependency.
+    // It is not the same as the $modal service used above.
+    .controller('ModalInstanceCtrl', ModalCtrl);
 
-.config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/manageUsersView', {
-    templateUrl: 'templates/manageUsersView.html',
-    controller: 'manageUsersController'
-  });
-}])
+  ManageUsers.$inject = ['$location', '$modal', '$log', 'Users', '$scope'];
 
-.controller('manageUsersController', function($http, $scope, Music, $location, $modal, $log) {
+  function ManageUsers($location, $modal, $log, Users, $scope) {
+    var vm = this;
 
-    $scope.delete = function(size, user) {
+    vm.remove = remove;
+    vm.createUser = createUser;
 
+    activate();
+
+    function activate() {
+      getUsers();
+    }
+
+    function remove(user) {
+      console.log('remove');
       $scope.selected = user;
 
       var modalInstance = $modal.open({
         templateUrl: 'myModalContent.html',
         controller: 'ModalInstanceCtrl',
-        size: size,
+        size: 'sm',
         scope: $scope
       });
 
       modalInstance.result.then(function(user) {
-        $http.delete('api/users/' + user._id)
-          .success(function() {
-            $scope.users.splice($scope.users.indexOf(user), 1);
-            console.log('borrado: ' + user.userName);
+        Users.remove(user._id)
+          .then(function() {
+            vm.users.splice(vm.users.indexOf(user), 1);
+            $log.info('deleted: ' + user.userName);
           })
-          .error(function(err) {
-            console.log('error al borrar: ' + err);
+          .catch(function(err) {
+            $log.error(err);
           });
       }, function() {
         $log.info('Modal dismissed at: ' + new Date());
       });
-    };
+    }
 
-    $http.get('api/users')
-      .success(function(data) {
-        $scope.users = data;
-      });
+    function getUsers() {
+      Users.getAll()
+        .then(function(res) {
+          vm.users = res.data;
+        })
+        .catch(function(err) {
+          $log.error('Error gettng users: ' + err.data);
+        });
+    }
 
-    $scope.createUser = function() {
+    function createUser() {
       $location.path('/view5');
-    };
-  })
-  // Please note that $modalInstance represents a modal window (instance) dependency.
-  // It is not the same as the $modal service used above.
-  .controller('ModalInstanceCtrl', function($scope, $modalInstance) {
+    }
+  }
 
-    $scope.ok = function() {
+  ModalCtrl.$inject = ['$modalInstance', '$scope'];
+
+  function ModalCtrl($modalInstance, $scope) {
+    $scope.ok = ok;
+    $scope.cancel = cancel;
+
+    function ok() {
       $modalInstance.close($scope.selected);
-    };
+    }
 
-    $scope.cancel = function() {
+    function cancel() {
       $modalInstance.dismiss('cancel');
-    };
-  });
+    }
+  }
+
+})();

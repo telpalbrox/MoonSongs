@@ -31,7 +31,7 @@ exports.upload = function(req, res) {
       return songUtils.saveSong(tags);
     })
     .then(function() {
-      res.send(201);
+      res.sendStatus(201);
     })
     .fail(function(error) {
       console.log(error);
