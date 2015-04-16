@@ -1,6 +1,7 @@
-angular.module('moonSongs.version', [
-  'moonSongs.version.interpolate-filter',
-  'moonSongs.version.version-directive'
-])
-
-.value('version', '0.0.5.1');
+(function() {
+  angular.module('moonSongs.version', [
+    'moonSongs.version.interpolate-filter',
+    'moonSongs.version.version-directive'
+  ])
+    .value('version', '0.0.6');
+})();
