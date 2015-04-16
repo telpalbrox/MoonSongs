@@ -2,9 +2,9 @@
   angular.module('moonSongs')
     .controller('AlbumsController', Albums);
 
-  Albums.$inject = ['$http', '$scope', 'Music', '$modal', 'Songs', '$log'];
+  Albums.$inject = ['Music', '$modal', 'Songs', '$log'];
 
-  function Albums($http, $scope, Music, $modal, Songs, $log) {
+  function Albums(Music, $modal, Songs, $log) {
     var vm = this;
 
     vm.predicate = 'album';
@@ -52,21 +52,19 @@
 
       var modalInstance = $modal.open({
         templateUrl: 'modals/modalDeleteSong.html',
-        controller: 'ModalDeleteSong',
-        scope: vm
+        controller: 'ModalInstanceCtrl'
       });
 
       modalInstance.result.then(function(song) {
-        $http.delete('api/songs/' + song._id)
-          .success(function() {
-            var albumIndex = $scope.albums.indexOf(album);
-            $scope.albums[albumIndex].songs.splice($scope.albums[albumIndex].songs.indexOf(song), 1);
-
-            if ($scope.albums[albumIndex].songs.length === 0) $scope.albums.splice($scope.albums.indexOf(album), 1);
-            console.log('borrado: ' + song.title);
+        Songs.remove(vm.selected._id)
+          .then(function() {
+            var albumIndex = vm.albums.indexOf(album);
+            vm.albums[albumIndex].songs.splice(vm.albums[albumIndex].songs.indexOf(vm.selected), 1);
+            if (vm.albums[albumIndex].songs.length === 0) vm.albums.splice(vm.albums.indexOf(album), 1);
+            $log.info('song deleted');
           })
-          .error(function(err) {
-            console.log('error al borrar: ' + err);
+          .catch(function() {
+            $log.info('error deleting song');
           });
       }, function() {
         $log.info('Modal dismissed at: ' + new Date());

@@ -11,7 +11,8 @@
     return {
       getAll: getAll,
       get: get,
-      getAlbums: getAlbums
+      getAlbums: getAlbums,
+      remove: remove
     };
 
     function getAll() {
@@ -30,6 +31,15 @@
 
     function getAlbums() {
       return $http.get(baseUrl() + '/albums');
+    }
+
+    function remove(id) {
+      if(arguments.length != 1) {
+        var deferred = $q.defer();
+        deferred.reject('Must be 1 arguments: song id');
+        return deferred.promise;
+      }
+      return $http.delete(baseUrl() + '/songs/' + id);
     }
 
     function baseUrl() {
