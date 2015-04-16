@@ -90,7 +90,11 @@
           }
         },
         file: file
-      }).success(function() {
+      })
+        .progress(function(evt) {
+          file.percentage = parseInt(100.0 * evt.loaded / evt.total);
+        })
+        .success(function() {
         // file is uploaded successfully
         file.uploaded = true;
         file.uploading = false;
@@ -113,7 +117,8 @@
           $log.info('Uploading song');
           upload(file);
         })
-        .catch(function() {
+        .catch(function(file) {
+          file.exists = true;
           $log.error('Song already uploaded');
         });
     }
