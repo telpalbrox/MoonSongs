@@ -17,7 +17,7 @@
     ////////////
 
     function get() {
-      return window.localStorage.getItem('serverIp') || "http://" + location.host;
+      return window.localStorage.getItem('serverIp') || location.protocol + '//' + location.host;
     }
 
     function set(ip) {
