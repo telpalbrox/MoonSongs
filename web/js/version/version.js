@@ -3,5 +3,5 @@
     'moonSongs.version.interpolate-filter',
     'moonSongs.version.version-directive'
   ])
-    .value('version', '0.0.6.1');
+    .value('version', '0.0.7');
 })();
