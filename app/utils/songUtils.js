@@ -6,7 +6,7 @@ var q = require('q');
 var fs = require('fs');
 var path = require('path');
 var request = require('request');
-var ffmetadata = require("ffmetadata");
+var id3 = require('id3-writer');
 var mongoose = require('mongoose');
 var Song = mongoose.model('Song');
 
@@ -239,11 +239,19 @@ exports.downloadImages = function(tags) {
 exports.writeTags = function(tags, fileRoute) {
   var deferred = q.defer();
   var file = fileRoute || 'music/' + tags.artist + '/' + tags.album + '/' + tags.title + '.mp3';
-  ffmetadata.write(file, tags, function(err) {
-    if (err) {
+  var writerId3 = new id3.Writer();
+  var metaId3 = new id3.Meta({
+    title: tags.title,
+    album: tags.album,
+    artist: tags.artist
+  });
+  writerId3.setFile(new id3.File(file)).write(metaId3, function(err) {
+    if(err) {
       console.log(err);
-    } else console.log("tags writed");
-    deferred.resolve();
+      deferred.reject(err);
+    } else {
+      deferred.resolve();
+    }
   });
   return deferred.promise;
 };
@@ -268,7 +276,19 @@ exports.saveSong = function(tags) {
 
 exports.moveSongToFolder = function(tags) {
   var deferred = q.defer();
-  fs.rename('uploads/' + tags.fileName, 'music/' + tags.artist + '/' + tags.album + '/' + tags.title + '.mp3', deferred.makeNodeResolver());
+  var sourcePath = 'uploads/' + tags.fileName;
+  var destPath = 'music/' + tags.artist + '/' + tags.album + '/' + tags.title + '.mp3';
+  var source = fs.createReadStream(sourcePath);
+  var dest = fs.createWriteStream(destPath);
+
+  source.pipe(dest);
+  source.on('end', function() {
+    deferred.resolve();
+  });
+  source.on('error', function() {
+    deferred.reject();
+  });
+
   return deferred.promise;
 };
 
