@@ -4,12 +4,13 @@ console.log('updating database');
 var mongoose = require('mongoose');
 var Song = mongoose.model('Song');
 var User = mongoose.model('User');
-var songUtils = require('../app/utils/songUtils.js');
+var songLib = require('../app/libs/song.lib.js');
 var path = require('path');
 var id3 = require('id3js');
 var fs = require('fs');
 var q = require('q');
 var walk    = require('walk');
+var packageJson = require('../package.json');
 
 function endHandler() {
   User.find({}, function(err, users) {
@@ -52,20 +53,20 @@ function fileHandler(root, fileStat, next) {
     tags.fileUploadName = fileStat.name;
     tags.path = fileRoute;
 
-    songUtils.getSongTags(tags, fileRoute, false)
+    songLib.getSongTags(tags, fileRoute, false)
     .then(function(requestedTags) {
       tags = requestedTags;
-      return songUtils.createArtistFolder(tags);
+      return songLib.createArtistFolder(tags);
     })
     .then(function() {
-      return songUtils.createAlbumFolder(tags);
+      return songLib.createAlbumFolder(tags);
     })
     .then(function() {
-      if(tags.autoTaged) return songUtils.writeTags(tags, fileRoute);
+      if(tags.autoTaged) return songLib.writeTags(tags, fileRoute);
     })
     .then(function() {
-      songUtils.downloadImages(tags);
-      return songUtils.saveSong(tags);
+      songLib.downloadImages(tags);
+      return songLib.saveSong(tags);
     })
     .then(function() {
       next();
@@ -83,7 +84,7 @@ module.exports = function(fs) {
 
   });
 
-  var musicDir = path.resolve(__dirname, '../music');
+  var musicDir = packageJson.config.musicFolder;
   var walker  = walk.walk(musicDir, { followLinks: false, filters: [".cache"] });
   walker.on("file", fileHandler);
   walker.on("end", endHandler);

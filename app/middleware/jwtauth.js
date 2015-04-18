@@ -57,7 +57,7 @@ function getUser(userName) {
  * @param userToken - User object from token
  */
 function ckeckPassword(user, userToken) {
-  return user.password == userToken.password;
+    return user.password == userToken.password;
 }
 
 /**

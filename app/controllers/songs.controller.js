@@ -7,7 +7,11 @@ console.log('loading song controller');
 var mongoose = require('mongoose'),
   Song = mongoose.model('Song'),
   path = require('path'),
-  fs = require('fs');
+  fs = require('fs'),
+  im = require('imagemagick');
+
+var packageJson = require('../../package.json');
+var musicFolder = packageJson.config.musicFolder;
 
 /**
  * Get find parameters form request
@@ -146,6 +150,81 @@ exports.listen = function(req, res) {
       if(err) {
         console.log(err);
         // return res.status(500).send('Error al enviar la cancion');
+      }
+    });
+  });
+};
+
+exports.imageCover = function(req, res) {
+  var album = req.params.album;
+  var artist = req.params.artist;
+
+  var height = 256 || req.query.height;
+  var width = 256 || req.query.width;
+  var file = musicFolder + '/' + artist + '/' + album + '/Cover.jpg';
+  var fileCroped = musicFolder + '/' + artist + '/' + album + '/Cover.' + height + '.' + width + '.jpg';
+
+  fs.exists(file, function(exits) {
+    if(!exits) {
+      return res.sendStatus(404);
+    }
+    fs.exists(fileCroped, function(exists) {
+      if(exists) {
+        res.sendFile(fileCroped, function(err) {
+          if(err) console.log(err);
+        });
+      } else {
+        var options = {
+          srcPath: file,
+          dstPath: fileCroped,
+          height: height,
+          width: width
+        };
+        im.resize(options, function(err) {
+          if(err) {
+            return res.sendStatus(500);
+          }
+          res.sendFile(fileCroped, function(err) {
+            if(err) console.log(err);
+          });
+        });
+      }
+    });
+  });
+};
+
+exports.imageArtist = function(req, res) {
+  var artist = req.params.artist;
+
+  var height = 256 || req.query.height;
+  var width = 256 || req.query.width;
+  var file = musicFolder + '/' + artist + '/Artist.jpg';
+  var fileCroped = musicFolder + '/' + artist + '/Artist.' + height + '.' + width + '.jpg';
+
+  fs.exists(file, function(exits) {
+    if(!exits) {
+      return res.sendStatus(404);
+    }
+    fs.exists(fileCroped, function(exists) {
+      if(exists) {
+        res.sendFile(fileCroped, function(err) {
+          if(err) console.log(err);
+        });
+      } else {
+        var options = {
+          srcPath: file,
+          dstPath: fileCroped,
+          height: height,
+          width: width
+        };
+        im.resize(options, function(err) {
+          if(err) {
+            return res.sendStatus(500);
+          }
+          res.sendFile(fileCroped, function(err) {
+            if(err) console.log(err);
+          });
+        });
       }
     });
   });

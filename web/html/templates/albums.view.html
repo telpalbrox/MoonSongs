@@ -4,7 +4,7 @@
         <div ng-repeat="album in vm.albums">
             <div class="row">
                 <a class="media-left media-middle col-md-1">
-                    <img class="img-circle" style="width:64px;height:64px" ng-src="music/{{album.artist}}/{{album.album}}/Cover.jpg?dim=64x64">
+                    <img class="img-circle" style="width:64px;height:64px" ng-src="{{album.songs[0].coverUrl}}">
                 </a>
                 <accordion-group class="col-md-11" heading="{{album.artist}} | {{album.album}}">
                     <button type="button" class="btn btn-default col-md-3" ng-click="vm.random(album)">
@@ -25,7 +25,7 @@
                             <td>
                                 <div class="media">
                                     <a class="media-left media-middle">
-                                        <img class="img-rounded" style="width:64px;height:64px" ng-src="music/{{song.artist}}/Artist.jpg?dim=64x64">
+                                        <img class="img-rounded" style="width:64px;height:64px" ng-src="{{song.artistUrl}}">
                                     </a>
                                     <div class="media-body">
                                         {{song.artist}}
@@ -35,7 +35,7 @@
                             <td>
                                 <div class="media">
                                     <a class="media-left media-middle">
-                                        <img class="img-rounded" style="width:64px;height:64px" ng-src="music/{{song.artist}}/{{song.album}}/Cover.jpg?64x64">
+                                        <img class="img-rounded" style="width:64px;height:64px" ng-src="{{song.coverUrl}}">
                                     </a>
                                     <div class="media-body">
                                         {{song.album}}

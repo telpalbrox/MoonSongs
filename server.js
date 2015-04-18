@@ -21,7 +21,6 @@ mongoose.connect(configDB.url, function(err) {
 });
 
 var connect = require('connect');
-var serveStatic = require('serve-static');
 
 // configurando herramientas de la libreria express
 if(process.env.NODE_ENV != 'test') app.use(morgan('dev')); // registra cada peticion a la consola
@@ -31,7 +30,6 @@ app.use(express.static('public'));
 app.use(cors());
 
 var qt = require('quickthumb');
-app.use('/music', qt.static(__dirname + '/music')); // Use quickthumb
 
 // configurando modelos
 require('./app/models/song');

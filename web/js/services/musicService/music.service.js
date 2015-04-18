@@ -36,7 +36,7 @@
         if (self.offline) {
           return self.getSong().url;
         } else {
-          var url = ServerIp.get() + '/api/songs/listen/' + self.getSong().artist + '/' + self.getSong().album + '/' + self.getSong().title;
+          var url = ServerIp.get() + '/api/songs/' + self.getSong().artist + '/' + self.getSong().album + '/' + self.getSong().title + '/listen';
           console.log(url);
           return url;
         }

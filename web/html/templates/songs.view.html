@@ -28,7 +28,7 @@
             <td>
                 <div class="media">
                     <a class="media-left media-middle">
-                        <img class="img-rounded" style="width:64px;height:64px" ng-src="music/{{song.artist}}/Artist.jpg?dim=64x64">
+                        <img class="img-rounded" style="width:64px;height:64px" ng-src="{{song.artistUrl}}">
                     </a>
                     <div class="media-body">
                         {{song.artist}}
@@ -38,7 +38,7 @@
             <td>
                 <div class="media">
                     <a class="media-left media-middle">
-                        <img class="img-rounded" style="width:64px;height:64px" ng-src="music/{{song.artist}}/{{song.album}}/Cover.jpg?dim=64x64">
+                        <img class="img-rounded" style="width:64px;height:64px" ng-src="{{song.coverUrl}}">
                     </a>
                     <div class="media-body">
                         {{song.album}}

@@ -69,7 +69,7 @@
 
     return {
       restrict: 'EA',
-      templateUrl: 'templates/playerDirective.html',
+      templateUrl: 'templates/playerDirective.view.html',
       controller: 'IndexController',
       controllerAs: 'vm',
       scope: {},

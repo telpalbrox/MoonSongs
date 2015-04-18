@@ -26,7 +26,7 @@
         return deferred.promise;
       }
       if(arguments.length == 1) return $http.get(baseUrl() + '/songs/' + arguments[0]);
-      else return $http.get(baseUrl() + '/songs/' + arguments[0] + '/' + arguments[1] + '/' + arguments[2]);
+      else return $http.get(baseUrl() + '/songs/' + arguments[0] + '/' + arguments[1] + '/' + arguments[2] + '/info');
     }
 
     function getAlbums() {

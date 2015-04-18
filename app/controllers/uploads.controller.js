@@ -6,29 +6,29 @@ var fs = require('fs');
 var request = require('request');
 var mongoose = require('mongoose');
 var Song = mongoose.model('Song');
-var songUtils = require('../utils/songUtils.js');
+var songLib = require('../libs/song.lib.js');
 
 exports.upload = function(req, res) {
   var tags = JSON.parse(req.body.info);
   tags.fileName = req.files.file.name;
 
-  songUtils.getSongTags(tags, 'uploads/' + tags.fileName, true)
+  songLib.getSongTags(tags, 'uploads/' + tags.fileName, true)
     .then(function(requestedTags) {
       tags = requestedTags;
-      return songUtils.createArtistFolder(tags);
+      return songLib.createArtistFolder(tags);
     })
     .then(function() {
-      return songUtils.createAlbumFolder(tags);
+      return songLib.createAlbumFolder(tags);
     })
     .then(function() {
-      return songUtils.moveSongToFolder(tags);
+      return songLib.moveSongToFolder(tags);
     })
     .then(function() {
-      return songUtils.writeTags(tags);
+      return songLib.writeTags(tags);
     })
     .then(function() {
-      songUtils.downloadImages(tags);
-      return songUtils.saveSong(tags);
+      songLib.downloadImages(tags);
+      return songLib.saveSong(tags);
     })
     .then(function() {
       res.sendStatus(201);

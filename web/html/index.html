@@ -62,7 +62,7 @@
           <li style="margin-right:2.5em;">
             <div class="row" ng-show="vm.getSong()">
               <span>{{vm.getSong().title}}</span>
-              <img style="width:45px;height:45px" ng-src="music/{{vm.getSong().artist}}/{{vm.getSong().album}}/Cover.jpg?dim=64x64" class="img-rounded">
+              <img style="width:45px;height:45px" ng-src="{{vm.getSong().coverUrl}}">
             </div>
           </li>
           <li>

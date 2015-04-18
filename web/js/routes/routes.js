@@ -13,27 +13,27 @@
     $stateProvider
       .state('start', {
         url: '/start',
-        templateUrl: 'templates/startView.html'
+        templateUrl: 'templates/start.view.html'
       })
       .state('songs', {
         url: '/songs',
-        templateUrl: 'templates/songsView.html'
+        templateUrl: 'templates/songs.view.html'
       })
       .state('albums', {
         url: '/albums',
-        templateUrl: 'templates/albumsView.html'
+        templateUrl: 'templates/albums.view.html'
       })
       .state('upload', {
         url: '/upload',
-        templateUrl: 'templates/uploadView.html'
+        templateUrl: 'templates/upload.view.html'
       })
       .state('manageUsers', {
         url: '/manageUsers',
-        templateUrl: 'templates/manageUsersView.html'
+        templateUrl: 'templates/manageUsers.view.html'
       })
       .state('login', {
         url: '/login',
-        templateUrl: 'templates/loginView.html'
+        templateUrl: 'templates/login.view.html'
       })
       .state('view5', {
         url: '/view5',

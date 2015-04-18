@@ -12,13 +12,16 @@ module.exports = function(app) {
     .get(jwtauth.allowUserType('canListen'), songs.read)
     .delete(jwtauth.allowUserType('canUpload'), songs.delete);
 
-  app.route('/api/songs/:artist/:album/:title')
-    .get(jwtauth.allowUserType('canListen'), songs.read)
-    .delete(jwtauth.allowUserType('canUpload'), songs.delete);
+  app.route('/api/songs/:artist/:album/:title/info')
+    .get(jwtauth.allowUserType('canListen'), songs.read);
 
   app.route('/api/albums')
     .get(jwtauth.allowUserType('canListen'), songs.albums);
 
-  app.route('/api/songs/listen/:artist/:album/:title')
+  app.route('/api/songs/:artist/:album/:title/listen')
     .get(songs.listen);
+
+  app.get('/api/songs/:artist/image', songs.imageArtist);
+
+  app.get('/api/songs/:artist/:album/image', songs.imageCover);
 };
