@@ -1,5 +1,7 @@
 // app/utils/songUtils.js
-console.log('loading songs utils...');
+var log4js = require('log4js');
+var debugLogger = log4js.getLogger('debug');
+var errorLogger = log4js.getLogger('error');
 
 var shelljs = require('shelljs');
 var q = require('q');
@@ -34,13 +36,21 @@ exports.createArtistFolder = createArtistFolder;
  */
 function getSongFingerPrint(fileRoute) {
   var deferred = q.defer();
-  shelljs.exec('fpcalc ' + '"' + fileRoute + '"', {
+  var fingerCommand = 'fpcalc ' + '"' + fileRoute + '"';
+  debugLogger.debug('[Getting song fingerprint] | ' +
+  '[Command: ' + fingerCommand + '] | ' +
+  '[Funciton: getSongFingerPrint]');
+  shelljs.exec(fingerCommand, {
     silent: true,
     aync: true
   }, function(code, output) {
+    debugLogger.debug('[Command: ' + fingerCommand + ' finished with code: ' + code + ']');
     output = output.replace(/\r/g, '');
     if(output.substr(0, 4) == 'ERROR') {
-      throw new Error('Error executing fpcalc');
+      errorLogger.error('[Error getting song fingerPrint] | ' +
+      '[File: ' + fileRoute + ']' +
+      '[Error: ' + output + ']');
+      return deferred.reject('Error executing fpcalc');
     }
     var commandLines = output.split('\n');
     var duration = commandLines[1].split('=')[1];
@@ -49,6 +59,7 @@ function getSongFingerPrint(fileRoute) {
       'duration': duration,
       'fingerPrint': fingerPrint
     };
+    debugLogger.debug('[Fingerprint successful calculated]');
     deferred.resolve(info);
   });
   return deferred.promise;
@@ -67,13 +78,22 @@ function getSongRid(duration, fingerPrint) {
     url: 'http://api.acoustid.org/v2/lookup?client=' + acoustidApiKey + '&meta=recordingids&duration=' + duration + '&fingerprint=' + fingerPrint,
     json: true
   };
-  request(requestRid, function(error, response, body) {
-    if (error || !body) throw new Error(error);
+  debugLogger.debug('[Getting song RID] | ' +
+  '[Request url(partial): ' + requestRid.url.substr(0, 70) +'] | ' +
+  '[Function: getSongRid]');
+  request(requestRid, function(err, response, body) {
+    if (err || !body) {
+      errorLogger.error('[Error getting song RID] | ' +
+      '[Error: ' + err + ']');
+      return deferred.reject('Error getting song RID');
+    }
     var rid = null;
     if (body.results.length !== 0) {
       rid = body.results[0].recordings[0].id;
+      debugLogger.debug('[RID successfully got, RID: ' + rid + ']');
+    } else {
+      debugLogger.warn('[Attemping get RID failed, song not recognized]');
     }
-    // console.log('rid: ' + rid);
     deferred.resolve(rid);
   });
   return deferred.promise;
@@ -88,6 +108,9 @@ function getSongRid(duration, fingerPrint) {
  * @returns {Promise} with Object that contains tags
  */
 function findTags(rid, fileName, fileUploadName, filePath) {
+  debugLogger.debug('[Finding song tags] | ' +
+  '[File: ' + filePath + '] | ' +
+  '[Funciton: fingTags]');
   var deferred = q.defer();
   var unknownTags = {
     artist: 'Unknown',
@@ -103,6 +126,8 @@ function findTags(rid, fileName, fileUploadName, filePath) {
 
   if (rid === null) {
     return q.fcall(function() {
+      debugLogger.debug('[Unknow song] | ' +
+      '[File: ' + unknownTags.path + ']');
       return unknownTags;
     });
   }
@@ -114,12 +139,18 @@ function findTags(rid, fileName, fileUploadName, filePath) {
     },
     json: true
   };
-  // console.log(requestTag.url);
-  request(requestTag, function(error, response, body) {
+  debugLogger.debug('[Requesting song info] | ' +
+  '[Url: ' + requestTag.url + ']');
+  request(requestTag, function(err, response, body) {
     var tags = null;
     var releaseId = "";
-    if(error) throw new Error();
-    if (!error && response.statusCode === 200) {
+    if(err)  {
+      errorLogger.error('[Error getting song tags from musicbrainz] | ' +
+      '[Url: ' + requestTag.url + '] |' +
+      '[Error: ' + err + ']');
+      return deferred.reject('Error getting song tags from musicbrainz');
+    }
+    if (!err && response.statusCode === 200) {
       // console.log('titulo: ' + body.title);
       // console.log('album: ' + body.releases[0].title);
       // console.log('artista: ' + body['artist-credit'][0].name);
@@ -132,6 +163,13 @@ function findTags(rid, fileName, fileUploadName, filePath) {
         autoTaged: true
       };
       tags.path = filePath || musicFolder + '/' + tags.artist + '/' + tags.album + '/' + tags.title + '.mp3';
+
+      debugLogger.debug('[Successfully got song tags] | ' +
+      '[File: ' + tags.path + ']' +
+      '[Artist: ' + tags.artist + '] | ' +
+      '[Album: ' + tags.album + '] | ' +
+      '[Title: ' + tags.title +']');
+
       releaseId = body.releases[0].id;
       // obtain track number and year
       var requestTrackYear = {
@@ -141,35 +179,45 @@ function findTags(rid, fileName, fileUploadName, filePath) {
         },
         json: true
       };
-      // console.log(requestTrackYear.url);
-      request(requestTrackYear, function(error, response, body) {
-        if(error) throw new Error();
-        if (!error && response.statusCode === 200) {
+      debugLogger.debug('[Requesting track number and album year] | ' +
+      '[Url: ' + requestTrackYear.url +']');
+      request(requestTrackYear, function(err, response, body) {
+        if(err) {
+          errorLogger.error('[Error getting song year and track number from musicbrainz] | ' +
+          '[Url: ' + requestTag.url + '] |' +
+          '[Error: ' + err + ']');
+          return deferred.reject('Error getting song year and track number from musicbrainz');
+        }
+        if (!err && response.statusCode === 200) {
           tags.year = new Date(body.date).getFullYear();
           tags.track = -1;
           var tracks = body.media[0].tracks;
           for (var j in tracks) {
             if (tags.title === tracks[j].title) {
               tags.track = tracks[j].number;
-              // console.log('numero de pista para ' + tags.title + ': ' + tags.track);
-              // console.log('anio: ' + tags.year);
               break;
             }
           }
           if (tags.track === -1) {
+            debugLogger.debug('Error getting track number');
             tags.track = 0;
           }
 
+          debugLogger.debug('[Successfully got song year and track number] | ' +
+          '[File: ' + tags.path + ']' +
+          '[Year: ' + tags.year + '] | ' +
+          '[Track: ' + tags.track + ']');
           deferred.resolve(tags);
         } else {
-          // console.log('error al recibir track number');
           tags.track = 0;
+          debugLogger.warn('[Http error getting song year and track number] | ' +
+          '[Http status code: ' + response.statusCode + ']');
           deferred.resolve(tags);
         }
       });
     } else {
-      // console.log('error al recibir tags');
-      // console.log(error);
+      debugLogger.warn('[Http error getting song tags] | ' +
+      '[Http status code: ' + response.statusCode + ']');
       deferred.resolve(unknownTags);
     }
   });
@@ -184,23 +232,34 @@ function findTags(rid, fileName, fileUploadName, filePath) {
  * @returns {Promise} with tags
  */
 function getSongTags(tags, fileRoute, uploaded) {
+  debugLogger.debug('[Getting song tags] | ' +
+  '[File: ' + fileRoute + '] | ' +
+  '[Funciton: getSongTags]');
   var deferred = q.defer();
   if (!tags.artist || !tags.album || !tags.title) {
+    debugLogger.debug('[There is not passed all tags, asking Internet]');
     exports.getSongFingerPrint(fileRoute)
       .then(function(info) {
         return exports.getSongRid(info.duration, info.fingerPrint);
       })
       .then(function(rid) {
-        if (uploaded) return exports.findTags(rid, tags.fileName, tags.fileUploadName);
-        else return exports.findTags(rid, tags.fileName, tags.fileUploadName, fileRoute);
+        if (uploaded) return findTags(rid, tags.fileName, tags.fileUploadName);
+        else return findTags(rid, tags.fileName, tags.fileUploadName, fileRoute);
       })
       .then(function(requestedTags) {
         return deferred.resolve(requestedTags);
+      })
+      .catch(function(err) {
+        errorLogger.error('[Error geting song tags from Internet] | ' +
+        '[Error: ' + err + '] | ' +
+        '[Function: getSongTags]');
+        return deferred.reject(err);
       });
   } else {
     return q.fcall(function() {
       if (uploaded) tags.path = musicFolder + '/' + tags.artist + '/' + tags.album + '/' + tags.title + '.mp3';
       else tags.path = fileRoute;
+      debugLogger.debug('[Tags passed]');
       return tags;
     });
   }
@@ -209,16 +268,39 @@ function getSongTags(tags, fileRoute, uploaded) {
 }
 
 function createArtistFolder(tags) {
+  debugLogger.debug('[Creating artist folder] | ' +
+  '[Artist: ' + tags.artist +'] | ' +
+  '[Funciton: createArtistFolder]');
   var deferred = q.defer();
-  fs.mkdir(musicFolder + '/' + tags.artist, function() {
+  var artistFolder = musicFolder + '/' + tags.artist;
+  fs.mkdir(artistFolder, function(err) {
+    if(err) {
+      debugLogger.warn('[Error creating artist folder, possibly folder already created] | ' +
+      '[Folder: ' + artistFolder + ']' +
+      '[Error: ' + err + ']');
+    }
+    debugLogger.debug('[Successfuly created artist folder] | ' +
+    '[Folder: ' + artistFolder + ']');
     deferred.resolve();
   });
   return deferred.promise;
 }
 
 function createAlbumFolder(tags) {
+  debugLogger.debug('[Creating album folder] | ' +
+  '[Artist: ' + tags.artist +'] | ' +
+  '[Album: ' + tags.album + '] | ' +
+  '[Funciton: createAlbumFolder]');
   var deferred = q.defer();
-  fs.mkdir(musicFolder + '/' + tags.artist + '/' + tags.album, function() {
+  var albumFolder = musicFolder + '/' + tags.artist + '/' + tags.album;
+  fs.mkdir(albumFolder, function(err) {
+    if(err) {
+      debugLogger.warn('[Error creating album folder, possibly folder already created] | ' +
+      '[Folder: ' + albumFolder + ']' +
+      '[Error: ' + err + ']');
+    }
+    debugLogger.debug('[Successfuly created album folder] | ' +
+    '[Folder: ' + albumFolder + ']');
     deferred.resolve();
   });
   return deferred.promise;
@@ -231,11 +313,22 @@ function moveSongToFolder(tags) {
   var source = fs.createReadStream(sourcePath);
   var dest = fs.createWriteStream(destPath);
 
+  debugLogger.debug('[Moving song to folder] | ' +
+  '[From: ' + sourcePath + '] | ' +
+  '[To: ' + destPath + '] | ' +
+  '[Function moveSongToFolder]');
+
   source.pipe(dest);
   source.on('end', function() {
+    debugLogger.debug('[Succesfuly move song to folder] | ' +
+    '[Folder: ' + destPath + ']');
     deferred.resolve();
   });
-  source.on('error', function() {
+  source.on('error', function(err) {
+    errorLogger.error('[Error moving song to folder] | ' +
+    '[From: ' + sourcePath + '] | ' +
+    '[To: ' + destPath + '] | ' +
+    '[Error: ' + err + ']');
     deferred.reject();
   });
 
@@ -256,8 +349,17 @@ function saveSong(tags) {
   newSong.found = true;
   newSong.artistUrl = '/api/songs/' + tags.artist + '/image';
   newSong.coverUrl ='/api/songs/' + tags.artist + '/' + tags.album + '/image';
+
+  debugLogger.debug('[Saving song to database] | ' +
+  '[Artist: ' + tags.artist +'] | ' +
+  '[Album: ' + tags.album + '] | ' +
+  '[Title: ' + tags.title + '] | ' +
+  '[Function: saveSong]');
+
   newSong.save(function(err) {
     if(err) {
+      errorLogger.error('[Error saving song] | ' +
+      '[Error: ' + err + ']');
       return deferred.reject();
     }
     deferred.resolve();
@@ -274,9 +376,18 @@ function writeTags(tags, fileRoute) {
     album: tags.album,
     artist: tags.artist
   });
+
+  debugLogger.debug('[Writting tags on song file] | ' +
+  '[Artist: ' + tags.artist +'] | ' +
+  '[Album: ' + tags.album + '] | ' +
+  '[Title: ' + tags.title + '] | ' +
+  '[File: ' + file + ']' +
+  '[Function writeTags]');
+
   writerId3.setFile(new id3.File(file)).write(metaId3, function(err) {
     if(err) {
-      console.log(err);
+      errorLogger.error('[Error writing song tags] | ' +
+      '[Error: ' + err + ']');
       deferred.reject(err);
     } else {
       deferred.resolve();
@@ -289,23 +400,41 @@ function downloadImages(tags) {
   var imageArtistPath = musicFolder + '/' + tags.artist + '/Artist.jpg';
   var imageCoverPath = musicFolder + '/' + tags.artist + '/' + tags.album + '/Cover.jpg';
 
+  debugLogger.debug('[Downloading images if its needed] | ' +
+  '[Function downloadImages]');
+
   fs.exists(imageCoverPath, function(exits) {
-    if (!exits) downloadImageCover(tags, imageCoverPath);
+    if (!exits) {
+      debugLogger.debug('[Need download cover image] | ' +
+      '[Path: ' + imageCoverPath + ']');
+      downloadImageCover(tags, imageCoverPath);
+    }
   });
   fs.exists(imageArtistPath, function(exits) {
-    if (!exits) downloadImageArtist(tags, imageArtistPath);
+    if (!exits) {
+      debugLogger.debug('[Need download artist image] | ' +
+      '[Path: ' + imageArtistPath + ']');
+      downloadImageArtist(tags, imageArtistPath);
+    }
   });
 }
 
 function downloadImageCover(tags, path) {
   var urlGetAlbumInfo = 'http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=' + lastfmApiKey + '&artist=' + tags.artist + '&album=' + tags.album + '&format=json';
+  debugLogger.debug('[Requesting album info] | ' +
+  '[Url: ' + urlGetAlbumInfo + '] | ' +
+  '[Function: downloadImageCover]');
   request({
     url: urlGetAlbumInfo,
     json: true
   }, function(error, response, body) {
     if (!error && response.statusCode === 200 && body.album && body.album.image[4]['#text']) {
-      request(body.album.image[4]['#text']).pipe(fs.createWriteStream(path));
+      var imageUrl = body.album.image[4]['#text'];
+      debugLogger.debug('[Downloading cover image] | ' +
+      '[Url: ' + imageUrl + ']');
+      request(imageUrl).pipe(fs.createWriteStream(path));
     } else {
+      debugLogger.debug('[Cover image not found coping default image]');
       fs.createReadStream('assets/Album.jpg').pipe(fs.createWriteStream(path));
     }
   });
@@ -313,14 +442,20 @@ function downloadImageCover(tags, path) {
 
 function downloadImageArtist(tags, path) {
   var urlGetArtistInfo = 'http://ws.audioscrobbler.com/2.0/?method=artist.getinfo&api_key=' + lastfmApiKey + '&artist=' + tags.artist + '&format=json';
+  debugLogger.debug('[Requesting artist info] | ' +
+  '[Url: ' + urlGetArtistInfo + '] | ' +
+  '[Function: downloadImageCover]');
   request({
     url: urlGetArtistInfo,
     json: true
   }, function(error, response, body) {
     if (!error && response.statusCode === 200 && body.artist && body.artist.image[4]['#text']) {
-      request(body.artist.image[4]['#text']).pipe(fs.createWriteStream(path));
-      console.log('imagen artista descargada');
+      var imageUrl = body.artist.image[4]['#text'];
+      debugLogger.debug('[Downloading artist image] | ' +
+      '[Url: ' + imageUrl + ']');
+      request(imageUrl).pipe(fs.createWriteStream(path));
     } else {
+      debugLogger.debug('[Artist image not found coping default image]');
       fs.createReadStream('assets/Artist.jpg').pipe(fs.createWriteStream(path));
     }
   });

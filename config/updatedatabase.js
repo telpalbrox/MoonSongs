@@ -1,6 +1,8 @@
 // config/updatedatabase.js
-console.log('updating database');
-
+var log4js = require('log4js');
+var mainLogger = log4js.getLogger('main');
+var errorLogger = log4js.getLogger('error');
+var authLogger = log4js.getLogger('auth');
 var mongoose = require('mongoose');
 var Song = mongoose.model('Song');
 var User = mongoose.model('User');
@@ -13,11 +15,24 @@ var walk    = require('walk');
 var packageJson = require('../package.json');
 
 function endHandler() {
+  Song.find({}, function(err, songs) {
+    if(err) {
+      errorLogger.error('[Error creating admin user] | ' +
+      '[Error: ' + err +']');
+      return;
+    }
+    mainLogger.info('[Finished scaning music folder, found ' + songs.length + ' songs]');
+  });
   User.find({}, function(err, users) {
+    if(err) {
+      errorLogger.error('[Error finding users] | ' +
+      '[Error: ' + err +']');
+      return;
+    }
     if(users.length !== 0) {
-      // console.log('Hay creados '+users.length+' usuarios');
+      mainLogger.info('[There is created ' + users.length +' users]');
     } else {
-      console.log('No hay usuarios creados, creando admin');
+      authLogger.info('[Creating admin user]');
       var newUser = new User();
       newUser.email = 'admin@localhost';
       newUser.userName = 'admin';
@@ -25,7 +40,14 @@ function endHandler() {
       newUser.permissions.canUpload = true;
       newUser.permissions.canListen = true;
       newUser.permissions.admin = true;
-      newUser.save(function(err) {});
+      newUser.save(function(err) {
+        if(err) {
+          errorLogger.error('[Error creating admin user] | ' +
+          '[Error: ' + err +']');
+          return;
+        }
+        authLogger.info('[Successful created admin user]');
+      });
     }
   });
 }
@@ -39,8 +61,9 @@ function fileHandler(root, fileStat, next) {
   // console.log(fileRoute);
   id3({ file: fileRoute, type: id3.OPEN_LOCAL }, function(err, tags) {
     if(err) {
-      console.log('Error al procesar: ' + fileRoute);
-      console.log(err);
+      errorLogger.error('[Error getting song tags] | ' +
+      '[File: ' + fileRoute + '] | ' +
+      '[Error: ' + err + ']');
       next();
     }
 
@@ -54,38 +77,44 @@ function fileHandler(root, fileStat, next) {
     tags.path = fileRoute;
 
     songLib.getSongTags(tags, fileRoute, false)
-    .then(function(requestedTags) {
-      tags = requestedTags;
-      return songLib.createArtistFolder(tags);
-    })
-    .then(function() {
-      return songLib.createAlbumFolder(tags);
-    })
-    .then(function() {
-      if(tags.autoTaged) return songLib.writeTags(tags, fileRoute);
-    })
-    .then(function() {
-      songLib.downloadImages(tags);
-      return songLib.saveSong(tags);
-    })
-    .then(function() {
-      next();
-    })
-    .fail(function(error) {
-      console.log(error);
-      console.log('Error al aniadir la cancion');
-      next();
-    });
+      .then(function(requestedTags) {
+        tags = requestedTags;
+        return songLib.createArtistFolder(tags);
+      })
+      .then(function() {
+        return songLib.createAlbumFolder(tags);
+      })
+      .then(function() {
+        if(tags.autoTaged) return songLib.writeTags(tags, fileRoute);
+      })
+      .then(function() {
+        songLib.downloadImages(tags);
+        return songLib.saveSong(tags);
+      })
+      .then(function() {
+        next();
+      })
+      .fail(function(err) {
+        errorLogger.error('[Error adding song] | ' +
+        '[File: ' + fileRoute + '] | ' +
+        '[Error: ' + err + ']');
+        next();
+      });
   });
 }
 
-module.exports = function(fs) {
-  Song.remove({}, function(err) {
-
-  });
-
+module.exports = function() {
   var musicDir = packageJson.config.musicFolder;
   var walker  = walk.walk(musicDir, { followLinks: false, filters: [".cache"] });
+  mainLogger.trace('[File: updatedatabase.js] | ' +
+  '[Music folder: ' + musicDir + ']');
+  Song.remove({}, function(err) {
+    if(err) {
+      errorLogger.error('[Error deleting songs] | ' +
+      '[Error: ' + err +']');
+    }
+  });
+
   walker.on("file", fileHandler);
   walker.on("end", endHandler);
 };

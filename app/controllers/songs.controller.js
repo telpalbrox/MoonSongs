@@ -1,6 +1,7 @@
+var log4js = require('log4js');
+var mainLogger = log4js.getLogger('main');
+var errorLogger = log4js.getLogger('error');
 // app/controllers/songs.controllers.js
-console.log('loading song controller');
-
 /**
  * Module dependencies
  */
@@ -41,12 +42,19 @@ function getFindParams(req) {
 }
 
 exports.list = function(req, res) {
+  mainLogger.trace('[File: songs.controller.js] | ' +
+  '[Route GET /api/songs] | ' +
+  '[Function list] | ' +
+  '[User id: ' + ( req.user ? req.user._id : 0) + ']');
+
   Song.find({}).sort({
     'album': 1,
     'title': 1
   }).exec(function(err, songs) {
-    if(songs.length === 0) {
-      res.status(404).send();
+    if(err) {
+      errorLogger.error('Error getting songs');
+      errorLogger.error(err);
+      res.sendStatus(500);
       return;
     }
     res.json(songs);
@@ -54,13 +62,19 @@ exports.list = function(req, res) {
 };
 
 exports.read = function(req, res) {
+  mainLogger.trace('[File: songs.controller.js] | ' +
+  '[Route GET /api/songs/' + req.params.id + '] | ' +
+  '[Function read] | ' +
+  '[User id: ' + ( req.user ? req.user._id : 0) + ']');
+
   var findParams = getFindParams(req);
   if(!findParams) return res.status(400).send();
 
   Song.findOne(findParams, function(err, song) {
     if (err) {
-      console.log(err);
-      res.status(501).send();
+      errorLogger.error('Error getting song');
+      errorLogger.error(err);
+      res.status(500).send();
       return;
     }
     if (!song) {
@@ -71,18 +85,12 @@ exports.read = function(req, res) {
   });
 };
 
-exports.check = function(req, res) {
-  var findParams = getFindParams(req);
-  if(!findParams) return res.status(400).send();
-
-  Song.findOne(findParams, function(err, song) {
-    if (err) res.status(501).send();
-    if (song) res.status(200).send();
-    else res.status(404).send();
-  });
-};
-
 exports.delete = function(req, res) {
+  mainLogger.trace('[File: songs.controller.js] | ' +
+  '[Route DELETE /api/songs/' + req.params.id + '] | ' +
+  '[Function delete] | ' +
+  '[User id: ' + ( req.user ? req.user._id : 0) + ']');
+
   var findParams = getFindParams(req);
   if(!findParams) return res.status(400).send();
 
@@ -93,18 +101,18 @@ exports.delete = function(req, res) {
     }
     song.remove(function(err, song) {
       if (err) {
-        console.log(err);
+        errorLogger.error('Error deleting song');
+        errorLogger.log(err);
         res.status(501).send('Error al borrar la cancion');
-        return;
       } else {
         fs.unlink(song.path, function(err) {
           if (err && process.env.NODE_ENV != 'test') {
-            console.log(err);
+            errorLogger.error('Error deleting song');
+            errorLogger.log(err);
             res.status(501).send('Error al borrar la cancion');
             return;
           }
           res.status(200).send();
-          return;
         });
       }
     });
@@ -112,13 +120,19 @@ exports.delete = function(req, res) {
 };
 
 exports.albums = function(req, res) {
+  mainLogger.trace('[File: songs.controller.js] | ' +
+  '[Route GET /api/albums/] | ' +
+  '[Function albums] | ' +
+  '[User id: ' + ( req.user ? req.user._id : 0) + ']');
+
   var albums = {};
 
   Song.find({}, function(err, songs) {
-    if (songs.length === 0) {
-      res.status(404).send();
-      return;
+    if(err) {
+      errorLogger.error('Error getting albums');
+      errorLogger.log(err);
     }
+
     for (var j in songs) {
       if (albums[songs[j].album] === undefined) {
         albums[songs[j].album] = {
@@ -140,22 +154,37 @@ exports.albums = function(req, res) {
 };
 
 exports.listen = function(req, res) {
+  mainLogger.trace('[File: songs.controller.js] | ' +
+  '[Route GET /api/songs/' + req.params.artist + '/' + req.params.album + '/' + req.params.title + '/listen] | ' +
+  '[Function listen] | ' +
+  '[User id: ' + ( req.user ? req.user._id : 0) + ']');
+
   var findParams = getFindParams(req);
   if(!findParams) return res.status(400).send();
 
   Song.findOne(findParams, function(err, song) {
-    if(err) return res.status(500).send('Error al buscar la cancion');
+    if(err) {
+      errorLogger.error('Error getting song');
+      errorLogger.error(err);
+      return res.status(500).send('Error al buscar la cancion');
+    }
     if(!song) return res.status(404).send('nosta');
+    mainLogger.info('[File: ' + song.path + ']');
     res.sendFile(song.path, function(err) {
       if(err) {
-        console.log(err);
-        // return res.status(500).send('Error al enviar la cancion');
+        errorLogger.error('Error sending song');
+        errorLogger.error(err);
       }
     });
   });
 };
 
 exports.imageCover = function(req, res) {
+  mainLogger.trace('[File: songs.controller.js] | ' +
+  '[Route GET /api/songs/' + req.params.artist + '/' + req.params.album + '/image] | ' +
+  '[Function imageCover] | ' +
+  '[User id: ' + ( req.user ? req.user._id : 0) + ']');
+
   var album = req.params.album;
   var artist = req.params.artist;
 
@@ -163,6 +192,11 @@ exports.imageCover = function(req, res) {
   var width = 256 || req.query.width;
   var file = musicFolder + '/' + artist + '/' + album + '/Cover.jpg';
   var fileCroped = musicFolder + '/' + artist + '/' + album + '/Cover.' + height + '.' + width + '.jpg';
+
+  mainLogger.info('[Height: ' + height + '] | ' +
+  '[Width: ' + width +'] | ' +
+  '[File: ' + file + '] | ' +
+  '[FileCroped: ' + fileCroped +']');
 
   fs.exists(file, function(exits) {
     if(!exits) {
@@ -180,10 +214,14 @@ exports.imageCover = function(req, res) {
           height: height,
           width: width
         };
+        mainLogger.info('[Need resizing: ' + file + ']');
         im.resize(options, function(err) {
           if(err) {
+            errorLogger.error('[Error resizing file: ' + file + '] | ' +
+            '[Error: ' + err +']');
             return res.sendStatus(500);
           }
+          mainLogger.info('[Resizing finished: ' + fileCroped + ']');
           res.sendFile(fileCroped, function(err) {
             if(err) console.log(err);
           });
@@ -194,12 +232,22 @@ exports.imageCover = function(req, res) {
 };
 
 exports.imageArtist = function(req, res) {
+  mainLogger.trace('[File: songs.controller.js] | ' +
+  '[Route GET /api/songs/' + req.params.artist + '/listen] | ' +
+  '[Function imageArtist] | ' +
+  '[User id: ' + ( req.user ? req.user._id : 0) + ']');
+
   var artist = req.params.artist;
 
   var height = 256 || req.query.height;
   var width = 256 || req.query.width;
   var file = musicFolder + '/' + artist + '/Artist.jpg';
   var fileCroped = musicFolder + '/' + artist + '/Artist.' + height + '.' + width + '.jpg';
+
+  mainLogger.info('[Height: ' + height + '] | ' +
+  '[Width: ' + width +'] | ' +
+  '[File: ' + file + '] | ' +
+  '[FileCroped: ' + fileCroped +']');
 
   fs.exists(file, function(exits) {
     if(!exits) {
@@ -217,10 +265,14 @@ exports.imageArtist = function(req, res) {
           height: height,
           width: width
         };
+        mainLogger.info('[Need resizing: ' + file + ']');
         im.resize(options, function(err) {
           if(err) {
+            errorLogger.error('[Error resizing file: ' + file + '] | ' +
+            '[Error: ' + err +']');
             return res.sendStatus(500);
           }
+          mainLogger.info('[Resizing finished: ' + fileCroped + ']');
           res.sendFile(fileCroped, function(err) {
             if(err) console.log(err);
           });

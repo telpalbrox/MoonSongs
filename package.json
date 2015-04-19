@@ -7,7 +7,7 @@
     "test": "grunt test"
   },
   "config": {
-    "musicFolder": "/home/alberto/Música"
+    "musicFolder": "/home/alberto/lal/ionic/songs/songs-nodejs-server/music"
   },
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
