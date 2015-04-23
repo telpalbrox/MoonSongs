@@ -88,7 +88,7 @@ function getSongRid(duration, fingerPrint) {
       return deferred.reject('Error getting song RID');
     }
     var rid = null;
-    if (body.results.length !== 0) {
+    if (body.results.length !== 0 && body.results[0].recordings) {
       rid = body.results[0].recordings[0].id;
       debugLogger.debug('[RID successfully got, RID: ' + rid + ']');
     } else {
@@ -435,7 +435,13 @@ function downloadImageCover(tags, path) {
       request(imageUrl).pipe(fs.createWriteStream(path));
     } else {
       debugLogger.debug('[Cover image not found coping default image]');
-      fs.createReadStream('assets/Album.jpg').pipe(fs.createWriteStream(path));
+      var defaultCoverImage = 'assets/Album.jpg';
+      copyFile(defaultCoverImage, path, function(err) {
+        if(err) {
+          errorLogger.error('[Error downloading image Artist] | ' +
+          '[Error: ' + err + ']');
+        }
+      });
     }
   });
 }
@@ -456,7 +462,37 @@ function downloadImageArtist(tags, path) {
       request(imageUrl).pipe(fs.createWriteStream(path));
     } else {
       debugLogger.debug('[Artist image not found coping default image]');
-      fs.createReadStream('assets/Artist.jpg').pipe(fs.createWriteStream(path));
+      var defaultArtistImage = 'assets/Artist.jpg';
+      copyFile(defaultArtistImage, path, function(err) {
+        if(err) {
+          errorLogger.error('[Error downloading image Artist] | ' +
+          '[Error: ' + err + ']');
+        }
+      });
     }
   });
+}
+
+function copyFile(source, target, cb) {
+  var cbCalled = false;
+
+  var rd = fs.createReadStream(source);
+  rd.on("error", function(err) {
+    done(err);
+  });
+  var wr = fs.createWriteStream(target);
+  wr.on("error", function(err) {
+    done(err);
+  });
+  wr.on("close", function(ex) {
+    done();
+  });
+  rd.pipe(wr);
+
+  function done(err) {
+    if (!cbCalled) {
+      cb(err);
+      cbCalled = true;
+    }
+  }
 }
