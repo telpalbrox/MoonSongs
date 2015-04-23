@@ -289,8 +289,6 @@ exports.update = function(req, res) {
     '[Function update] | ' +
     '[User id: ' + ( req.user ? req.user._id : 0) + ']');
 
-  console.log(req.body);
-
   if(!req.params.id || !req.body.song) {
     res.sendStatus(400);
   }

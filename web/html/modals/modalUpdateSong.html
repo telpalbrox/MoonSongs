@@ -1,0 +1,13 @@
+<div class="modal-header">
+  <h3 class="modal-title">Update song</h3>
+</div>
+<div class="modal-body">
+  <p>New song data</p>
+  <input type="text" class="form-control" placeholder="New title" ng-model="mvm.title">
+  <input type="text" class="form-control" placeholder="New album" ng-model="mvm.album">
+  <input type="text" class="form-control" placeholder="New artist" ng-model="mvm.artist">
+</div>
+<div class="modal-footer">
+  <button class="btn btn-danger" ng-click="mvm.ok()" translate>Update</button>
+  <button class="btn btn-primary" ng-click="mvm.cancel()" translate>CANCEL</button>
+</div>

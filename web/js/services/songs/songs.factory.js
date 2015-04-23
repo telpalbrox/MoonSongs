@@ -12,7 +12,8 @@
       getAll: getAll,
       get: get,
       getAlbums: getAlbums,
-      remove: remove
+      remove: remove,
+      update: update
     };
 
     function getAll() {
@@ -40,6 +41,19 @@
         return deferred.promise;
       }
       return $http.delete(baseUrl() + '/songs/' + id);
+    }
+
+    function update(newSong) {
+      if(!newSong) {
+        var deferred = $q.defer();
+        deferred.reject('Need pass song');
+        return deferred.promise;
+      }
+
+      return $http.put(baseUrl() + '/songs/' + newSong._id, {
+        song: newSong
+      });
+
     }
 
     function baseUrl() {

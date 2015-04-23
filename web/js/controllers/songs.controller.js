@@ -2,18 +2,20 @@
   angular.module('moonSongs')
     .controller('SongsController', SongsCtr);
 
-  SongsCtr.$inject = ['Music', '$modal', '$log', 'Songs'];
+  SongsCtr.$inject = ['Music', '$modal', '$log', 'Songs', '$rootScope'];
 
-  function SongsCtr(Music, $modal, $log, Songs) {
+  function SongsCtr(Music, $modal, $log, Songs, $rootScope) {
     var vm = this;
 
     vm.predicate = 'album';
     vm.reverse = false;
+    vm.song = null;
 
     vm.addSong = addSong;
     vm.play = play;
     vm.random = random;
     vm.remove = remove;
+    vm.update = update;
 
     activate();
 
@@ -69,6 +71,53 @@
         .catch(function(err) {
           $log.error('Error getting songs');
         });
+    }
+
+    function update(song) {
+      vm.song = song;
+      var modalInstance = $modal.open({
+        templateUrl: 'modals/modalUpdateSong.html',
+        controller: UpdateModalCtrl,
+        controllerAs: 'mvm'
+      });
+
+      modalInstance.result.then(function(updatedTags) {
+        for(var key in updatedTags) {
+          if(updatedTags.hasOwnProperty(key)) {
+            vm.song[key] = updatedTags[key];
+          }
+        }
+
+        Songs.update(vm.song)
+          .then(function() {
+            $log.info('song updated');
+          })
+          .catch(function() {
+            $log.info('error deleting song');
+          });
+      }, function() {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
+    }
+  }
+
+  UpdateModalCtrl.$inject = ['$modalInstance'];
+
+  function UpdateModalCtrl($modalInstance) {
+    var mvm = this;
+    mvm.ok = ok;
+    mvm.cancel = cancel;
+
+    function ok() {
+      $modalInstance.close({
+        title: mvm.title,
+        album: mvm.album,
+        artist: mvm.artist
+      });
+    }
+
+    function cancel() {
+      $modalInstance.dismiss('cancel');
     }
   }
 
