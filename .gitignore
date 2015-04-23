@@ -15,6 +15,7 @@ musicTmp/
 # temporal upload folder
 uploads/
 # log files
-**/*.log*
+**/*.log
+logs/
 # WebStorm folder
 .idea/
