@@ -10,7 +10,8 @@ module.exports = function(app) {
 
   app.route('/api/songs/:id')
     .get(jwtauth.allowUserType('canListen'), songs.read)
-    .delete(jwtauth.allowUserType('canUpload'), songs.delete);
+    .delete(jwtauth.allowUserType('canUpload'), songs.delete)
+    .put(songs.update);
 
   app.route('/api/songs/:artist/:album/:title/info')
     .get(jwtauth.allowUserType('canListen'), songs.read);
