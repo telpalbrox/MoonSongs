@@ -7,7 +7,7 @@
     "test": "grunt test"
   },
   "config": {
-    "musicFolder": "/home/alberto/lal/ionic/songs/songs-nodejs-server/music"
+    "musicFolder": "music"
   },
   "dependencies": {
     "async": "^0.9.0",

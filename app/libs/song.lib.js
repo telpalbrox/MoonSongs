@@ -16,7 +16,7 @@ var acoustidApiKey = 'cSpUJKpD';
 var lastfmApiKey = 'b6eea2a4758396a9c5369fa6938d0d7e';
 var packageJson = require('../../package.json');
 var version = packageJson.version;
-var musicFolder = packageJson.config.musicFolder;
+var musicFolder = path.resolve(packageJson.config.musicFolder);
 
 exports.getSongFingerPrint = getSongFingerPrint;
 exports.getSongRid = getSongRid;

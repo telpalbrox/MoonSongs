@@ -13,7 +13,7 @@ var mongoose = require('mongoose'),
   im = require('imagemagick');
 
 var packageJson = require('../../package.json');
-var musicFolder = packageJson.config.musicFolder;
+var musicFolder = path.resolve(packageJson.config.musicFolder);
 
 /**
  * Get find parameters form request

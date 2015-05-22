@@ -104,7 +104,7 @@ function fileHandler(root, fileStat, next) {
 }
 
 module.exports = function() {
-  var musicDir = packageJson.config.musicFolder;
+  var musicDir = path.resolve(packageJson.config.musicFolder);
   var walker  = walk.walk(musicDir, { followLinks: false, filters: [".cache"] });
   mainLogger.trace('[File: updatedatabase.js] | ' +
   '[Music folder: ' + musicDir + ']');

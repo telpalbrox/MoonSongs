@@ -1,7 +1,7 @@
 <div ng-controller="UploadController as vm">
   <h1 translate>UPLOADS SONGS</h1>
-  <a href="" class="btn btn-default" ng-file-select ng-file-change="vm.addFiles($files)" ng-multiple="true" translate>SELECT FILES</a>
-  <div ng-file-change="vm.addFiles($files)" drag-over-class="arrastrando" ng-show="dropSupported" id="cuadrado" ng-file-drag-over-delay="100" ng-file-drop ng-multiple="true" translate>DRAG SONGS</div>
+  <a href="" class="btn btn-default" accept="audio/mpeg" ng-file-select ng-file-change="vm.addFiles($files)" ng-multiple="true" translate>SELECT FILES</a>
+  <div ng-file-change="vm.addFiles($files)" accept="audio/mpeg" drag-over-class="arrastrando" ng-show="dropSupported" id="cuadrado" ng-file-drag-over-delay="100" ng-file-drop ng-multiple="true" translate>DRAG SONGS</div>
   <div ng-file-drop-available="dropSupported=true" ng-show="!dropSupported">HTML5 Drop File is not supported!</div>
   <input type="checkbox" ng-model="vm.autotag" ng-change="vm.changeAutotag()">{{'AUTOTAG' | translate}}<br>
   <div ng-repeat="archivo in vm.archivos">
