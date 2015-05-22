@@ -12,7 +12,7 @@ module.exports = function(app) {
     .get(jwtauth.allowUserType('admin'), users.list);
 
   app.route('/api/users/:id')
-    .get(jwtauth.allowUserType('admin'), users.read)
-    .put(jwtauth.allowUserType('admin'), users.update)
+    .get(jwtauth.allowAllUsers, users.read)
+    .put(jwtauth.allowAllUsers, users.update)
     .delete(jwtauth.allowUserType('admin'), users.delete);
 };

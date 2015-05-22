@@ -5,13 +5,14 @@
     // It is not the same as the $modal service used above.
     .controller('ModalInstanceCtrl', ModalCtrl);
 
-  ManageUsers.$inject = ['$location', '$modal', '$log', 'Users', '$scope'];
+  ManageUsers.$inject = ['$location', '$modal', '$log', 'Users', '$scope', '$state'];
 
-  function ManageUsers($location, $modal, $log, Users, $scope) {
+  function ManageUsers($location, $modal, $log, Users, $scope, $state) {
     var vm = this;
 
     vm.remove = remove;
     vm.createUser = createUser;
+    vm.updateUser = updateUser;
 
     activate();
 
@@ -56,6 +57,10 @@
 
     function createUser() {
       $location.path('/view5');
+    }
+
+    function updateUser(user) {
+      $state.go('updateUser', {id: user._id});
     }
   }
 

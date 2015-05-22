@@ -38,6 +38,10 @@
       .state('view5', {
         url: '/view5',
         templateUrl: 'templates/view5.html'
+      })
+      .state('updateUser', {
+        url: '/updateUser/:id',
+        templateUrl: 'templates/updateUser.view.html'
       });
   }
 
@@ -48,7 +52,7 @@
 
     function checkAuth(event, toState) {
       var user = Token.getUser();
-      var whiteList = ['start', 'login'];
+      var whiteList = ['start', 'login', 'updateUser'];
       if(!user) {
         if(whiteList.indexOf(toState.name) === -1) {
           console.log('no esta en la lista blanca');

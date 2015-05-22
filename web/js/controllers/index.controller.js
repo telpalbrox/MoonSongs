@@ -18,6 +18,7 @@
     vm.changeLang = changeLang;
     vm.getUser = getUser;
     vm.logout = logout;
+    vm.updateUserInfo = updateUserInfo;
 
     activate();
 
@@ -102,6 +103,10 @@
       };
       Music.reset();
       $location.path('/start');
+    }
+
+    function updateUserInfo() {
+      $location.path('/updateUser/' + getUser()._id);
     }
   }
 })();

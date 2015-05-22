@@ -79,6 +79,7 @@
                 <li ng-show="!vm.status.logged"><a href="#/login" translate>LOGIN</a></li>
                 <li ng-show="vm.status.logged && vm.getUser().permissions.admin"><a href="#/manageUsers" translate>MANAGE USERS</a></li>
                 <li ng-show="vm.status.logged && vm.getUser().permissions.admin" class="divider"></li>
+                <li ng-show="vm.status.logged"><a href="" ng-click="vm.updateUserInfo()">Update user info</a></li>
                 <li ng-show="vm.status.logged"><a href="" ng-click="vm.logout()" translate>LOGOUT</a></li>
               </ul>
             </div>

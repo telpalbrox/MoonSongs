@@ -114,22 +114,18 @@ function auth(req, callback) {
 module.exports.allowAllUsers = function(req, res, next) {
   mainLogger.trace('[File: jwauth.js] | ' +
   '[Route MIDLEWARE] | ' +
-  '[Function allowAllUsers] | ' +
-  '[User id: ' + ( req.user ? req.user._id : 0) + ']');
+  '[Function allowAllUsers]');
 
   auth(req, function (err) {
     if(err) {
       errorLogger.error('[Error authenticate user] | ' +
-      '[Error: ' + err + '] | ' +
-      '[User id auth: ' + ( user ? user._id : 0) + ']');
+      '[Error: ' + err + ']');
       authLogger.warn('[Error authenticate user, see error log] | ' +
-      '[User ip: ' + req.connection.remoteAddress + '] | ' +
-      '[User id auth: ' + ( user ? user._id : 0) + ']');
+      '[User ip: ' + req.connection.remoteAddress + ']');
       return res.status(401).send();
     }
     authLogger.info('[Successful user access] | ' +
-    '[User ip: ' + req.connection.remoteAddress + '] |' +
-    '[User id auth: ' + ( user ? user._id : 0) + '] | ');
+    '[User ip: ' + req.connection.remoteAddress + '] |');
     next();
   });
 };

@@ -11,10 +11,12 @@
   /* @ngInject */
   function Users($q, $http, ServerIp) {
     var service = {
+      get: get,
       getAll: getAll,
       create: create,
       remove: remove,
-      login: login
+      login: login,
+      update: update
     };
 
     return service;
@@ -27,9 +29,7 @@
 
     function create(email, userName, password, admin, canListen, canUpload) {
       if(arguments.length != 6) {
-        var deferred = $q.defer();
-        deferred.reject('Must be 6 arguments: email, userName, password, admin, canListen and canUpload');
-        return deferred.promise;
+        return $q.reject('Must be 6 arguments: email, userName, password, admin, canListen and canUpload');
       }
       return $http.post(baseUrl() + '/users', {
         'email': email,
@@ -41,29 +41,39 @@
       });
     }
 
+    function get(userId) {
+      if(userId === undefined) {
+        return $q.reject('It is needed an user id');
+      }
+      return $http.get(baseUrl() + '/users/' + userId);
+    }
+
     function remove(id) {
       if(arguments.length != 1) {
-        var deferred = $q.defer();
-        deferred.reject('Must be 1 arguments: user id');
-        return deferred.promise;
+        return $q.reject('Must be 1 arguments: user id');
       }
       return $http.delete(baseUrl() + '/users/' + id);
     }
 
-    function baseUrl() {
-      return ServerIp.get() + '/api';
-    }
-
     function login(userName, pass) {
       if(arguments.length != 2) {
-        var deferred = $q.defer();
-        deferred.reject('Must be 2 arguments: userName, password');
-        return deferred.promise;
+        return $q.reject('Must be 2 arguments: userName, password');
       }
-      return $http.post('api/authenticate', {
+      return $http.post(baseUrl() + '/authenticate', {
         'userName': userName,
         'password': pass
       });
+    }
+
+    function update(updatedUser, newPass) {
+      return $http.put(baseUrl() + '/users/' + updatedUser._id, {
+        user: updatedUser,
+        newPass: newPass
+      });
+    }
+
+    function baseUrl() {
+      return ServerIp.get() + '/api';
     }
   }
 })();

@@ -3,6 +3,9 @@ var log4js = require('log4js');
 var mainLogger = log4js.getLogger('main');
 var errorLogger = log4js.getLogger('error');
 var authLogger = log4js.getLogger('auth');
+var bcrypt = require('bcrypt-nodejs');
+var _ = require('lodash');
+var async = require('async');
 
 /**
  * Module dependencies
@@ -95,6 +98,11 @@ exports.read = function(req, res) {
   '[Function read] | ' +
   '[User id: ' + ( req.user ? req.user._id : 0) + ']');
 
+  if((req.user._id != req.params.id) && !req.user.permissions.admin) {
+    authLogger.warn('No admins can\'t read other users');
+    return res.sendStatus(401);
+  }
+
   User.findOne({
     _id: req.params.id
   }, function(err, user) {
@@ -117,39 +125,69 @@ exports.update = function(req, res) {
   '[Function update] | ' +
   '[User id: ' + ( req.user ? req.user._id : 0) + ']');
 
+  if((req.user._id != req.params.id) && !req.user.permissions.admin) {
+    authLogger.warn('No admins can\'t update other users');
+    return res.sendStatus(401);
+  }
+
   if (!req.body.user) {
-    res.status(409).send();
+    res.status(400).send();
     return;
   }
 
-  var user = req.body.user;
-  var updateUser = {};
-  var auxUser = new User();
+  var updatedUser = req.body.user;
 
-  if (user.email !== undefined) updateUser.email = user.email;
-  if (user.password !== undefined) updateUser.password = auxUser.generateHash(user.password);
-  if (user.userName !== undefined) updateUser.userName = user.userName;
-  if (user.permissions !== undefined) {
-    updateUser.permissions = {};
-    if (user.permissions.canUpload !== undefined) updateUser.permissions.canUpload = user.permissions.canUpload;
-    if (user.permissions.canListen !== undefined) updateUser.permissions.canListen = user.permissions.canListen;
-    if (user.permissions.admin !== undefined) updateUser.permissions.admin = user.permissions.admin;
+  if(!updatedUser._id) {
+    updatedUser._id = req.params.id;
   }
 
-  User.findOneAndUpdate({
-    '_id': req.params.id
-  }, {
-    $set: updateUser
-  }, function(err, user) {
-    if (err) {
-      errorLogger.error('Error updating user');
-      errorLogger.error(err);
-      return res.status(500).send();
+  if(req.body.newPass) {
+    updatedUser.password = bcrypt.hashSync(req.body.newPass, bcrypt.genSaltSync(8), null);
+  }
+
+  async.waterfall([function(callback) {
+    User.findOne({_id: updatedUser._id}, function(err, user) {
+      if(err) {
+        errorLogger.error('Error getting user');
+        errorLogger.error(err);
+        return callback({
+          statusCode: 500,
+          message: 'Error getting user'
+        });
+      }
+      if(!user) {
+        return callback({
+          statusCode: 404,
+          message: 'User not found'
+        });
+      }
+      console.log(areEqualPermissions(updatedUser.permissions, req.user.permissions));
+      if(!areEqualPermissions(updatedUser.permissions, req.user.permissions) && !req.user.permissions.admin) {
+        authLogger.warn('No admins can\'t update his owns permissions');
+        return callback({
+          statusCode: 401,
+          message: 'You can\'t update your own permissions'
+        });
+      }
+      callback();
+    });
+  }, function(callback) {
+    User.update({_id: updatedUser._id}, updatedUser, function(err) {
+      if(err) {
+        errorLogger.error('Error updating user');
+        errorLogger.error(err);
+        return callback({
+          statusCode: 500,
+          message: 'Error updating user'
+        });
+      }
+      callback();
+    });
+  }], function(err) {
+    if(err) {
+      return res.status(err.statusCode).send(err.message);
     }
-    if (!user) {
-      return res.status(404).send();
-    }
-    res.status(201).send();
+    res.sendStatus(200);
   });
 };
 
@@ -178,3 +216,17 @@ exports.delete = function(req, res) {
     res.status(200).send();
   });
 };
+
+function areEqualPermissions(perm1, perm2) {
+  for(var key in perm1) {
+    if(perm1.hasOwnProperty(key) && perm2.hasOwnProperty(key)) {
+      if(perm1[key] != perm2[key]) {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  return true;
+}

@@ -1,0 +1,45 @@
+<div ng-controller="UpdateUserController as vm">
+    <h1>Update user</h1>
+    <form class="form-horizontal">
+        <fieldset>
+            <legend>Update user</legend>
+            <div class="form-group">
+                <label for="inputEmail" class="col-lg-1 control-label" translate>EMAIL</label>
+                <div class="col-lg-5">
+                    <input class="form-control" id="inputEmail" ng-model="vm.user.email" placeholder="{{'EMAIL' | translate}}" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail" class="col-lg-1 control-label" translate>USER</label>
+                <div class="col-lg-5">
+                    <input class="form-control" id="inputUsuario" ng-model="vm.user.userName" placeholder="{{'USER' | translate}}" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword" class="col-lg-1 control-label" translate>PASSWORD</label>
+                <div class="col-lg-5">
+                    <input class="form-control" id="inputPassword" ng-model="vm.newPass" placeholder="{{'PASSWORD' | translate}}" type="password">
+                </div>
+            </div>
+            <div ng-show="vm.getUser().permissions.admin">
+                <label class="checkbox-inline">
+                    <input type="checkbox" ng-model="vm.user.permissions.admin"><span translate>ADMIN</span>
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" ng-model="vm.user.permissions.canUpload"><span translate>CAN UPLOAD</span>
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" ng-model="vm.user.permissions.canListen"><span translate>CAN LISTEN</span>
+                </label>
+            </div>
+            <br>
+            <br>
+            <div class="form-group">
+                <div class="col-lg-5 col-lg-offset-2">
+                    <button class="btn btn-default" translate>CANCEL</button>
+                    <button type="submit" class="btn btn-primary" ng-click="vm.update()">Submit</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

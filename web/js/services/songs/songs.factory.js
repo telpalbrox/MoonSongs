@@ -22,9 +22,7 @@
 
     function get() {
       if(arguments.length != 1 && arguments.length != 3) {
-        var deferred = $q.defer();
-        deferred.reject('Need pass id or aritst/album/title');
-        return deferred.promise;
+        return $q.reject('Need pass id or aritst/album/title');
       }
       if(arguments.length == 1) return $http.get(baseUrl() + '/songs/' + arguments[0]);
       else return $http.get(baseUrl() + '/songs/' + arguments[0] + '/' + arguments[1] + '/' + arguments[2] + '/info');
@@ -36,18 +34,14 @@
 
     function remove(id) {
       if(arguments.length != 1) {
-        var deferred = $q.defer();
-        deferred.reject('Must be 1 arguments: song id');
-        return deferred.promise;
+        return $q.reject('Must be 1 arguments: song id');
       }
       return $http.delete(baseUrl() + '/songs/' + id);
     }
 
     function update(newSong) {
       if(!newSong) {
-        var deferred = $q.defer();
-        deferred.reject('Need pass song');
-        return deferred.promise;
+        return $q.reject('Need pass song');
       }
 
       return $http.put(baseUrl() + '/songs/' + newSong._id, {
