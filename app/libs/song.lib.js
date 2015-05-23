@@ -274,10 +274,11 @@ function createArtistFolder(tags) {
   var deferred = q.defer();
   var artistFolder = musicFolder + '/' + tags.artist;
   fs.mkdir(artistFolder, function(err) {
-    if(err) {
-      debugLogger.warn('[Error creating artist folder, possibly folder already created] | ' +
+    if(err && err.code !== 'EEXIST') {
+      debugLogger.warn('[Error creating artist folder] | ' +
       '[Folder: ' + artistFolder + ']' +
       '[Error: ' + err + ']');
+      return deferred.reject(err);
     }
     debugLogger.debug('[Successfuly created artist folder] | ' +
     '[Folder: ' + artistFolder + ']');
@@ -294,10 +295,11 @@ function createAlbumFolder(tags) {
   var deferred = q.defer();
   var albumFolder = musicFolder + '/' + tags.artist + '/' + tags.album;
   fs.mkdir(albumFolder, function(err) {
-    if(err) {
-      debugLogger.warn('[Error creating album folder, possibly folder already created] | ' +
+    if(err && err.code !== 'EEXIST') {
+      debugLogger.warn('[Error creating album folder] | ' +
       '[Folder: ' + albumFolder + ']' +
       '[Error: ' + err + ']');
+      return deferred.reject(err);
     }
     debugLogger.debug('[Successfuly created album folder] | ' +
     '[Folder: ' + albumFolder + ']');

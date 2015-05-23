@@ -105,6 +105,10 @@ function fileHandler(root, fileStat, next) {
 
 module.exports = function() {
   var musicDir = path.resolve(packageJson.config.musicFolder);
+  if(!fs.existsSync(musicDir)) {
+    errorLogger.error('Music folder doesn\'t exist');
+    return process.exit(2);
+  }
   var walker  = walk.walk(musicDir, { followLinks: false, filters: [".cache"] });
   mainLogger.trace('[File: updatedatabase.js] | ' +
   '[Music folder: ' + musicDir + ']');

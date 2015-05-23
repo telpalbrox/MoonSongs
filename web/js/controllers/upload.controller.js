@@ -85,7 +85,7 @@
             year: file.year,
             track: file.track,
             genre: file.genre,
-            imageData: file.image,
+            // imageData: file.image,
             fileUploadName: file.fileUploadName
           }
         },
