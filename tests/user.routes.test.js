@@ -200,7 +200,7 @@ describe('User CRUD tests', function() {
         .send({
           user: data
         })
-        .expect(201)
+        .expect(200)
         .end(function(err, res) {
           should.not.exist(err);
           User.findById(user.id, function(err, user) {
@@ -221,7 +221,7 @@ describe('User CRUD tests', function() {
         .send({
           user: data
         })
-        .expect(201)
+        .expect(200)
         .end(function(err, res) {
           should.not.exist(err);
           User.findById(user.id, function(err, user) {

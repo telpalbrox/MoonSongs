@@ -3,7 +3,7 @@
  */
 require('../app/models/song');
 var should = require('should'),
-  songUtils = require('../app/utils/songUtils.js'),
+  songUtils = require('../app/libs/song.lib'),
   mongoose = require('mongoose'),
   Song = mongoose.model('Song');
 

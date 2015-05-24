@@ -239,6 +239,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('moveMusicTmp', function () {
     shelljs.mv('music/', 'musicTmp/');
+    shelljs.mkdir('music');
   });
 
   grunt.registerTask('moveMusic', function () {

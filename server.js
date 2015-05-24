@@ -15,6 +15,10 @@ var expressLogger = log4js.getLogger('express');
 var mainLogger = log4js.getLogger('main');
 var errorLogger = log4js.getLogger('error');
 
+if(process.env.NODE_ENV === 'test') {
+  // log4js.clearAppenders();
+}
+
 // configurando bd
 var configDB = require('./config/database.js');
 mongoose.connect(configDB.url, function(err) {

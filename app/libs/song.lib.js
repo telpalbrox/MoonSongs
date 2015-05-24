@@ -28,6 +28,7 @@ exports.saveSong = saveSong;
 exports.moveSongToFolder = moveSongToFolder;
 exports.createAlbumFolder = createAlbumFolder;
 exports.createArtistFolder = createArtistFolder;
+exports.getFindParams = getFindParams;
 
 /**
  * Gets duration
@@ -496,5 +497,32 @@ function copyFile(source, target, cb) {
       cb(err);
       cbCalled = true;
     }
+  }
+}
+
+/**
+ * Get find parameters form request
+ * @param req
+ * @returns {Object|null}
+ */
+function getFindParams(req) {
+  var id = req.params.id;
+  if(!id) {
+    var title = req.params.title;
+    var album = req.params.album;
+    var artist = req.params.artist;
+    if(!title || !album || !artist) {
+      return null;
+    } else {
+      return {
+        'title': title,
+        'album': album,
+        'artist': artist
+      };
+    }
+  } else {
+    return {
+      '_id': id
+    };
   }
 }

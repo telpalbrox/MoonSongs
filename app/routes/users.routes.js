@@ -2,7 +2,7 @@
 console.log('loading user routes...');
 
 var jwtauth = require('../middleware/jwtauth');
-var users = require('../controllers/users.controller.js');
+var users = require('../controllers/users');
 
 module.exports = function(app) {
   app.route('/api/users')

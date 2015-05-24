@@ -1,7 +1,5 @@
 // app/songs.routes.js
-console.log('loading songs routes...');
-
-var songs = require('../controllers/songs.controller.js');
+var songs = require('../controllers/songs');
 var jwtauth = require('../middleware/jwtauth');
 
 module.exports = function(app) {
