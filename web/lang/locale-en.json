@@ -42,5 +42,6 @@
   "CAN UPLOAD" : "Can upload songs",
   "CAN LISTEN" : "Can listen songs",
   "REGISTER" : "Register",
-  "CEATE USER" : "Create new usser"
+  "CEATE USER" : "Create new usser",
+  "INVALIDUSERPASS": "Invalid user or password"
 }

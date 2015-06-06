@@ -42,5 +42,6 @@
   "CAN UPLOAD" : "Puede subir canciones",
   "CAN LISTEN" : "Puede escuchar canciones",
   "REGISTER" : "Registro",
-  "CEATE USER" : "Crear nuevo usuario"
+  "CEATE USER" : "Crear nuevo usuario",
+  "INVALIDUSERPASS": "Usuario o contraseña invalido"
 }

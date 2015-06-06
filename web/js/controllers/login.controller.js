@@ -1,23 +1,28 @@
 (function() {
-  angular.module('moonSongs')
-    .controller('LoginController', Login);
+    angular.module('moonSongs')
+        .controller('LoginController', Login);
 
-  Login.$inject = ['Token', '$location', 'Users', '$log'];
+    Login.$inject = ['Token', '$location', 'Users', '$log'];
 
-  function Login(Token, $location, Users, $log) {
-    var vm = this;
+    function Login(Token, $location, Users, $log) {
+        var vm = this;
 
-    vm.login = login;
+        vm.login = login;
+        vm.error = "";
 
-    function login() {
-      Users.login(vm.userName, vm.pass)
-        .then(function(res) {
-          Token.save(res.data.token);
-          $location.path('/start');
-        })
-        .catch(function(err) {
-          $log.error('Error when login: ' + err.data);
-        });
+        function login() {
+            vm.error = '';
+            Users.login(vm.userName, vm.pass)
+                .then(function(res) {
+                    Token.save(res.data.token);
+                    $location.path('/start');
+                })
+                .catch(function(err) {
+                    if(err.status === 400) {
+                        vm.error = 'INVALIDUSERPASS';
+                    }
+                    $log.error('Error when login: ' + err.data);
+                });
+        }
     }
-  }
 })();
