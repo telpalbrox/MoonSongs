@@ -5,6 +5,7 @@ module.exports = function(grunt) {
     jsServerFiles: ['app/**/*.js', 'config/**/*.js'],
     langFiles: ['web/lang/**/*.json'],
     cssFiles: ['web/css/**/*.css'],
+    lessFiles: ['web/less/**/*.less'],
     htmlFiles: ['web/html/**/*.html'],
     mochaTests: ['tests/**/*.js']
   };
@@ -54,7 +55,7 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           src: ['public/css/style.css'],
-          ext: '.min.css'
+          ext: '.css'
         }]
       }
     },
@@ -68,7 +69,7 @@ module.exports = function(grunt) {
       },
       js: {
         files: {
-          'public/js/moonSongs.min.js': ['public/js/moonSongs.js']
+          'public/js/moonSongs.js': ['public/js/moonSongs.js']
         }
       }
     },
@@ -81,8 +82,7 @@ module.exports = function(grunt) {
       img: ['public/img'],
       release: ['public/js/moonSongs.js', 'public/css/style.css'],
       public: ['public/**'],
-      uploads: ['uploads'],
-      music: ['music/**']
+      uploads: ['uploads']
     },
     // Copy static html and resources to public/ directory
     sync: {
@@ -153,9 +153,9 @@ module.exports = function(grunt) {
         files: watchFiles.jsServerFiles,
         tasks: ['jshint:server']
       },
-      css: {
-        files: watchFiles.cssFiles,
-        tasks: ['concat:css']
+      less: {
+        files: watchFiles.lessFiles,
+        tasks: ['less', 'pleeease', 'concat:css']
       },
       // Watch any html change and re-sync it
       html: {
@@ -204,6 +204,24 @@ module.exports = function(grunt) {
 
         }
       }
+    },
+    less: {
+      moonsongs: {
+        files: {
+          "web/css/app.css": "web/less/app.less"
+        }
+      }
+    },
+    pleeease: {
+      custom: {
+        options: {
+          autoprefixer: {'browsers': ['last 40 versions', 'ios 6']},
+          minifier: false
+        },
+        files: {
+          'web/css/app.css': 'web/css/app.css'
+        }
+      }
     }
   });
 
@@ -219,6 +237,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-env');
   grunt.loadNpmTasks('grunt-ng-annotate');
+  grunt.loadNpmTasks('grunt-contrib-less');
+  grunt.loadNpmTasks('grunt-pleeease');
 
   // Installs bower dependences
   grunt.registerTask('bower', function() {
@@ -249,9 +269,9 @@ module.exports = function(grunt) {
   // Install bower dependences and build project
   grunt.registerTask('install', ['clean', 'folders', 'bower', 'build']);
   // Build project and uglify
-  grunt.registerTask('build', ['jshint', 'concat', 'cssmin', 'sync', 'uglify']);
+  grunt.registerTask('build', ['jshint', 'less', 'pleeease', 'concat', 'cssmin', 'sync', 'uglify']);
   // Build project without minify and uglify
-  grunt.registerTask('build-dev', ['jshint', 'concat', 'sync']);
+  grunt.registerTask('build-dev', ['jshint', 'less', 'pleeease', 'concat', 'sync']);
   // Build project and clean dev files
   grunt.registerTask('release', ['install', 'clean:release']);
   // Watch server and client files

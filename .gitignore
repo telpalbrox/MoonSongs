@@ -6,6 +6,8 @@ node_modules/
 **/*~
 # web libraries
 web/lib/
+# css is compiled throught less
+web/css/
 # compiled js/css/html
 public/
 # music folders

@@ -1,13 +1,19 @@
 /* app css stylesheet */
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
-body { padding-top: 90px; }
+.nav,
+.pagination,
+.carousel,
+.panel-title a {
+  cursor: pointer;
+}
+body {
+  padding-top: 90px;
+}
 #cuadrado {
   margin: 2%;
-  width:96%;
-  height:200px;
+  width: 96%;
+  height: 200px;
   border: 5px dashed;
 }
-
 #cuadrado.arrastrando {
   border: 5px dashed blue;
 }
