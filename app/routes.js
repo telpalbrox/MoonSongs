@@ -2,13 +2,12 @@
 console.log('loading routes...');
 
 var mongoose = require('mongoose');
-var Song = mongoose.model('Song');
 var User = mongoose.model('User');
-var path = require('path');
-var fs = require('fs');
 var jwt = require('jsonwebtoken');
-var moment = require('moment');
-var request = require('request');
+var log4js = require('log4js');
+var mainLogger = log4js.getLogger('main');
+var errorLogger = log4js.getLogger('error');
+var authLogger = log4js.getLogger('auth');
 
 var SECRET = "albertoesmuylol";
 
@@ -26,32 +25,47 @@ module.exports = function(app) {
 
   // TOKEN
   app.post('/api/authenticate', function(req, res) {
+    mainLogger.trace('[File: routes.js] | ' +
+    '[Route POST /api/authenticate] | ' +
+    '[Function anonymous] | ' +
+    '[User id: ' + ( req.user ? req.user._id : 0) + ']');
     // find a user whose email is the same as the forms email
     // we are checking to see if the user trying to login alredy exits
     var userName = req.body.userName;
     var password = req.body.password;
+    if(!userName || !password) {
+      return res.send(400).send('Need pass userName and password');
+    }
+    
+    authLogger.info('[Attempting login: ' + userName +'] | ' +
+    '[Request from: ' + ( req.user ? req.user._id : 0) +']');
+    
     User.findOne({
       'userName': req.body.userName
     }, function(err, user) {
       // if there ar any erros, return the error before anything else
-      if (err) return done(err);
+      if (err) {
+        errorLogger.error('Error getting user');
+        return res.status(500).send();
+      }
 
       // if no user is found, return the message
       if (!user) {
-        res.status(401).send('Unauthorized request, wrong user');
+        authLogger.warn('[Attempting login: ' + userName +'] | ' +
+        '[Failed: wrong user]');
+        res.status(400).send('Unauthorized request, wrong user');
         return;
       }
 
       // if the user is found, but the password is wrong
       if (!user.validPassword(req.body.password)) {
-        res.status(401).send('Unauthorized request, wrong pass');
+        authLogger.warn('[Attempting login: ' + userName +'] | ' +
+        '[Failed: wrong pass]');
+        res.status(400).send('Unauthorized request, wrong pass');
         return;
       }
-
-      user.exp = moment().add(1, 'minutes');
-      var token = jwt.sign(user, SECRET, {
-        expiresInMinutes: 1
-      });
+      
+      var token = jwt.sign(user, SECRET);
       // console.log(token);
       res.json({
         'token': token
