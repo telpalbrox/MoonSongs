@@ -28,6 +28,8 @@
         if (StorageService.get('token')) {
           var encodedUser = StorageService.get('token').split('.')[1];
           return JSON.parse(window.atob(encodedUser));
+        } else {
+          return null;
         }
       }
     };

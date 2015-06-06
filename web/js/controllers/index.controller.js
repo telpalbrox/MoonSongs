@@ -9,14 +9,8 @@
     var vm = this;
 
     vm.play = play;
-    vm.pause = pause;
-    vm.next = next;
-    vm.prev = prev;
-    vm.getSong = getSong;
-    vm.getSongIndex = getSongIndex;
     vm.getMusicLength = getMusicLength;
     vm.changeLang = changeLang;
-    vm.getUser = getUser;
     vm.logout = logout;
     vm.updateUserInfo = updateUserInfo;
 
@@ -64,36 +58,12 @@
       Music.play();
     }
 
-    function pause() {
-      Music.pause();
-    }
-
-    function next() {
-      Music.nextSong();
-    }
-
-    function prev() {
-      Music.prevSong();
-    }
-
-    function getSong() {
-      return Music.getSong();
-    }
-
-    function getSongIndex() {
-      return Music.getIndex();
-    }
-
     function getMusicLength() {
       return Music.songList.length;
     }
 
     function changeLang(lang) {
       $translate.use(lang);
-    }
-
-    function getUser() {
-      return Token.getUser();
     }
 
     function logout() {

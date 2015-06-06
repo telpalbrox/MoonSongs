@@ -33,26 +33,26 @@
           <!--<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>-->
           <li><a href="#/start" translate>START</a></li>
           <li><a href="#/songs" class="fx-zoom-normal fx-easing-bounce fx-speed-800"
-            ng-show="vm.getUser() && vm.getUser().permissions.canListen" translate>SONGS</a>
+            ng-if="Token.getUser() && Token.getUser().permissions.canListen" translate>SONGS</a>
           </li>
           <li><a href="#/albums" class="fx-zoom-normal fx-easing-bounce fx-speed-800"
-            ng-show="vm.getUser() && vm.getUser().permissions.canListen" translate>ALBUMS</a>
+            ng-if="Token.getUser() && Token.getUser().permissions.canListen" translate>ALBUMS</a>
           </li>
           <li><a href="#/upload" class="fx-zoom-normal fx-easing-bounce fx-speed-800"
-            ng-show="vm.getUser() && vm.getUser().permissions.canUpload" translate>UPLOADS SONGS</a>
+            ng-if="Token.getUser() && Token.getUser().permissions.canUpload" translate>UPLOADS SONGS</a>
           </li>
           <li>
-            <div class="btn-group navbar-form">
-              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bounce fx-speed-800" ng-show="vm.getUser() && vm.getUser().permissions.canListen" ng-click="vm.prev()">
+            <div class="btn-group navbar-form" ng-if="Token.getUser() && Token.getUser().permissions.canListen">
+              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bounce fx-speed-800" ng-click="Music.prevSong()">
                 <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
               </button>
-              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bouncefx-speed-800" ng-show="vm.getUser() && vm.getUser().permissions.canListen" ng-click="vm.play()">
-                <span class="glyphicon glyphicon-play fx-zoom-normal fx-easing-bounce" ng-show="vm.getUser() && vm.getUser().permissions.canListen" aria-hidden="true"></span>
+              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bouncefx-speed-800" ng-click="vm.play()">
+                <span class="glyphicon glyphicon-play fx-zoom-normal fx-easing-bounce" aria-hidden="true"></span>
               </button>
-              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bounce fx-speed-800" ng-show="vm.getUser() && vm.getUser().permissions.canListen" ng-click="vm.pause()">
+              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bounce fx-speed-800" ng-click="Music.pause()">
                 <span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
               </button>
-              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bounce fx-speed-800" ng-show="vm.getUser() && vm.getUser().permissions.canListen" ng-click="vm.next()">
+              <button type="button" class="btn btn-default fx-zoom-normal fx-easing-bounce fx-speed-800" ng-click="Music.nextSong()">
                 <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
               </button>
             </div>
@@ -60,34 +60,34 @@
         </ul>
         <ul class="nav navbar-nav navbar-right navbar-form">
           <li style="margin-right:2.5em;">
-            <div class="row" ng-show="vm.getSong()">
-              <span>{{vm.getSong().title}}</span>
-              <img style="width:45px;height:45px" ng-src="{{vm.getSong().coverUrl}}">
+            <div class="row" ng-if="Music.getSong()">
+              <span>{{Music.getSong().title}}</span>
+              <img style="width:45px;height:45px" ng-src="{{Music.getSong().coverUrl}}">
             </div>
           </li>
           <li>
             <div class="btn-group" dropdown>
               <button type="button" class="btn btn-primary">
-                <span ng-show="!vm.status.logged" translate>NOT LOGGED</span>
-                <span ng-show="vm.status.logged" translate-value-user="{{vm.getUser().userName}}" translate>WELCOME USER</span>
+                <span ng-if="!vm.status.logged" translate>NOT LOGGED</span>
+                <span ng-if="vm.status.logged" translate-value-user="{{Token.getUser().userName}}" translate>WELCOME USER</span>
               </button>
               <button class="btn btn-primary dropdown-toggle" dropdown-toggle>
                 <span class="caret"></span>
                 <span class="sr-only">Split button!</span>
               </button>
               <ul class="dropdown-menu" role="menu">
-                <li ng-show="!vm.status.logged"><a href="#/login" translate>LOGIN</a></li>
-                <li ng-show="vm.status.logged && vm.getUser().permissions.admin"><a href="#/manageUsers" translate>MANAGE USERS</a></li>
-                <li ng-show="vm.status.logged && vm.getUser().permissions.admin" class="divider"></li>
-                <li ng-show="vm.status.logged"><a href="" ng-click="vm.updateUserInfo()">Update user info</a></li>
-                <li ng-show="vm.status.logged"><a href="" ng-click="vm.logout()" translate>LOGOUT</a></li>
+                <li ng-if="!vm.status.logged"><a href="#/login" translate>LOGIN</a></li>
+                <li ng-if="vm.status.logged && Token.getUser().permissions.admin"><a href="#/manageUsers" translate>MANAGE USERS</a></li>
+                <li ng-if="vm.status.logged && Token.getUser().permissions.admin" class="divider"></li>
+                <li ng-if="vm.status.logged"><a href="" ng-click="vm.updateUserInfo()">Update user info</a></li>
+                <li ng-if="vm.status.logged"><a href="" ng-click="vm.logout()" translate>LOGOUT</a></li>
               </ul>
             </div>
           </li>
         </ul>
       </div><!-- /.navbar-collapse -->
-        <div class="row">
-            <moon-player/>
+        <div class="row" ng-if="Token.getUser() && Token.getUser().permissions.canListen">
+            <moon-player></moon-player>
         </div>
     </div><!-- /.container-fluid -->
   </nav>
