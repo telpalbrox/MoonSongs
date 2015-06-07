@@ -1,6 +1,19 @@
 /* app css stylesheet */
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
-body { padding-top: 90px; }
+body {
+  @media(max-width:767px){
+    padding-top: 60px;
+  }
+  @media(min-width:768px){
+    padding-top: 90px;
+  }
+  @media(min-width:992px){
+    padding-top: 90px;
+  }
+  @media(min-width:1200px){
+    padding-top: 90px;
+  }
+}
 #cuadrado {
   margin: 2%;
   width:96%;
@@ -10,4 +23,28 @@ body { padding-top: 90px; }
 
 #cuadrado.arrastrando {
   border: 5px dashed blue;
+}
+
+.cover {
+  width: 64px;
+  height: 64px;
+}
+
+.song-container {
+  display: inline-block;
+  width: 100%;
+  background-color: #f5f4f6;
+  border-radius: 15px 15px 15px 15px;
+  border: 0 solid #000000;
+  padding: 10px;
+  margin: 10px;
+
+  .song-text {
+    display: inline-block;
+    position: absolute;
+  }
+
+  .song-col {
+    margin-bottom: 10px;
+  }
 }

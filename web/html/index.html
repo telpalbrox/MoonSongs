@@ -31,14 +31,14 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
           <!--<li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>-->
-          <li><a href="#/start" translate>START</a></li>
-          <li><a href="#/songs" class="fx-zoom-normal fx-easing-bounce fx-speed-800"
+          <li ui-sref-active="active"><a ui-sref="start" translate>START</a></li>
+          <li ui-sref-active="active"><a ui-sref="songs" class="fx-zoom-normal fx-easing-bounce fx-speed-800"
             ng-if="Token.getUser() && Token.getUser().permissions.canListen" translate>SONGS</a>
           </li>
-          <li><a href="#/albums" class="fx-zoom-normal fx-easing-bounce fx-speed-800"
+          <li ui-sref-active="active"><a ui-sref="albums" class="fx-zoom-normal fx-easing-bounce fx-speed-800"
             ng-if="Token.getUser() && Token.getUser().permissions.canListen" translate>ALBUMS</a>
           </li>
-          <li><a href="#/upload" class="fx-zoom-normal fx-easing-bounce fx-speed-800"
+          <li ui-sref-active="active"><a ui-sref="upload" class="fx-zoom-normal fx-easing-bounce fx-speed-800"
             ng-if="Token.getUser() && Token.getUser().permissions.canUpload" translate>UPLOADS SONGS</a>
           </li>
           <li>
@@ -85,10 +85,12 @@
             </div>
           </li>
         </ul>
-      </div><!-- /.navbar-collapse -->
         <div class="row" ng-if="Token.getUser() && Token.getUser().permissions.canListen">
+          <div class="col-md-12">
             <moon-player></moon-player>
+          </div>
         </div>
+      </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
   </nav>
 

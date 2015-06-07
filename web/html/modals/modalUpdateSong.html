@@ -3,9 +3,9 @@
 </div>
 <div class="modal-body">
   <p>New song data</p>
-  <input type="text" class="form-control" placeholder="New title" ng-model="mvm.title">
-  <input type="text" class="form-control" placeholder="New album" ng-model="mvm.album">
-  <input type="text" class="form-control" placeholder="New artist" ng-model="mvm.artist">
+  <input type="text" class="form-control" placeholder="New title" ng-model="mvm.data.song.title">
+  <input type="text" class="form-control" placeholder="New album" ng-model="mvm.data.song.album">
+  <input type="text" class="form-control" placeholder="New artist" ng-model="mvm.data.song.artist">
 </div>
 <div class="modal-footer">
   <button class="btn btn-danger" ng-click="mvm.ok()" translate>Update</button>

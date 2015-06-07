@@ -10,6 +10,7 @@ var packageJson = require('../../../package.json');
 var path = require('path');
 var musicFolder = path.resolve(packageJson.config.musicFolder);
 var async = require('async');
+var fs = require('fs');
 
 module.exports = function(req, res) {
     mainLogger.trace('[File: delete.song.js] | ' +
@@ -20,25 +21,28 @@ module.exports = function(req, res) {
     var findParams = songLib.getFindParams(req);
     if(!findParams) return res.status(400).send();
 
+    var song;
+
     async.waterfall([
         function(callback) {
             // check if song exists
-            Song.findOne(findParams, function(err, song) {
+            Song.findOne(findParams, function(err, songDatabase) {
                 if(err) {
                     return callback({
                         response: Boom.badImplementation('Server error finding song'),
                         error: err
                     });
                 }
-                if(!song) {
+                if(!songDatabase) {
                     return callback({
                         response: Boom.notFound('Song not found')
                     });
                 }
-                callback(null, song);
+                song = songDatabase;
+                callback(null);
             });
         },
-        function(song, callback) {
+        function(callback) {
             // remove song from database
             song.remove(function(err) {
                 if(err) {
@@ -47,9 +51,9 @@ module.exports = function(req, res) {
                         error: err
                     });
                 }
-                callback(null, song);
+                callback(null);
             });
-        }, function(song, callback) {
+        }, function(callback) {
             // If there is not any song with that artist remove artist folder
             Song.find({ artist: song.artist }, function(err, songs) {
                 if(err) {
@@ -66,16 +70,16 @@ module.exports = function(req, res) {
                                 error: err
                             });
                         }
-                        callback(null, null);
+                        callback(null);
                     });
                 } else {
-                    callback(null, song);
+                    callback(null);
                 }
             });
-        }, function(song, callback) {
+        }, function(callback) {
             // If there is not any song with that album remove album folder
             if(!song) {
-                return callback(null, null);
+                return callback(null);
             }
 
             Song.find({ album: song.album}, function(err, songs) {
@@ -94,13 +98,13 @@ module.exports = function(req, res) {
                                 error: err
                             });
                         }
-                        callback(null, null);
+                        callback(null);
                     });
                 } else {
-                    callback(null, song);
+                    callback(null);
                 }
             });
-        }, function(song, callback) {
+        }, function(callback) {
             if(!song) {
                 return callback();
             }
@@ -116,9 +120,11 @@ module.exports = function(req, res) {
             });
         }
     ], function(err) {
+        fs.unlink(song.path, function () {
+        });
         if(err) {
             errorLogger.error('Error deletting song');
-            errorLogger.log(err.error);
+            errorLogger.error(err.error);
             return res.status(err.response.message).send(err.response);
         }
         res.sendStatus(204);

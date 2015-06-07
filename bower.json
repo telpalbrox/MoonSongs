@@ -23,7 +23,8 @@
     "angular-file-upload": "~1.1.5",
     "angular-translate": "~2.6.1",
     "angular-translate-loader-static-files": "~2.6.1",
-    "angular-ui-router": "~0.2.13"
+    "angular-ui-router": "~0.2.13",
+    "fontawesome": "~4.3.0"
   },
   "resolutions": {
     "angular": "1.3.14",

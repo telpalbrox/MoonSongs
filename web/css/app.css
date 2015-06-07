@@ -5,8 +5,25 @@
 .panel-title a {
   cursor: pointer;
 }
-body {
-  padding-top: 90px;
+@media (max-width: 767px) {
+  body {
+    padding-top: 60px;
+  }
+}
+@media (min-width: 768px) {
+  body {
+    padding-top: 90px;
+  }
+}
+@media (min-width: 992px) {
+  body {
+    padding-top: 90px;
+  }
+}
+@media (min-width: 1200px) {
+  body {
+    padding-top: 90px;
+  }
 }
 #cuadrado {
   margin: 2%;
@@ -16,4 +33,26 @@ body {
 }
 #cuadrado.arrastrando {
   border: 5px dashed blue;
+}
+.cover {
+  width: 64px;
+  height: 64px;
+}
+.song-container {
+  display: inline-block;
+  width: 100%;
+  background-color: #f5f4f6;
+  -webkit-border-radius: 15px 15px 15px 15px;
+     -moz-border-radius: 15px 15px 15px 15px;
+          border-radius: 15px 15px 15px 15px;
+  border: 0 solid #000000;
+  padding: 10px;
+  margin: 10px;
+}
+.song-container .song-text {
+  display: inline-block;
+  position: absolute;
+}
+.song-container .song-col {
+  margin-bottom: 10px;
 }

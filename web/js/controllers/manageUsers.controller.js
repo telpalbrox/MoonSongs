@@ -1,9 +1,6 @@
 (function() {
   angular.module('moonSongs')
-    .controller('manageUsersController', ManageUsers)
-    // Please note that $modalInstance represents a modal window (instance) dependency.
-    // It is not the same as the $modal service used above.
-    .controller('ModalInstanceCtrl', ModalCtrl);
+    .controller('manageUsersController', ManageUsers);
 
   ManageUsers.$inject = ['$location', '$modal', '$log', 'Users', '$scope', '$state'];
 
@@ -61,21 +58,6 @@
 
     function updateUser(user) {
       $state.go('updateUser', {id: user._id});
-    }
-  }
-
-  ModalCtrl.$inject = ['$modalInstance', '$scope'];
-
-  function ModalCtrl($modalInstance, $scope) {
-    $scope.ok = ok;
-    $scope.cancel = cancel;
-
-    function ok() {
-      $modalInstance.close($scope.selected);
-    }
-
-    function cancel() {
-      $modalInstance.dismiss('cancel');
     }
   }
 
