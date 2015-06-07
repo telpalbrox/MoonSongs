@@ -81,7 +81,6 @@ module.exports = function(grunt) {
             html: ['public/index.html', 'public/modals', 'public/templates'],
             fonts: ['public/fonts'],
             img: ['public/img'],
-            release: ['public/js/moonSongs.js', 'public/css/style.css'],
             public: ['public/**'],
             uploads: ['uploads']
         },
@@ -284,7 +283,7 @@ module.exports = function(grunt) {
     // Build project without minify and uglify
     grunt.registerTask('build-dev', ['jshint', 'less', 'pleeease', 'concat', 'sync']);
     // Build project and clean dev files
-    grunt.registerTask('release', ['install', 'clean:release']);
+    grunt.registerTask('release', ['install']);
     // Watch server and client files
     grunt.registerTask('dev', ['build-dev', 'concurrent']);
     // Starts server
