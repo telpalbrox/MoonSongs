@@ -76,7 +76,7 @@
     }
 
     function updateUserInfo() {
-      $location.path('/updateUser/' + getUser()._id);
+      $location.path('/updateUser/' + Token.getUser()._id);
     }
   }
 })();

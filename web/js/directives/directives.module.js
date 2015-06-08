@@ -3,6 +3,7 @@
         .module('moonSongs.directives', [
             'directives.moonPlayer',
             'directives.moonSong',
-            'directives.moonSongList'
+            'directives.moonSongList',
+            'directives.moonValidate'
         ]);
 })();

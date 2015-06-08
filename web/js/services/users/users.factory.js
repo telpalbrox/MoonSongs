@@ -16,7 +16,8 @@
       create: create,
       remove: remove,
       login: login,
-      update: update
+      update: update,
+      check: check
     };
 
     return service;
@@ -70,6 +71,10 @@
         user: updatedUser,
         newPass: newPass
       });
+    }
+
+    function check(field, value) {
+      return $http.post(baseUrl() + '/users/check/' + value, {field: field});
     }
 
     function baseUrl() {

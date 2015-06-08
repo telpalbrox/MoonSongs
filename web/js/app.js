@@ -2,6 +2,7 @@
 (function() {
     angular.module('moonSongs', [
         'ngRoute',
+        'ngMessages',
         'ui.router',
         'pascalprecht.translate',
         'moonSongs.version',

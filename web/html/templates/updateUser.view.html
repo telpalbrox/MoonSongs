@@ -1,24 +1,26 @@
 <div ng-controller="UpdateUserController as vm">
     <h1>Update user</h1>
-    <form class="form-horizontal">
+    <form class="form-horizontal" name="updateForm" ng-submit="vm.update()" novalidate>
         <fieldset>
             <legend>Update user</legend>
             <div class="form-group">
                 <label for="inputEmail" class="col-lg-1 control-label" translate>EMAIL</label>
                 <div class="col-lg-5">
-                    <input class="form-control" id="inputEmail" ng-model="vm.user.email" placeholder="{{'EMAIL' | translate}}" type="text">
+                    <input class="form-control" id="inputEmail" ng-model="vm.user.email" placeholder="{{'EMAIL' | translate}}" type="text" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputEmail" class="col-lg-1 control-label" translate>USER</label>
                 <div class="col-lg-5">
-                    <input class="form-control" id="inputUsuario" ng-model="vm.user.userName" placeholder="{{'USER' | translate}}" type="text">
+                    <input class="form-control" id="inputUsuario" ng-model="vm.user.userName" placeholder="{{'USER' | translate}}" type="text" required>
                 </div>
             </div>
             <div class="form-group">
                 <label for="inputPassword" class="col-lg-1 control-label" translate>PASSWORD</label>
                 <div class="col-lg-5">
-                    <input class="form-control" id="inputPassword" ng-model="vm.newPass" placeholder="{{'PASSWORD' | translate}}" type="password">
+                    <input class="form-control" id="inputPassword" name="password" ng-model="vm.newPass" placeholder="{{'PASSWORD' | translate}}" ng-minlength="6" type="password">
+                    <span class="help-block" ng-class="{'invalid-form': updateForm.password.$error.minlength}" translate>PASSMIN</span>
+                    <span class="help-block" translate>PASSEMPTY</span>
                 </div>
             </div>
             <div ng-show="vm.getUser().permissions.admin">
@@ -37,7 +39,7 @@
             <div class="form-group">
                 <div class="col-lg-5 col-lg-offset-2">
                     <button class="btn btn-default" translate>CANCEL</button>
-                    <button type="submit" class="btn btn-primary" ng-click="vm.update()">Submit</button>
+                    <button type="submit" class="btn btn-primary" ng-disabled="!updateForm.$valid">Submit</button>
                 </div>
             </div>
         </fieldset>

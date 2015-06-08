@@ -43,5 +43,11 @@
   "CAN LISTEN" : "Can listen songs",
   "REGISTER" : "Register",
   "CEATE USER" : "Create new usser",
-  "INVALIDUSERPASS": "Invalid user or password"
+  "INVALIDUSERPASS": "Invalid user or password",
+  "PASSMIN" : "Password must have minimum 6 characters",
+  "CHECKINGEMAIL" : "Checking if this email is available..",
+  "CHECKINGUSER" : "Checking if this name is available...",
+  "EMAILTAKEN" : "This email is already taken!",
+  "USERTAKEN" : "This username is already taken!",
+  "PASSEMPTY" : "Leave blank if you do not want to change"
 }

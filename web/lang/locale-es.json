@@ -43,5 +43,11 @@
   "CAN LISTEN" : "Puede escuchar canciones",
   "REGISTER" : "Registro",
   "CEATE USER" : "Crear nuevo usuario",
-  "INVALIDUSERPASS": "Usuario o contraseña invalido"
+  "INVALIDUSERPASS": "Usuario o contraseña invalido",
+  "PASSMIN" : "La contraseña debe tener mínimo 6 caracteres",
+  "CHECKINGEMAIL" : "Comprobando si el email está registrado...",
+  "CHECKINGUSER" : "Comprobando si el usuario está disponbile...",
+  "EMAILTAKEN" : "¡Ya se está usando ese email!",
+  "USERTAKEN" : "¡Ese usuario no está disponible!",
+  "PASSEMPTY" : "Dejar en blanco si no quieres cambiarla"
 }

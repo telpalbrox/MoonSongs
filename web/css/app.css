@@ -56,3 +56,6 @@
 .song-container .song-col {
   margin-bottom: 10px;
 }
+.invalid-form {
+  color: #a94442;
+}

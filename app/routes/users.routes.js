@@ -15,4 +15,7 @@ module.exports = function(app) {
     .get(jwtauth.allowAllUsers, users.read)
     .put(jwtauth.allowAllUsers, users.update)
     .delete(jwtauth.allowUserType('admin'), users.delete);
+
+  app.route('/api/users/check/:value')
+      .post(users.check);
 };
