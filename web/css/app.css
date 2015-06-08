@@ -59,3 +59,16 @@
 .invalid-form {
   color: #a94442;
 }
+.file-upload {
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.file-upload .form-group {
+  margin-left: 10px;
+}
+.file-upload form {
+  margin-bottom: 10px;
+}
+.upload-buttons {
+  margin-top: 15px;
+}

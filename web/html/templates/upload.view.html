@@ -1,13 +1,16 @@
 <div ng-controller="UploadController as vm">
-  <h1 translate>UPLOADS SONGS</h1>
+  <div class="page-header">
+    <h1 translate>UPLOADS SONGS</h1>
+  </div>
   <a href="" class="btn btn-default" accept="audio/mpeg" ng-file-select ng-file-change="vm.addFiles($files)" ng-multiple="true" translate>SELECT FILES</a>
   <div ng-file-change="vm.addFiles($files)" accept="audio/mpeg" drag-over-class="arrastrando" ng-show="dropSupported" id="cuadrado" ng-file-drag-over-delay="100" ng-file-drop ng-multiple="true" translate>DRAG SONGS</div>
   <div ng-file-drop-available="dropSupported=true" ng-show="!dropSupported">HTML5 Drop File is not supported!</div>
   <input type="checkbox" ng-model="vm.autotag" ng-change="vm.changeAutotag()">{{'AUTOTAG' | translate}}<br>
-  <div ng-repeat="archivo in vm.archivos">
-    <p>{{archivo.fileUploadName}}</p>
-    <form class="form-inline" role="form">
-      <img ng-src="{{archivo.image}}" style="width:45px;height:45px" class="img-thumbnail">
+  <div ng-repeat="archivo in vm.archivos" class="row file-upload">
+    <div class="row">
+      <p class="col-md-12">{{archivo.fileUploadName}}</p>
+    </div>
+    <form class="form-inline row" role="form">
       <div class="form-group">
         <div class="input-group">
           <label class="sr-only" for="inputArtista" translate>ARTIST</label>
@@ -24,17 +27,19 @@
       </div>
       <a href="" ng-show="!archivo.uploading" class="btn btn-warning" ng-click="vm.remove(archivo)" translate>DELETE</a>
     </form>
-    <div class="col-sm-4" ng-show="archivo.uploading">
+    <div class="row" ng-show="archivo.uploading">
       <progressbar class="progress-striped active" max="100" value="archivo.percentage"
                    type="info"><i>{{archivo.percentage}} %</i></progressbar>
     </div>
-    <div class="alert alert-dismissable alert-danger" ng-show="archivo.exists">
+    <div class="alert alert-dismissable alert-danger row" ng-show="archivo.exists">
       <span translate>FAIL UPLOAD</span>
     </div>
-    <div class="alert alert-dismissable alert-success" ng-show="archivo.uploaded">
+    <div class="alert alert-dismissable alert-success row" ng-show="archivo.uploaded">
       <span translate>SUCCESS UPLOAD</span>
     </div>
   </div>
-  <a href="" class="btn btn-success" ng-click="vm.startUpload(vm.archivos)" translate>UPLOAD FILES</a>
-  <a href="" class="btn btn-danger" ng-click="vm.cancel()" translate>CANCEL UPLOAD</a>
+  <div class="upload-buttons">
+    <a href="" class="btn btn-success" ng-click="vm.startUpload(vm.archivos)" translate>UPLOAD FILES</a>
+    <a href="" class="btn btn-danger" ng-click="vm.cancel()" translate>CANCEL UPLOAD</a>
+  </div>
 </div>
