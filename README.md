@@ -6,3 +6,4 @@ MoonSongs is a small music server written in javascript. It uses nodejs for back
 * Rewrite tests
 * Instrucions for install
 * Update dependences
+* Test that all works correctly when clone from github
