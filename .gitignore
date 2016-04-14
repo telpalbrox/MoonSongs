@@ -1,24 +1,6 @@
-# node dependences
 node_modules/
-# Auto created file by Dolphin
-**/.directory
-# Auto created file by vim
-**/*~
-# web libraries
-web/lib/
-# css is compiled throught less
-web/css/
-# compiled js/css/html
-public/
-# music folders
-music/
-music2/
-musicTmp/
-# temporal upload folder
-uploads/
-# log files
-**/*.log*
-# WebStorm folder
+es6/
+typings/
+db.development.sqlite
 .idea/
-.settings/
-assets/demo_music
+npm-debug.log*
