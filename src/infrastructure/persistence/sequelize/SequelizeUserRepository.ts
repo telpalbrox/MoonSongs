@@ -27,4 +27,8 @@ export class SequelizeUserRepository implements UserRespository {
         return new User(sequelizeUser.uuid, sequelizeUser.userName, sequelizeUser.password);
     }
     
+    async count(): Promise<number> {
+        return await db.User.count();
+    }
+    
 }
