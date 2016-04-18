@@ -1,6 +1,22 @@
 export class Song {
-    public constructor(private _uuid: string, private _title: string) { }
+    public constructor (
+        private _uuid: string,
+        private _title: string,
+        private _album: string,
+        private _artist: string,
+        private _relativePath: string
+    ) { }
 
+    toPlainObject() {
+        return {
+            uuid: this.uuid,
+            title: this.title,
+            album: this.album,
+            artist: this.artist,
+            relativePath: this.relativePath
+        }
+    }
+    
     set title(title: string) {
         this._title = title;
     }
@@ -15,5 +31,29 @@ export class Song {
 
     get uuid() {
         return this._uuid;
+    }
+    
+    set relativePath(relativePath) {
+        this._relativePath = relativePath;
+    }
+    
+    get relativePath() {
+        return this._relativePath;
+    }
+    
+    set album(album: string) {
+        this._album = album;
+    }
+    
+    get album() {
+        return this._album;
+    }
+    
+    set artist(artist: string) {
+        this._artist = artist;
+    }
+    
+    get artist() {
+        return this._artist;
     }
 }

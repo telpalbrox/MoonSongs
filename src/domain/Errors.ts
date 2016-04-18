@@ -8,7 +8,8 @@ const errorSymbols = {
     BAD_FORMAT: Symbol(),
     USER_ALREADY_EXISTS: Symbol(),
     USER_NOT_FOUND: Symbol(),
-    INVALID_CREDENTIALS: Symbol()
+    INVALID_CREDENTIALS: Symbol(),
+    MUSIC_FOLDER_NOT_FOUND: Symbol()
 };
 
 const errors = {

@@ -4,3 +4,5 @@ typings/
 db.development.sqlite
 .idea/
 npm-debug.log*
+music/
+**/.DS_Store
