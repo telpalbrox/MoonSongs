@@ -10,7 +10,7 @@ let db: Database = {};
 fs
     .readdirSync(__dirname)
     .filter(function(file) {
-        return (file.indexOf(".") !== 0) && (file !== "index.ts") && (file !== "Models.ts") && (file !== "index.js") && (file !== "Models.js");
+        return (file.indexOf(".") !== 0) && (!/\.ts$/.test(file)) && (file !== "index.js") && (file !== "Models.js");
     })
     .forEach(function(file) {
         var model: any = sequelize.import(path.join(__dirname, file));

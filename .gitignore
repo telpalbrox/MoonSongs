@@ -1,8 +1,10 @@
 node_modules/
 es6/
 typings/
-db.development.sqlite
+**.sqlite
 .idea/
 npm-debug.log*
 music/
 **/.DS_Store
+src/**/*.js
+tests/**/*.js

@@ -6,7 +6,7 @@ const expressWinston = require('express-winston');
 import routes from './routes';
 const config = {port: 3000};
 
-const app:Express = express();
+const app: Express = express();
 
 app.use(bodyParser.json({limit: "7mb"}));
 
@@ -19,3 +19,5 @@ routes(app);
 app.listen(config.port, () => {
     logger.info(`Listening on port: ${config.port}`);
 });
+
+export { app };

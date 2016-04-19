@@ -29,7 +29,6 @@ const fileSongScanner: SongScanner = (path: string): Promise<Song[]> => {
     return new Promise<Song[]>((resolve) => {
         const songs: Song[] = [];
         const walker = walk.walk(pathResolve(__dirname, path));
-        console.log(pathResolve(process.cwd(), path));
         walker.on('file', fileHandler(songs));
         walker.on('end', () => {
             resolve(songs);

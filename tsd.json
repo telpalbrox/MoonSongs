@@ -12,7 +12,7 @@
       "commit": "641df27e73ca67fa7199a3deedae104198d41a17"
     },
     "node/node.d.ts": {
-      "commit": "641df27e73ca67fa7199a3deedae104198d41a17"
+      "commit": "544a35a10866b32afda9c7f029c0764558563f4f"
     },
     "mime/mime.d.ts": {
       "commit": "641df27e73ca67fa7199a3deedae104198d41a17"
@@ -21,16 +21,16 @@
       "commit": "641df27e73ca67fa7199a3deedae104198d41a17"
     },
     "lodash/lodash.d.ts": {
-      "commit": "641df27e73ca67fa7199a3deedae104198d41a17"
+      "commit": "544a35a10866b32afda9c7f029c0764558563f4f"
     },
     "sequelize/sequelize.d.ts": {
-      "commit": "641df27e73ca67fa7199a3deedae104198d41a17"
+      "commit": "544a35a10866b32afda9c7f029c0764558563f4f"
     },
     "bluebird/bluebird.d.ts": {
-      "commit": "641df27e73ca67fa7199a3deedae104198d41a17"
+      "commit": "544a35a10866b32afda9c7f029c0764558563f4f"
     },
     "validator/validator.d.ts": {
-      "commit": "641df27e73ca67fa7199a3deedae104198d41a17"
+      "commit": "544a35a10866b32afda9c7f029c0764558563f4f"
     },
     "winston/winston.d.ts": {
       "commit": "641df27e73ca67fa7199a3deedae104198d41a17"
@@ -46,6 +46,24 @@
     },
     "jsonwebtoken/jsonwebtoken.d.ts": {
       "commit": "641df27e73ca67fa7199a3deedae104198d41a17"
+    },
+    "chai/chai.d.ts": {
+      "commit": "544a35a10866b32afda9c7f029c0764558563f4f"
+    },
+    "assertion-error/assertion-error.d.ts": {
+      "commit": "544a35a10866b32afda9c7f029c0764558563f4f"
+    },
+    "superagent/superagent.d.ts": {
+      "commit": "544a35a10866b32afda9c7f029c0764558563f4f"
+    },
+    "supertest/supertest.d.ts": {
+      "commit": "544a35a10866b32afda9c7f029c0764558563f4f"
+    },
+    "sequelize-fixtures/sequelize-fixtures.d.ts": {
+      "commit": "544a35a10866b32afda9c7f029c0764558563f4f"
+    },
+    "mocha/mocha.d.ts": {
+      "commit": "544a35a10866b32afda9c7f029c0764558563f4f"
     }
   }
 }
