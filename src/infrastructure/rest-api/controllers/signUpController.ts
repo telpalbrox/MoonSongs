@@ -15,6 +15,7 @@ export default async function signUpController(req: Request, res: Response) {
             user: user.getTokenInfo()
         });
     } catch (err) {
-        res.json(errorHandler(err));
+        const httpError = errorHandler(err);
+        res.status(httpError.statusCode).json(httpError);
     }
 }

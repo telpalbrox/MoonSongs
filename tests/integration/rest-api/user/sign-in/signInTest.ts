@@ -3,9 +3,9 @@ process.env.NODE_ENV = 'test';
 import sequelizeFixtures = require('sequelize-fixtures');
 import supertest = require('supertest');
 import chai = require('chai');
-import db from '../../../src/infrastructure/persistence/sequelize/models/index';
+import db from '../../../../../src/infrastructure/persistence/sequelize/models/index';
 const signInFixtures = require('./signInFixtures.json');
-const MoonSongs = require('../../../src/index');
+const MoonSongs = require('../../../../../src/index');
 const request: any = supertest(MoonSongs.app);
 const expect = chai.expect;
 

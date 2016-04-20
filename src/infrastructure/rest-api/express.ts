@@ -4,7 +4,7 @@ import bodyParser = require("body-parser");
 import logger = require('winston');
 const expressWinston = require('express-winston');
 import routes from './routes';
-const config = {port: 3000};
+const config = {port: process.env.PORT || 3000};
 
 const app: Express = express();
 
