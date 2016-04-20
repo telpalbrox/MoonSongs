@@ -1,6 +1,11 @@
 import logger = require('winston');
 
 module.exports = {
+    production: {
+        dialect: "sqlite",
+        storage: "./moon-songs.sqlite",
+        music: "../music"
+    },
     development: {
         dialect: "sqlite",
         storage: "./db.development.sqlite",
