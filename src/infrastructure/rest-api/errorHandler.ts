@@ -1,5 +1,5 @@
 import boom = require('boom');
-import {errorSymbols} from '../../domain/errors';
+import {errorSymbols} from '../../domain/Errors';
 import BoomError = Boom.BoomError;
 
 const httpErrors = {

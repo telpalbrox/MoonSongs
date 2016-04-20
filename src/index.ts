@@ -1,7 +1,7 @@
 /// <reference path="../typings/tsd.d.ts" />
 import logger = require('winston');
 import db from './infrastructure/persistence/sequelize/models';
-import {fileSongScanner} from "./infrastructure/file-system/fileSongScanner";
+import {fileSongScanner} from "./infrastructure/file-system/FileSongScanner";
 import {ScanSongsService} from "./application/song/ScanSongsService";
 import {ScanSongsRequest} from "./application/song/ScanSongsRequest";
 import {dirname, resolve} from 'path';

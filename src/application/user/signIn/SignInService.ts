@@ -2,7 +2,7 @@ import {UserRespository} from "../../../domain/models/UserRespository";
 import {ApplicationService} from "../../../domain/ApplicationService";
 import {SignInRequest} from "./SigInRequest";
 import {SignInResponse} from "./SignInResponse";
-import {errors} from "../../../domain/errors";
+import {errors} from "../../../domain/Errors";
 import {signUser} from "../../../infrastructure/jwt/jwt";
 export class SignInService implements ApplicationService{
 

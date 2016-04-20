@@ -3,7 +3,7 @@ import {ApplicationService} from "../../../domain/ApplicationService";
 import {UserRespository} from "../../../domain/models/UserRespository";
 import {SignUpResponse} from "./SignUpResponse";
 import {signUser} from '../../../infrastructure/jwt/jwt';
-import {errors} from '../../../domain/errors';
+import {errors} from '../../../domain/Errors';
 export class SignUpService implements ApplicationService {
     
     constructor(private userRepository: UserRespository) { }
