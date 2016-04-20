@@ -15,3 +15,4 @@ deploy:
     secure: U9oO7cYPD1mZUUMiMQiXPDTk4e+LHM+KZa0pEB8fCUtYWCqUGjFk+kuoIJvjsiUw9Jiz2yZc6cJJQqb3eFqkAytBpE27p0UXj687qLvLKjoF9ngvdYFWYJfUVMYn8vb+Pg0M+u/WWIm9g8F0zpk4sTxqQi8K0sBqmdybUH5TsM+EpJfnKuAV8yn5DLPipcsPpx8pfArwpjuhNRZLT6WK/cHmDZEOpKF8BSRvXVqL3OmSFZaPwrZCmWbVioAMsGhgY2JswnTupVtdBHdZz+uUS6DSLK56QkuWwmgaAKFEbSoHPe53DhqymMz9VoW75Vn75Otgh4C0bKCbVFtkvITAqatl3CoCXEMtUwWjqVF1BfMHk9CxCpkEi2PtZLsey/pTtR8h0AlM/Pbw7AMbiWQVwz8kwwYQANoycaVRHznGcXR01paKU/+dfTb8uEcY/lsM9wqCDZpMTfkYF5/k5aKE3w47/u++hyupdosTZWtVy4ZtAlkoFVLbLNVcQ0whWo/xqvTQzoG75Hr2O+bnVkjr2taW3+/AMtDwOe3aczsU17yfvaR9Kk9VTZkCk4YPza3+4iun/cQLo43lwGQWlm4K8H6WqObRwz5c98YhO+9/dRLeefrz+NE95E+npw2f2qCrZ6X5q5P2p4teYwEnbl589FncSmOJQrvMwBSKb+UgpNc=
     app:
       refactor-from-scratch: moon-songs-dev
+    on: refactor-from-scratch
