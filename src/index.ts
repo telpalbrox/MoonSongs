@@ -1,5 +1,4 @@
 /// <reference path="../typings/tsd.d.ts" />
-import logger = require('winston');
 import db from './infrastructure/persistence/sequelize/models';
 import {fileSongScanner} from "./infrastructure/file-system/FileSongScanner";
 import {ScanSongsService} from "./application/song/ScanSongsService";
@@ -9,6 +8,8 @@ import {SequelizeSongRespository} from "./infrastructure/persistence/sequelize/S
 import {CreateAdminService} from "./application/user/CreateAdminService";
 import {SequelizeUserRepository} from "./infrastructure/persistence/sequelize/SequelizeUserRepository";
 const config = require('./config/config')[process.env.NODE_ENV || "development"];
+require('./config/logger');
+import logger = require('winston');
 let app = require('./infrastructure/rest-api/express').app;
 let startPromise;
 async function startMoonSongs() {

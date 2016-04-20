@@ -28,7 +28,6 @@ export class SignInService implements ApplicationService{
 
         const user = await this.userRepository.getByUserName(request.userName);
         if(!user) {
-            console.log('no hay usuario');
             throw errors.userNotFound();
         }
         if(!user.comparePassword(request.password)) {

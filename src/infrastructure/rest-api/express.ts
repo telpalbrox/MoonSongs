@@ -11,7 +11,10 @@ const app: Express = express();
 app.use(bodyParser.json({limit: "7mb"}));
 
 app.use(expressWinston.logger({
-    winstonInstance: logger
+    winstonInstance: logger,
+    skip() {
+        return (process.env.NODE_ENV == "test");
+    }
 }));
 
 routes(app);

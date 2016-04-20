@@ -1,3 +1,5 @@
+import logger = require('winston');
+
 module.exports = {
     development: {
         dialect: "sqlite",
@@ -7,6 +9,11 @@ module.exports = {
     test: {
         dialect: "sqlite",
         storage: "./db.test.sqlite",
-        music: "../music"
+        music: "../music",
+        logging(log) {
+            if (process.env.NODE_ENV != "test") {
+                logger.debug(log);
+            }
+        }
     }
 };
