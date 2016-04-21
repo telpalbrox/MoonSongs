@@ -5,12 +5,12 @@ import {Song} from "../../domain/models/Song";
 import {SongsRepository} from "../../domain/models/SongsRepository";
 export class ScanSongsService implements ApplicationService{
 
-    constructor(private songRepository: SongsRepository, private songScanner: SongScanner) { }
+    constructor(private songsRepository: SongsRepository, private songScanner: SongScanner) { }
 
     async execute(request: ScanSongsRequest): Promise<Song[]> {
         const songs = await this.songScanner(request.path);
-        const createdUuids = await this.songRepository.findOrCreateAll(songs);
-        await this.songRepository.removeSongsWhichUuidIsNot(createdUuids);
+        const createdUuids = await this.songsRepository.findOrCreateAll(songs);
+        await this.songsRepository.removeSongsWhichUuidIsNot(createdUuids);
         return songs;
     }
 }

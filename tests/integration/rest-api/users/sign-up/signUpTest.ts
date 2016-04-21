@@ -16,7 +16,7 @@ before(async () => {
     return await sequelizeFixtures.loadFixtures(signInFixtures, db);
 });
 
-describe(`GET ${PATH}`, () => {
+describe(`POST ${PATH}`, () => {
     it('Should register and get login token', (done) => {
         request
             .post(PATH)
@@ -26,7 +26,9 @@ describe(`GET ${PATH}`, () => {
             })
             .expect((res) => {
                 expect(res.body.token).to.be.string;
+                expect(res.body.user.uuid).to.be.string;
                 delete res.body.token;
+                delete res.body.user.uuid;
             })
             .expect(200, {
                 user: {

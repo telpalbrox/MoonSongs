@@ -1,5 +1,3 @@
-import logger = require('winston');
-import boom = require('boom');
 import {Request, Response} from "express";
 import {SequelizeUserRepository} from "../../persistence/sequelize/SequelizeUserRepository";
 import errorHandler from '../errorHandler';

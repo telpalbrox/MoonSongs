@@ -21,7 +21,8 @@ export class User {
     
     getTokenInfo() {
         return {
-            userName: this.userName
+            userName: this.userName,
+            uuid: this.uuid
         };
     }
 

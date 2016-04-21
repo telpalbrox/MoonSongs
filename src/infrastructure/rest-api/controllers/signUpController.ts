@@ -1,5 +1,3 @@
-import logger = require('winston');
-import boom = require('boom');
 import {Request, Response} from "express";
 import {SignUpRequest} from "../../../application/user/signUp/SignUpRequest";
 import {SignUpService} from "../../../application/user/signUp/SignUpService";

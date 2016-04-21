@@ -14,7 +14,7 @@ before(async () => {
     return await sequelizeFixtures.loadFixtures(signInFixtures, db);
 });
 
-describe('GET /login', () => {
+describe('POST /login', () => {
     it('Should get login token and user', (done) => {
         request
             .post('/login')
@@ -28,7 +28,8 @@ describe('GET /login', () => {
             })
             .expect(200, {
                 user: {
-                    userName: 'testUser'
+                    userName: 'testUser',
+                    uuid: '4daca394-1ee1-4db6-9447-b3dd97ed3884'
                 }
             }, done);
     });

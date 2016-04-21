@@ -17,6 +17,16 @@ export class Song {
         }
     }
     
+    toJSON() {
+        return {
+            uuid: this.uuid,
+            title: this.title,
+            album: this.album,
+            artist: this.artist,
+            url: this.url
+        }
+    }
+    
     set title(title: string) {
         this._title = title;
     }
@@ -55,5 +65,9 @@ export class Song {
     
     get artist() {
         return this._artist;
+    }
+    
+    get url(): string {
+        return `${this._artist}/${this._album}/${this._title}/listen`;
     }
 }
