@@ -34,7 +34,7 @@ export class SequelizeSongRespository implements SongsRepository {
         await db.Song.destroy({ where: { $not: [ { uuid: uuids } ] } } );
     }
     
-    async findAll(limit: number, offset: number): Promise<{songs: Song[], total: number}> {
+    async findAll(limit?: number, offset?: number): Promise<{songs: Song[], total: number}> {
         const sequelizeResponse = await db.Song.findAndCount({ limit, offset, order: [['album', 'ASC'], ['title', 'ASC'], ['artist', 'ASC']] });
         const songs = sequelizeResponse.rows.map((sequelizeSong) => {
             return new Song(sequelizeSong.uuid, sequelizeSong.title, sequelizeSong.album, sequelizeSong.artist, sequelizeSong.relativePath);
