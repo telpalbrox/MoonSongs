@@ -5,10 +5,9 @@ import supertest = require('supertest');
 import db from '../../../../src/infrastructure/persistence/sequelize/models/index';
 const loggedUsersFixtures = require('../common-fixtures/users');
 const songsFixtures = require('../common-fixtures/songs');
-const token = require('../common-fixtures/tokens').default[0];
 const MoonSongs = require('../../../../src/index');
 const request: any = supertest(MoonSongs.app);
-const PATH = (uuid) => `/api/${uuid}/listen`;
+const PATH = (uuid) => `/api/songs/${uuid}/listen`;
 
 before(async () => {
     await MoonSongs.startPromise;

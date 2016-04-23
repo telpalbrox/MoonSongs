@@ -11,5 +11,5 @@ export default function (router: Router) {
 
     const songsRouter = express.Router();
     songRoutes(songsRouter);
-    router.use(songsRouter);
+    router.use('/songs', songsRouter);
 }

@@ -8,7 +8,7 @@ const songsFixtures = require('../common-fixtures/songs');
 const token = require('../common-fixtures/tokens').default[0];
 const MoonSongs = require('../../../../src/index');
 const request: any = supertest(MoonSongs.app);
-const PATH = '/api/albums/';
+const PATH = '/api/songs/albums/';
 
 before(async () => {
     await MoonSongs.startPromise;
