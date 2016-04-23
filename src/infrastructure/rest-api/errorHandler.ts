@@ -1,4 +1,5 @@
 import boom = require('boom');
+import logger = require('winston');
 import {errorSymbols} from '../../domain/Errors';
 import BoomError = Boom.BoomError;
 
@@ -17,10 +18,18 @@ const httpErrors = {
     },
     [errorSymbols.USER_NOT_FOUND](error) {
         return boom.unauthorized(error.message);
+    },
+    [errorSymbols.SONG_NOT_FOUND](error) {
+        return boom.notFound(error.message);
     }
 };
 
 export default function(error): any {
+    if(error.stack) {
+        logger.error(error.stack);
+    } else {
+        logger.error(error);
+    }
     if(!httpErrors[error.code]) {
         return boom.badImplementation().output.payload;
     }

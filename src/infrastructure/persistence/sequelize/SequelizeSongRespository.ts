@@ -44,4 +44,12 @@ export class SequelizeSongRespository implements SongsRepository {
             total: sequelizeResponse.count
         }
     }
+
+    async getByUuid(uuid: string): Promise<Song> {
+        const sequelizeSong = await db.Song.find({ where: { uuid } });
+        if(!sequelizeSong) {
+            return null;
+        }
+        return new Song(sequelizeSong.uuid, sequelizeSong.title, sequelizeSong.album, sequelizeSong.artist, sequelizeSong.relativePath);
+    }
 }

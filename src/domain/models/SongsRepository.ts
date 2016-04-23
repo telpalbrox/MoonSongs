@@ -5,4 +5,5 @@ export interface SongsRepository {
     findOrCreateAll(songs: Song[]): Promise<string[]>;
     removeSongsWhichUuidIsNot(uuids: string[]): Promise<any>;
     findAll(limit?: number, offset?: number): Promise<{songs: Song[], total: number}>;
+    getByUuid(uuid: string): Promise<Song>;
 }

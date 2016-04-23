@@ -68,6 +68,6 @@ export class Song {
     }
     
     get url(): string {
-        return `${this._artist}/${this._album}/${this._title}/listen`;
+        return `${this.uuid}/listen`;
     }
 }

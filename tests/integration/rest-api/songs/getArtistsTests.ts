@@ -31,7 +31,7 @@ describe(`GET ${PATH}`, () => {
                             title: 'song1',
                             album: 'album1',
                             artist: 'artist1',
-                            url: 'artist1/album1/song1/listen'
+                            url: '0321eb0a-d88d-4f29-ba3b-2c34b815e0c3/listen'
                         }]
                     }]
                 }, {
@@ -44,7 +44,7 @@ describe(`GET ${PATH}`, () => {
                             title: 'song2',
                             album: 'album2',
                             artist: 'artist2',
-                            url: 'artist2/album2/song2/listen'
+                            url: '12fdb639-3de5-40cf-8706-f24a475a3987/listen'
                         }]
                     }]
                 }, {
@@ -57,7 +57,7 @@ describe(`GET ${PATH}`, () => {
                             title: 'song3',
                             album: 'album3',
                             artist: 'artist3',
-                            url: 'artist3/album3/song3/listen'
+                            url: 'e29e3d6b-dffc-4d5b-ad91-d59d73b14a5b/listen'
                         }]
                     }]
                 }, {
@@ -70,7 +70,7 @@ describe(`GET ${PATH}`, () => {
                             title: 'song4',
                             album: 'album4',
                             artist: 'artist4',
-                            url: 'artist4/album4/song4/listen'
+                            url: 'e5f41858-927d-4e5b-95bd-1273e3cf7f8e/listen'
                         }]
                     }]
                 }],
