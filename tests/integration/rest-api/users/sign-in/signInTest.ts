@@ -8,16 +8,17 @@ const signInFixtures = require('./signInFixtures.json');
 const MoonSongs = require('../../../../../src/index');
 const request: any = supertest(MoonSongs.app);
 const expect = chai.expect;
+const PATH = '/api/login';
 
 before(async () => {
     await MoonSongs.startPromise;
     return await sequelizeFixtures.loadFixtures(signInFixtures, db);
 });
 
-describe('POST /login', () => {
+describe(`POST ${PATH}`, () => {
     it('Should get login token and user', (done) => {
         request
-            .post('/login')
+            .post(PATH)
             .send({
                 userName: 'testUser',
                 password: 'patata'
@@ -36,7 +37,7 @@ describe('POST /login', () => {
 
     it('Should get login error if user don\'t exists', (done) => {
         request
-            .post('/login')
+            .post(PATH)
             .send({
                 userName: 'asdfasdf',
                 password: 'patata'
@@ -50,7 +51,7 @@ describe('POST /login', () => {
 
     it('Should get login error if password is wrong', (done) => {
         request
-            .post('/login')
+            .post(PATH)
             .send({
                 userName: 'testUser',
                 password: 'dasf'

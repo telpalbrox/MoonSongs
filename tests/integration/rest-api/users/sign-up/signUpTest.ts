@@ -8,8 +8,7 @@ const signInFixtures = require('./signUpFixtures.json');
 const MoonSongs = require('../../../../../src/index');
 const request: any = supertest(MoonSongs.app);
 const expect = chai.expect;
-
-const PATH = '/signup';
+const PATH = '/api/signup';
 
 before(async () => {
     await MoonSongs.startPromise;

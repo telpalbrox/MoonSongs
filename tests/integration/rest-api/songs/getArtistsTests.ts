@@ -8,14 +8,14 @@ const songsFixtures = require('../common-fixtures/songs');
 const token = require('../common-fixtures/tokens').default[0];
 const MoonSongs = require('../../../../src/index');
 const request: any = supertest(MoonSongs.app);
-const PATH = '/artists/';
+const PATH = '/api/artists/';
 
 before(async () => {
     await MoonSongs.startPromise;
     return await sequelizeFixtures.loadFixtures(loggedUsersFixtures.default.concat(songsFixtures.default), db);
 });
 
-describe.only(`GET ${PATH}`, () => {
+describe(`GET ${PATH}`, () => {
     it('Should get albums', (done) => {
         request
             .get(PATH)

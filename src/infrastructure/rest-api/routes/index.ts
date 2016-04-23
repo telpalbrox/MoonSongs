@@ -2,13 +2,14 @@ import loginRoutes from './loginRoutes';
 import songRoutes from './songsRoutes';
 import {Express} from "express";
 import express = require("express");
+import {Router} from "express-serve-static-core";
 
-export default function (app: Express) {
+export default function (router: Router) {
     const loginRouter = express.Router();
     loginRoutes(loginRouter);
-    app.use(loginRouter);
+    router.use(loginRouter);
 
     const songsRouter = express.Router();
     songRoutes(songsRouter);
-    app.use(songsRouter);
+    router.use(songsRouter);
 }

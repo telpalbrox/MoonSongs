@@ -17,7 +17,11 @@ app.use(expressWinston.logger({
     }
 }));
 
-routes(app);
+const rootRooter = express.Router();
+
+routes(rootRooter);
+
+app.use('/api', rootRooter);
 
 app.listen(config.port, () => {
     logger.info(`Listening on port: ${config.port}`);
