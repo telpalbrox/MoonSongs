@@ -7,4 +7,7 @@ npm-debug.log*
 music/
 **/.DS_Store
 src/**/*.js
+src/**/*.map
 tests/**/*.js
+tests/**/*.map
+public/

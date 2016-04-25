@@ -1,6 +1,17 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "ES6"
-  }
+    "target": "ES6",
+    "jsx": "react",
+    "sourceMap": true,
+    "moduleResolution": "node"
+  },
+  "exclude": [
+    "node_modules",
+    "webpack.config.js",
+    "webpack.dev.config.js",
+    "src/infrastructure/web",
+    "public",
+    "bin"
+  ]
 }

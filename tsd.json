@@ -64,6 +64,18 @@
     },
     "mocha/mocha.d.ts": {
       "commit": "544a35a10866b32afda9c7f029c0764558563f4f"
+    },
+    "react/react-dom.d.ts": {
+      "commit": "2d448c0a3152e8871521848c5c2c61ab4e2a2cc9"
+    },
+    "react/react.d.ts": {
+      "commit": "310c247694d7f31bd2e3198f71c55221f7c3a3c7"
+    },
+    "material-ui/material-ui.d.ts": {
+      "commit": "310c247694d7f31bd2e3198f71c55221f7c3a3c7"
+    },
+    "react-tap-event-plugin/react-tap-event-plugin.d.ts": {
+      "commit": "310c247694d7f31bd2e3198f71c55221f7c3a3c7"
     }
   }
 }
