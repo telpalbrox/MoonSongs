@@ -5,6 +5,7 @@ import logger = require('winston');
 import routes from './routes';
 import { join } from 'path';
 const expressWinston = require('express-winston');
+const fallback = require('express-history-api-fallback');
 const config = {port: process.env.PORT || 3000};
 
 const app: Express = express();
@@ -26,10 +27,6 @@ app.use('/api', rootRooter);
 
 app.use('/public', express.static(join(__dirname, '../../../public')));
 
-app.get('/', (req, res) => {
-    res.sendFile(join(__dirname, '../../../index.html'));
-});
-
 if(process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
     const webpack = require('webpack');
     const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -43,6 +40,8 @@ if(process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'test') {
         publicPath: config.output.publicPath
     }));
 }
+
+app.use(fallback(join(__dirname, '../../../index.html')));
 
 app.listen(config.port, () => {
     logger.info(`Listening on port: ${config.port}`);
