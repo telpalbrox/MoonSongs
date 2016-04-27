@@ -21,3 +21,8 @@ declare module 'material-ui/AppBar' {
     export import AppBar = __MaterialUI.AppBar;
     export default AppBar;
 }
+
+declare module 'material-ui/FlatButton' {
+    export import FlatButton = __MaterialUI.FlatButton;
+    export default FlatButton;
+}
