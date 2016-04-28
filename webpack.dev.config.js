@@ -26,7 +26,8 @@ var config = {
     module: {
         loaders: [
             { test: /\.tsx?$/, loader: 'react-hot!ts-loader', include: path.join(__dirname, 'src'), exclude: nodeModulesPath },
-            { test: /\.scss?$/, loader: 'style!css!sass', include: path.join(__dirname, 'src/infrastructure/web/', 'styles') },
+            { test: /\.scss?$/, loader: 'style!css!sass' },
+            { test: /\.css/, loader: 'style!css' },
             { test: /\.png$/, loader: 'file' },
             { test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/, loader: 'file'}
         ],

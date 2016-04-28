@@ -26,3 +26,13 @@ declare module 'material-ui/FlatButton' {
     export import FlatButton = __MaterialUI.FlatButton;
     export default FlatButton;
 }
+
+declare module 'material-ui/TextField' {
+    export import TextField = __MaterialUI.TextField;
+    export default TextField;
+}
+
+declare module 'material-ui/RaisedButton' {
+    export import RaisedButton = __MaterialUI.RaisedButton;
+    export default RaisedButton;
+}

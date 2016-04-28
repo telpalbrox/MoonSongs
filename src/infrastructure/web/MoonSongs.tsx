@@ -13,7 +13,9 @@ export default class MoonSongs extends React.Component<any, any> {
                     title="MoonSongs"
                     iconElementRight={<FlatButton label="Login" onTouchTap={this.goLogin} />}
                 />
-                {this.props.children}
+                <div className="container">
+                    {this.props.children}
+                </div>
             </div>
         </MuiThemeProvider>);
     }
