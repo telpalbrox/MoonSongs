@@ -2,12 +2,13 @@
 import * as React from 'react';
 import { render } from 'react-dom';
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
-import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { Provider } from 'react-redux'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 import loginReducer from './login/loginReducer';
-import Login from './login/LoginPage';
+import Login from './login/LoginContainer';
 import MoonSongs from './MoonSongs';
 import Home from './home/HomePage';
 
@@ -16,7 +17,8 @@ const store = createStore(
     combineReducers({
         login: loginReducer,
         routing: routerReducer
-    })
+    }),
+    applyMiddleware(thunk)
 );
 
 // Create an enhanced history that syncs navigation events with the store

@@ -1,7 +1,7 @@
 import {Reducer, Action} from "redux/index";
 import {actions as loginActions} from './loginActions';
 
-interface LoginState {
+export interface LoginState {
     userName?: string;
     password?: string;
     loading?: boolean;

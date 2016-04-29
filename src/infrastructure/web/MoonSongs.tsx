@@ -4,6 +4,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 import { browserHistory } from 'react-router';
+import {LoginState} from "./login/loginReducer";
+
+export interface MoonSongsState {
+    login: LoginState;
+}
 
 export default class MoonSongs extends React.Component<any, any> {
     render() {

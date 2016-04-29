@@ -1,5 +1,4 @@
 import { post as axiosPost } from 'axios';
-
 const actions = {
     LOGIN_REQUEST: 'LOGIN_REQUEST',
     LOGIN_SUCCESS: 'LOGIN_SUCCESS',
@@ -7,7 +6,7 @@ const actions = {
 };
 
 const login = (userName: string, password: string) => {
-    return async (dispatch) => {
+    return async (dispatch: Function) => {
         try {
             dispatch({ type: actions.LOGIN_REQUEST });
             await axiosPost('api/login', { userName, password });
