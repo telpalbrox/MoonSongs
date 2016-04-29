@@ -12,6 +12,10 @@ import Login from './login/LoginContainer';
 import MoonSongs from './MoonSongs';
 import Home from './home/HomePage';
 
+if(process.env.NODE_ENV === 'production') {
+    require("babel-polyfill");
+}
+
 // Add the reducer to your store on the `routing` key
 const store = createStore(
     combineReducers({
