@@ -1,19 +1,21 @@
+import RouterProps = ReactRouter.RouterProps;
 import * as React from 'react';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import AppBar from 'material-ui/AppBar';
 import FlatButton from 'material-ui/FlatButton';
 import Snackbar from 'material-ui/Snackbar';
-import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import {LoginState} from "./login/loginReducer";
 import {MoonSongsContainerState} from "./moonSongsReducer";
-import RouterProps = ReactRouter.RouterProps;
 import { closeError } from './moonSongsActions';
+import {SongsState} from "./songs/interfaces";
 
 export interface MoonSongsState {
     login: LoginState;
-    moonSongs: MoonSongsContainerState
+    moonSongs: MoonSongsContainerState;
+    songs: SongsState;
 }
 
 interface MoonSongsProps {
@@ -36,6 +38,7 @@ class MoonSongs extends React.Component<MoonSongsProps, any> {
     constructor(props) {
         super(props);
         this.handleCloseError = this.handleCloseError.bind(this);
+        this.goLogin = this.goLogin.bind(this);
     }
 
     render() {
@@ -60,7 +63,7 @@ class MoonSongs extends React.Component<MoonSongsProps, any> {
     }
 
     goLogin() {
-        browserHistory.push('/login');
+        this.props.dispatch(push('/login'));
     }
 
     handleCloseError() {
