@@ -9,16 +9,21 @@ export interface OpenErrorAction extends Action {
     duration: number;
 }
 
-const openError = (message, duration = 1500) => {
+const closeError = () => {
+    return { type: actions.CLOSE_ERROR };
+};
+
+const openError = (message, duration = 4000) => {
     return (dispatch: Function) => {
         dispatch({ type: actions.OPEN_ERROR, message , duration});
         setTimeout(() => {
-            dispatch({ type: actions.CLOSE_ERROR });
+            dispatch(closeError());
         }, duration);
     };
 };
 
 export {
     actions,
-    openError
+    openError,
+    closeError
 };

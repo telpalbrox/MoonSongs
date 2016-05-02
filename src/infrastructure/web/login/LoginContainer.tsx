@@ -24,6 +24,11 @@ class LoginPage extends React.Component<LoginProps, any> {
             loading
         };
     }
+
+    constructor(props) {
+        super(props);
+        this.onFormSubmit = this.onFormSubmit.bind(this);
+    }
     
     render() {
         return (
@@ -33,45 +38,49 @@ class LoginPage extends React.Component<LoginProps, any> {
                         <h2>Login</h2>
                     </div>
                 </div>
-                <div className="row center-sm center-xs">
-                    <div className="col-sm-4 col-xs-10">
-                        <TextField
-                            ref={(node) => this.userNameInput = node}
-                            defaultValue={this.props.userName}
-                            style={{width: '100%'}}
-                            hintText="Enter your user name"
-                            floatingLabelText="User name"
-                            type="text"
-                        />
+                <form onSubmit={this.onFormSubmit}>
+                    <div className="row center-sm center-xs">
+                        <div className="col-sm-4 col-xs-10">
+                            <TextField
+                                ref={(node) => this.userNameInput = node}
+                                defaultValue={this.props.userName}
+                                style={{width: '100%'}}
+                                hintText="Enter your user name"
+                                floatingLabelText="User name"
+                                type="text"
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className="row center-sm center-xs">
-                    <div className="col-sm-4 col-xs-10">
-                        <TextField
-                            ref={(node) => this.passwordInput = node}
-                            defaultValue={this.props.password}
-                            style={{width: '100%'}}
-                            hintText="Enter your password"
-                            floatingLabelText="Password"
-                            type="password"
-                        />
+                    <div className="row center-sm center-xs">
+                        <div className="col-sm-4 col-xs-10">
+                            <TextField
+                                ref={(node) => this.passwordInput = node}
+                                defaultValue={this.props.password}
+                                style={{width: '100%'}}
+                                hintText="Enter your password"
+                                floatingLabelText="Password"
+                                type="password"
+                            />
+                        </div>
                     </div>
-                </div>
-                <div className="row center-sm center-xs" >
-                    <div className="col-sm-4 col-xs-10">
-                        <RaisedButton style={{float: 'right'}} label="Login" primary={true} onTouchTap={this.onLoginClick.bind(this)} disabled={this.props.loading} />
-                        <RaisedButton style={{float: 'right', marginRight: '10px'}} label="Cancel" secondary={true} />
+                    <div className="row center-sm center-xs" >
+                        <div className="col-sm-4 col-xs-10">
+                            <RaisedButton style={{float: 'right'}} label="Login" primary={true} disabled={this.props.loading} type="submit" />
+                            <RaisedButton style={{float: 'right', marginRight: '10px'}} label="Cancel" secondary={true} />
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
         );
     }
 
-    onLoginClick() {
+    onFormSubmit(event: Event) {
+        event.preventDefault();
         if(!this.userNameInput.getValue() || !this.passwordInput.getValue()) {
             return;
         }
         this.props.dispatch(login(this.userNameInput.getValue(), this.passwordInput.getValue()));
+        return;
     }
 }
 

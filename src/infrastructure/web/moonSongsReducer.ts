@@ -8,7 +8,8 @@ export interface MoonSongsContainerState {
 }
 
 const initialState = {
-    error: false
+    error: false,
+    errorMessage: ''
 };
 
 const reducer: Reducer<MoonSongsContainerState> = (state = initialState, action: Action) => {

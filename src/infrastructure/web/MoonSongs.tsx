@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import {LoginState} from "./login/loginReducer";
 import {MoonSongsContainerState} from "./moonSongsReducer";
 import RouterProps = ReactRouter.RouterProps;
+import { closeError } from './moonSongsActions';
 
 export interface MoonSongsState {
     login: LoginState;
@@ -32,6 +33,11 @@ class MoonSongs extends React.Component<MoonSongsProps, any> {
         }
     }
 
+    constructor(props) {
+        super(props);
+        this.handleCloseError = this.handleCloseError.bind(this);
+    }
+
     render() {
         return (<MuiThemeProvider muiTheme={getMuiTheme()}>
             <div>
@@ -46,6 +52,7 @@ class MoonSongs extends React.Component<MoonSongsProps, any> {
                     open={this.props.error}
                     message={this.props.errorMessage}
                     action="Ok"
+                    onActionTouchTap={this.handleCloseError}
                     onRequestClose={() => {}}
                 />
             </div>
@@ -54,6 +61,10 @@ class MoonSongs extends React.Component<MoonSongsProps, any> {
 
     goLogin() {
         browserHistory.push('/login');
+    }
+
+    handleCloseError() {
+        this.props.dispatch(closeError());
     }
 }
 
