@@ -59,7 +59,7 @@ class LoginPage extends React.Component<LoginProps, any> {
                 </div>
                 <div className="row center-sm center-xs" >
                     <div className="col-sm-4 col-xs-10">
-                        <RaisedButton style={{float: 'right'}} label="Login" primary={true} onTouchTap={this.onLoginClick.bind(this)} />
+                        <RaisedButton style={{float: 'right'}} label="Login" primary={true} onTouchTap={this.onLoginClick.bind(this)} disabled={this.props.loading} />
                         <RaisedButton style={{float: 'right', marginRight: '10px'}} label="Cancel" secondary={true} />
                     </div>
                 </div>

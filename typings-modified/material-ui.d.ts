@@ -36,3 +36,8 @@ declare module 'material-ui/RaisedButton' {
     export import RaisedButton = __MaterialUI.RaisedButton;
     export default RaisedButton;
 }
+
+declare module 'material-ui/Snackbar' {
+    export import Snackbar = __MaterialUI.Snackbar;
+    export default Snackbar;
+}

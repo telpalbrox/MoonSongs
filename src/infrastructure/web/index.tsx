@@ -4,10 +4,11 @@ import { render } from 'react-dom';
 import * as injectTapEventPlugin from 'react-tap-event-plugin';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import { Provider } from 'react-redux'
-import { Router, Route, browserHistory, IndexRoute } from 'react-router'
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import { Provider } from 'react-redux';
+import { Router, Route, browserHistory, IndexRoute } from 'react-router';
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 import loginReducer from './login/loginReducer';
+import moonSongsReducer from './moonSongsReducer';
 import Login from './login/LoginContainer';
 import MoonSongs from './MoonSongs';
 import Home from './home/HomePage';
@@ -20,7 +21,8 @@ if(process.env.NODE_ENV === 'production') {
 const store = createStore(
     combineReducers({
         login: loginReducer,
-        routing: routerReducer
+        routing: routerReducer,
+        moonSongs: moonSongsReducer
     }),
     applyMiddleware(thunk)
 );
