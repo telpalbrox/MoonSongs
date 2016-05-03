@@ -19,6 +19,7 @@ var config = {
         loaders: [
             { test: /\.tsx?$/, loader: 'babel!ts-loader', include: path.join(__dirname, 'src') },
             { test: /\.scss?$/, loader: 'style!css!sass', include: path.join(__dirname, 'src/infrastructure/web/', 'styles') },
+            { test: /\.css/, loader: 'style!css' },
             { test: /\.png$/, loader: 'file' },
             { test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/, loader: 'file'}
         ],
