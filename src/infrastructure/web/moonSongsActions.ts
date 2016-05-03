@@ -1,7 +1,9 @@
 import {Action} from "redux/index";
 const actions = {
     OPEN_ERROR: 'OPEN_ERROR',
-    CLOSE_ERROR: 'CLOSE_ERROR'
+    CLOSE_ERROR: 'CLOSE_ERROR',
+    OPEN_DRAWER: 'OPEN_DRAWER',
+    CLOSE_DRAWER: 'CLOSE_DRAWER'
 };
 
 export interface OpenErrorAction extends Action {
@@ -22,8 +24,18 @@ const openError = (message, duration = 4000) => {
     };
 };
 
+const openDrawer = () => {
+    return { type: actions.OPEN_DRAWER };
+};
+
+const closeDrawer = () => {
+    return { type: actions.CLOSE_DRAWER };
+};
+
 export {
     actions,
     openError,
-    closeError
+    closeError,
+    openDrawer,
+    closeDrawer
 };

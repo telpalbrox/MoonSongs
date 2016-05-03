@@ -41,3 +41,20 @@ declare module 'material-ui/Snackbar' {
     export import Snackbar = __MaterialUI.Snackbar;
     export default Snackbar;
 }
+
+declare module 'material-ui/MenuItem' {
+    export import MenuItem = __MaterialUI.Menus.MenuItem;
+    export default MenuItem;
+}
+
+declare module 'material-ui/Drawer' {
+    export import Drawer = __MaterialUI.LeftNav;
+    export default Drawer;
+}
+
+declare module 'material-ui/List' {
+    export import List =  __MaterialUI.Lists.List;
+    export import MakeSelectable =  __MaterialUI.Hoc.SelectableContainerEnhance;
+    export import ListItem = __MaterialUI.Lists.ListItem;
+    export default List;
+}
