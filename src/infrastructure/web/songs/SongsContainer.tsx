@@ -4,6 +4,7 @@ import {MoonSongsState} from "../MoonSongs";
 import {PaginatedState} from "../common/reducers/paginate";
 import {Song} from "../../../domain/models/Song";
 import { getSongs } from '../songs/songsActions';
+import { SongList } from './SongListsComponent';
 
 interface SongsProps extends PaginatedState {
     songs: Song[];
@@ -29,7 +30,7 @@ class SongsContainer extends React.Component<SongsProps, any> {
         }
         return this.props.songs.map((song) => {
             return (
-                <li>{song.title}</li>
+                <li key={song.uuid}>{song.title}</li>
             );
         });
     }
@@ -42,9 +43,7 @@ class SongsContainer extends React.Component<SongsProps, any> {
         return (
             <div>
                 <h2>Songs</h2>
-                <ul>
-                    { this.renderSongs() }
-                </ul>
+                <SongList songs={this.props.songs} />
             </div>
         );
     }

@@ -11,14 +11,14 @@ function fileHandler(songs: Song[]) {
             jsmediatags.read(songPath, {
                 onSuccess(tag) {
                     const tags: any = tag.tags;
-                    songs.push(new Song(undefined, tags.title, tags.album, tags.artist, songPath));
+                    songs.push(new Song(undefined, tags.title || 'Unknown', tags.album || 'Unknown', tags.artist || 'Unknown', songPath));
                     next();
                 },
                 onError(err) {
                     console.error(err);
                     next();
                 }
-            });   
+            });
         } else {
             next();
         }

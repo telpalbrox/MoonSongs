@@ -27,7 +27,7 @@ export default function paginate<T>({ types, dataKey }: { types: [string, string
             case successType:
                 return Object.assign({}, state, {
                     loading: false,
-                    [dataKey]: action.data[dataKey],
+                    [dataKey]: action[dataKey],
                     page: action.page,
                     total: action.total
                 });
