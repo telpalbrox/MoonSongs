@@ -4,9 +4,9 @@
   "main": "src/index.js",
   "scripts": {
     "clean": "node ./bin/clean",
-    "build-front": "webpack --config ./webpack.prod.config.js --progress --colors",
+    "build-front": "webpack --progress --colors",
     "test": "tsc && mocha tests --recursive -r babel-register -r babel-polyfill",
-    "start": "tsc && npm run build-front && babel-node src/index.js",
+    "start": "NODE_ENV=production tsc && NODE_ENV=production npm run build-front && NODE_ENV=production babel-node src/index.js",
     "start-dev": "tsc && node src/index.js",
     "postinstall": "tsd install",
     "compile-tests": "tsc"
