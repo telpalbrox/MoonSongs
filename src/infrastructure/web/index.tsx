@@ -5,14 +5,11 @@ import * as injectTapEventPlugin from 'react-tap-event-plugin';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
-import { Router, Route, browserHistory, IndexRoute } from 'react-router';
+import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
 import loginReducer from './login/loginReducer';
 import moonSongsReducer from './moonSongsReducer';
-import Login from './login/LoginContainer';
 import MoonSongs from './MoonSongs';
-import Home from './home/HomePage';
-import Songs from './songs/SongsContainer';
 import paginate from './common/reducers/paginate';
 import { actions as songsActions } from './songs/songsActions';
 import userReducer from './common/reducers/userReducer';
@@ -47,16 +44,22 @@ const history = syncHistoryWithStore(browserHistory, store);
 // http://stackoverflow.com/a/34015469/988941
 injectTapEventPlugin();
 
+const routes = {
+    component: 'div',
+    childRoutes: [{
+        path: '/',
+        component: MoonSongs,
+        indexRoute: require('./home/homeRoute.ts'),
+        childRoutes: [
+            require('./login/loginRoute.ts'),
+            require('./songs/songsRoute.ts')
+        ]}
+    ]
+};
+
 render(
     <Provider store={store}>
-        { /* Tell the Router to use our enhanced history */ }
-        <Router history={history}>
-            <Route path="/" component={MoonSongs}>
-                <IndexRoute component={Home}/>
-                <Route path="login" component={Login}/>
-                <Route path="songs" component={Songs}/>
-            </Route>
-        </Router>
+        <Router history={history} routes={routes} />
     </Provider>,
     document.getElementById('root')
 );
