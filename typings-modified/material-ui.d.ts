@@ -58,3 +58,14 @@ declare module 'material-ui/List' {
     export import ListItem = __MaterialUI.Lists.ListItem;
     export default List;
 }
+
+declare module 'material-ui/GridList' {
+    export import GridList = __MaterialUI.GridList.GridList;
+    export import GridTile = __MaterialUI.GridList.GridTile;
+    export default GridList;
+}
+
+declare module 'material-ui/IconButton' {
+    export import IconButton = __MaterialUI.IconButton;
+    export default IconButton;
+}
