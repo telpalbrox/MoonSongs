@@ -5,6 +5,7 @@ export class User {
         private _uuid: string,
         private _userName: string,
         private _password: string,
+        private _admin: boolean = false,
         newUser: boolean = false
     ) {
         if(newUser) {
@@ -22,7 +23,16 @@ export class User {
     getTokenInfo() {
         return {
             userName: this.userName,
-            uuid: this.uuid
+            uuid: this.uuid,
+            admin: this.admin
+        };
+    }
+    
+    toJSON() {
+        return {
+            userName: this.userName,
+            uuid: this.uuid,
+            admin: this.admin
         };
     }
 
@@ -48,5 +58,13 @@ export class User {
 
     get uuid() {
         return this._uuid;
+    }
+
+    set admin(admin) {
+        this._admin = admin;
+    }
+
+    get admin() {
+        return this._admin;
     }
 }

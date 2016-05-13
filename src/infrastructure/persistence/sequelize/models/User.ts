@@ -7,7 +7,8 @@ module.exports = function(sequelize: Sequelize, DataTypes: DataTypes) {
     return sequelize.define("User", {
         password: { type: DataTypes.STRING, allowNull: false },
         userName: { type: DataTypes.STRING, allowNull: false },
-        uuid: { type: DataTypes.UUIDV4, unique: true, primaryKey: true, defaultValue: DataTypes.UUIDV4 }
+        uuid: { type: DataTypes.UUIDV4, unique: true, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
+        admin: { type: DataTypes.BOOLEAN, defaultValue: false, allowNull: false }
     }, {
         classMethods: {
             associate(models: Models) {

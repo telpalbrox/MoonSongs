@@ -19,16 +19,27 @@ export class SequelizeUserRepository implements UserRespository {
         if(!sequelizeUser) {
             return null;
         }
-        return new User(sequelizeUser.uuid, sequelizeUser.userName, sequelizeUser.password);
+        return new User(sequelizeUser.uuid, sequelizeUser.userName, sequelizeUser.password, sequelizeUser.admin);
     }
 
-    async create(userName, password): Promise<User> {
-        const sequelizeUser = await db.User.create({ userName: userName, password: bcrypt.hashSync(password, 8) });
-        return new User(sequelizeUser.uuid, sequelizeUser.userName, sequelizeUser.password);
+    async create(userName, password, admin = false): Promise<User> {
+        const sequelizeUser = await db.User.create({ userName: userName, password: bcrypt.hashSync(password, 8), admin });
+        return new User(sequelizeUser.uuid, sequelizeUser.userName, sequelizeUser.password, sequelizeUser.admin);
     }
     
     async count(): Promise<number> {
         return await db.User.count();
     }
-    
+
+    async findAll(): Promise<{ users: User[] }> {
+        const sequelizeUsers = await db.User.findAll({ order: [['userName', 'ASC']] });
+        const users = sequelizeUsers.map((sequelizeUser) => {
+            return new User(sequelizeUser.uuid, sequelizeUser.userName, sequelizeUser.password, sequelizeUser.admin);
+        });
+        return { users };
+    }
+
+    async remove(id: number): Promise<any> {
+        await db.User.destroy({ where: { id } });
+    }
 }

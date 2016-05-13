@@ -8,6 +8,6 @@ export class CreateAdminService implements ApplicationService {
         if(numberUsers !== 0) {
             return;
         }
-        await this.userRepository.create('admin', 'patata');
+        await this.userRepository.create('admin', 'patata', true);
     }
 }
