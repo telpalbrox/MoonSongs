@@ -28,7 +28,7 @@
     "log4js": "^0.6.25",
     "method-override": "^2.3.1",
     "moment": "^2.9.0",
-    "mongoose": "^3.8.24",
+    "mongoose": "^5.9.4",
     "morgan": "^1.5.1",
     "multer": "^0.1.8",
     "q": "^1.2.0",
